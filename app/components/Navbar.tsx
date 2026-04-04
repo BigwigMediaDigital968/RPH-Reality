@@ -5,13 +5,27 @@ import Image from "next/image";
 import { useState } from "react";
 import logo from "../assets/RPH-logo-nav.png"
 
-const navLinks = [
-  { name: "Buy", href: "/buy" },
-  { name: "Rent", href: "/rent" },
-  { name: "Off-Plan", href: "/off-plan" },
-  { name: "Developers", href: "/developers" },
-  { name: "Blog", href: "/blog" },
+type NavLink = {
+  name: string;
+  href?: string;
+  isDropdown?: boolean;
+  dropdownItems?: { name: string; href: string }[];
+};
+
+const navLinks: NavLink[] = [
+  { name: "Home", href: "/" },
   { name: "About", href: "/about-us" },
+  {
+    name: "Properties",
+    isDropdown: true,
+    dropdownItems: [
+      { name: "Buy", href: "/buy" },
+      { name: "Sell", href: "/sell" },
+      { name: "Rent", href: "/rent" },
+      { name: "Lease Property", href: "/lease" },
+    ],
+  },
+  { name: "Blogs", href: "/blog" },
 ];
 
 export default function Navbar({ scrolled }: { scrolled: boolean }) {
@@ -43,17 +57,41 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-sans font-medium tracking-widest uppercase transition-colors duration-200 relative group ${scrolled
-                  ? "text-charcoal-700 hover:text-navy-900"
-                  : "text-white/85 hover:text-white"
-                  }`}
-              >
-                {link.name}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300 group-hover:w-full" />
-              </Link>
+              link.isDropdown ? (
+                <div key={link.name} className="relative group">
+                  <span className={`cursor-pointer text-sm font-sans font-medium tracking-widest uppercase transition-colors duration-200 relative ${scrolled ? "text-charcoal-700 hover:text-navy-900" : "text-white/85 hover:text-white"}`}>
+                    {link.name}
+                  </span>
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300 group-hover:w-full" />
+
+                  {/* Dropdown Menu */}
+                  <div className="absolute top-full -left-4 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="bg-white shadow-xl rounded-lg py-2 min-w-[200px] border border-gray-100">
+                      {link.dropdownItems?.map(item => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block px-6 py-2.5 text-sm font-sans font-medium text-charcoal-700 hover:text-navy-900 hover:bg-gray-50 transition-colors uppercase tracking-widest"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.name}
+                  href={link.href!}
+                  className={`text-sm font-sans font-medium tracking-widest uppercase transition-colors duration-200 relative group ${scrolled
+                    ? "text-charcoal-700 hover:text-navy-900"
+                    : "text-white/85 hover:text-white"
+                    }`}
+                >
+                  {link.name}
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300 group-hover:w-full" />
+                </Link>
+              )
             ))}
           </div>
 
@@ -108,14 +146,34 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
           >
             <div className="px-5 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-sans font-medium tracking-widest uppercase text-navy-900 py-1"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
+                link.isDropdown ? (
+                  <div key={link.name} className="flex flex-col gap-2">
+                    <span className="text-sm font-sans font-semibold tracking-widest uppercase text-navy-900 py-1 border-b border-gray-100">
+                      {link.name}
+                    </span>
+                    <div className="flex flex-col gap-1 pl-4">
+                      {link.dropdownItems?.map(item => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="text-sm font-sans font-medium tracking-widest uppercase text-charcoal-600 hover:text-navy-900 py-2"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href!}
+                    className="text-sm font-sans font-medium tracking-widest uppercase text-navy-900 py-1"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
               <div className="flex flex-col gap-2 pt-2">
                 <Link
