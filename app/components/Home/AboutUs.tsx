@@ -55,7 +55,7 @@ const cardVariant: Variants = {
 export default function AboutUs() {
     return (
         <>
-            <div className="relative z-10 min-h-screen bg-gradient-to-br from-[#0f1f3d] via-[#1B365D] to-[#0a1628] px-6 py-20">
+            <div className="relative z-10 bg-gradient-to-br from-[#0f1f3d] via-[#1B365D] to-[#0a1628] px-6 py-20">
                 <div className="max-w-6xl mx-auto">
 
                     {/* Heading */}

@@ -43,74 +43,89 @@ export default function PaymentMethods() {
     }, []);
 
     return (
-        <section className="py-20 bg-navy-950 text-white overflow-hidden">
-            <div className="max-w-[1320px] mx-auto px-6 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
-
-                {/* Icons Grid */}
-                <div className="grid grid-cols-3 gap-6 w-full lg:w-1/2 relative">
-                    {paymentIcons.map((icon, i) => {
-                        const isActive = activeIndices.includes(i);
-
-                        return (
-                            <motion.div
-                                key={i}
-                                animate={{
-                                    y: [0, Math.random() * 8 - 4, 0, Math.random() * 8 - 4, 0],
-                                    x: [0, Math.random() * 6 - 3, 0, Math.random() * 6 - 3, 0],
-                                }}
-                                transition={{
-                                    duration: 10 + i,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                }}
-                                className="relative flex items-center justify-center p-4"
-                            >
-                                <div
-                                    onMouseEnter={() => setActiveIndices([i])}
-                                    onMouseLeave={() => setActiveIndices([])}
-                                    className="relative w-20 h-20 md:w-28 md:h-28">
-                                    <Image
-                                        src={icon.src}
-                                        alt={icon.alt}
-                                        fill
-                                        unoptimized // Crucial for external SVGs
-                                        className="object-contain transition-all duration-2000 ease-in-out"
-                                        style={{
-                                            filter: isActive
-                                                ? "grayscale(0%) brightness(100%)"
-                                                : "grayscale(100%) brightness(150%) opacity(0.2)",
-                                            transform: isActive ? "scale(1.1)" : "scale(1)"
-                                        }}
-                                    />
-                                </div>
-                            </motion.div>
-                        );
-                    })}
+        <section className="py-20 pt-5 bg-navy-950 text-white overflow-hidden">
+            <div className="max-w-[1320px] mx-auto">
+                <div className="mb-10 text-center">
+                    <div className="flex items-center gap-3 justify-center mb-4">
+                        <span className="block w-8 h-px bg-gold-400" />
+                        <span className="text-gold-500 text-xs tracking-[0.2em] font-semibold uppercase font-sans">
+                            Our Partner
+                        </span>
+                        <span className="block w-8 h-px bg-gold-400" />
+                    </div>
+                    <h2 className="text-white font-display text-4xl mb-4">
+                        Trusted network of <br /> <span className="text-gold-500">Elite Developers</span>
+                    </h2>
                 </div>
+                <div className=" px-6 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
 
-                {/* Text Section */}
-                <div className="w-full lg:w-1/2 space-y-6">
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-                            Trusted Developer Network: <span className="text-[#00B4D8]">Building Excellence</span> Together
+                    {/* Icons Grid */}
+                    <div className="grid grid-cols-3 gap-6 w-full lg:w-1/2 relative">
+                        {paymentIcons.map((icon, i) => {
+                            const isActive = activeIndices.includes(i);
 
-                        </h2>
-                        <p className="text-slate-400 text-lg font-light leading-relaxed mt-6">
-                            We collaborate with some of the most reputed developers to bring you
-                            premium residential and commercial properties.
-                        </p>
+                            return (
+                                <motion.div
+                                    key={i}
+                                    animate={{
+                                        y: [0, Math.random() * 8 - 4, 0, Math.random() * 8 - 4, 0],
+                                        x: [0, Math.random() * 6 - 3, 0, Math.random() * 6 - 3, 0],
+                                    }}
+                                    transition={{
+                                        duration: 10 + i,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                    }}
+                                    className="relative flex items-center justify-center p-4"
+                                >
+                                    <div
+                                        onMouseEnter={() => setActiveIndices([i])}
+                                        onMouseLeave={() => setActiveIndices([])}
+                                        className="relative w-20 h-20 md:w-28 md:h-28">
+                                        <Image
+                                            src={icon.src}
+                                            alt={icon.alt}
+                                            fill
+                                            unoptimized // Crucial for external SVGs
+                                            className="object-contain transition-all duration-2000 ease-in-out"
+                                            style={{
+                                                filter: isActive
+                                                    ? "grayscale(0%) brightness(100%)"
+                                                    : "grayscale(100%) brightness(150%) opacity(0.2)",
+                                                transform: isActive ? "scale(1.1)" : "scale(1)"
+                                            }}
+                                        />
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
 
-                        <div className="pt-8">
-                            <button className="cursor-pointer px-8 py-3 rounded-full border border-[#00D4FF] text-[#00D4FF] text-sm font-bold tracking-[0.2em] uppercase hover:bg-[#00D4FF]/10 transition-all duration-300">
-                                View Details
-                            </button>
-                        </div>
-                    </motion.div>
+                    {/* Text Section */}
+                    <div className="w-full lg:w-1/2 space-y-6">
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+                                Building Excellence Together
+
+                            </h2>
+                            <p className="text-slate-400 text-lg font-light leading-relaxed mt-6">
+                                We partner with some of the most reputed developers to bring you
+                                premium residential and commercial properties, carefully selected
+                                for their quality, location, and long-term value.
+                            </p>
+
+                            <div className="pt-8">
+                                <button className="cursor-pointer px-8 py-3 rounded-full border border-white text-white text-sm font-bold tracking-[0.2em] uppercase hover:bg-[#00D4FF]/10 transition-all duration-300">
+                                    View Details
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import SectionLabel from "../Ui/SectionLabel";
 import { fadeUp, motionContainer } from "@/app/utils/motion";
+import { ArrowRight } from "lucide-react";
 
 export default function Blogs() {
   const ref = useRef(null);
@@ -127,13 +128,22 @@ export default function Blogs() {
         </motion.div>
 
         <div className="flex items-center justify-center mt-5 md:mt-10">
-          <motion.a
-            variants={fadeUp}
-            href="#"
-            className="text-xs font-sans font-semibold tracking-widest uppercase text-navy-900 border-b border-navy-900 pb-0.5 hover:text-gold-500 hover:border-gold-400 transition-colors duration-200 whitespace-nowrap"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="flex justify-center mt-12"
           >
-            View All Posts →
-          </motion.a>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer group inline-flex items-center gap-3 px-10 py-5 bg-white text-navy-900 border border-navy-900 font-semibold rounded-full hover:bg-navy-950 hover:text-white transition-all shadow-xl"
+            >
+              Read All Blogs
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </motion.div>
         </div>
       </div>
     </section>

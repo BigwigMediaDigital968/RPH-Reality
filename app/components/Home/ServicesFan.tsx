@@ -52,8 +52,15 @@ export default function ServicesFan() {
             <div className="max-w-11/12 mx-auto px-5">
                 {/* Header Section */}
                 <div className="mb-16">
-                    <h2 className="text-[#00d4ff] font-display text-4xl font-bold mb-4">
-                        Services & <span className="text-white">Expertise</span>
+                    <div className="flex items-center gap-3 justify-center mb-4">
+                        <span className="block w-8 h-px bg-gold-400" />
+                        <span className="text-gold-500 text-xs font-semibold tracking-[0.2em] uppercase font-sans">
+                            Services
+                        </span>
+                        <span className="block w-8 h-px bg-gold-400" />
+                    </div>
+                    <h2 className="text-white font-display text-4xl mb-4">
+                        Services & <span className="text-gold-500">Expertise</span>
                     </h2>
                     <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
                         From bespoke beachside villas to expansive heritage plots, we provide
@@ -80,7 +87,7 @@ export default function ServicesFan() {
                                     backgroundColor: hoveredId === service.id ? "#ffffff" : "#adb5bd",
                                 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                className="absolute w-[240px] h-[280px] rounded-2xl border-2 border-[#00d4ff]/30 shadow-2xl cursor-pointer flex flex-col items-center justify-center p-4"
+                                className="absolute w-[240px] h-[280px] rounded-2xl border-2 border-white/40 shadow-2xl cursor-pointer flex flex-col items-center justify-center p-4"
                                 style={{
                                     marginLeft: `${service.x}%`,
                                     transformOrigin: "bottom center",
@@ -131,7 +138,7 @@ export default function ServicesFan() {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="cursor-pointer mt-5 z-50 relative px-8 py-3 rounded-full border border-[#00d4ff] text-[#00d4ff] flex items-center gap-2 mx-auto hover:bg-[#00d4ff]/10 transition-all text-sm font-semibold tracking-widest uppercase"
+                    className="cursor-pointer mt-5 z-50 relative px-8 py-3 rounded-full border border-white text-white flex items-center gap-2 mx-auto hover:bg-[#00d4ff]/10 transition-all text-sm font-semibold tracking-widest uppercase"
                 >
                     View More Details
                     <span>→</span>
