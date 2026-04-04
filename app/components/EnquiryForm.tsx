@@ -51,7 +51,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
   return (
     <div className="flex flex-col gap-4">
       {/* Grid wrapper */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Name */}
         <div>
           <label className="block text-xs font-sans font-semibold tracking-wider uppercase text-charcoal-600 mb-1.5">

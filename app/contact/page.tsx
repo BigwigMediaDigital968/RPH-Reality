@@ -85,13 +85,13 @@ const Contact = () => {
 
                             {/* RIGHT FORM */}
                             <motion.div
-                                className="bg-white p-10 md:p-14 shadow-sm"
+                                className="bg-white p-10 md:p-6 shadow-sm"
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 viewport={{ once: true }}
                             >
-                                <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
+                                <h3 className="text-2xl font-semibold mb-4">Send a Message</h3>
 
                                 <EnquiryForm variant="default" btnText="SEND MESSAGE" />
                             </motion.div>

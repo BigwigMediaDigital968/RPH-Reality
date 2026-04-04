@@ -3,6 +3,7 @@
 import { motion, Variants } from 'framer-motion';
 import { Shield, Heart, Users, Award, Handshake } from 'lucide-react';
 import Link from 'next/link';
+import SectionLabel from '../Ui/SectionLabel';
 
 const coreValues = [
     {
@@ -82,22 +83,17 @@ export default function CoreValuesSection() {
                     viewport={{ once: false, amount: 0.3 }}
                     className="mb-16"
                 >
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        viewport={{ once: false, amount: 0.3 }}
-                        className="text-sm uppercase tracking-widest text-amber-600 font-semibold mb-4"
-                    >
-                        Our Core Values
-                    </motion.p>
+
+                    <div className='mb-4'>
+                        <SectionLabel>Our Core Values</SectionLabel>
+                    </div>
 
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                         viewport={{ once: false, amount: 0.3 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] max-w-4xl"
+                        className="text-center text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] max-w-4xl mx-auto"
                     >
                         Principles That Guide Every Client Relationship
                     </motion.h2>

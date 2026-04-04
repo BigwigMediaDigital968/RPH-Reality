@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView, useMotionValue, useTransform } from "framer-motion";
 import Image from "next/image";
 import { ShieldCheck, Target, Users, Award, ChevronRight } from "lucide-react";
 import { fadeUp, motionContainer } from "@/app/utils/motion";
@@ -108,16 +108,29 @@ export default function AboutUsPage() {
                 </div>
             </section>
 
-            <section className=" w-full bg-off-white py-5 md:py-10 lg:py-16">
+            <section className="w-full bg-off-white py-5 md:py-10 lg:py-16">
                 <div className="relative z-20 max-w-[1200px] mx-auto px-6">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 bg-white/5 backdrop-blur-xl rounded-3xl overflow-hidden">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                        className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 bg-white border border-slate-100 shadow-sm rounded-3xl overflow-hidden"
+                    >
                         {stats.map((stat, i) => (
-                            <div key={i} className="p-8 text-center border-r border-white/5 last:border-r-0 hover:bg-white/5 transition-colors">
-                                <h3 className="text-3xl md:text-4xl font-bold text-navy-900 mb-1">{stat.value}</h3>
-                                <p className="text-slate-400 text-xs uppercase tracking-widest font-semibold">{stat.label}</p>
+                            <div
+                                key={i}
+                                className="p-8 text-center border-r border-slate-100 last:border-r-0 hover:bg-slate-50 transition-colors group"
+                            >
+                                <h3 className="text-3xl md:text-4xl font-bold text-navy-900 mb-1 group-hover:text-gold-500 transition-colors">
+                                    <Counter value={stat.value} />
+                                </h3>
+                                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+                                    {stat.label}
+                                </p>
                             </div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -128,20 +141,14 @@ export default function AboutUsPage() {
 
                 <div className="max-w-[1200px] mx-auto px-6 relative z-10">
                     <div className="text-center mb-20">
-                        <motion.span
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            className="text-navy-900 font-bold tracking-[0.3em] uppercase text-xs"
-                        >
-                            Leadership
-                        </motion.span>
+                        <SectionLabel>Leadership</SectionLabel>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl md:text-5xl font-bold mt-4 text-slate-900 tracking-tight"
+                            className="text-4xl md:text-5xl font-bold mt-4 text-navy-900 tracking-tight"
                         >
-                            Meet Our <span className="text-slate-400 font-light italic">Innovators</span>
+                            Meet Our <span className="text-gold-400 font-light ">Innovators</span>
                         </motion.h2>
                     </div>
 
@@ -201,5 +208,36 @@ export default function AboutUsPage() {
 
             <CoreValuesSection />
         </main >
+    );
+}
+
+function Counter({ value }: { value: string }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+    const [displayValue, setDisplayValue] = useState(0);
+
+    // Strip non-numeric characters (like +) to animate the number
+    const numericValue = parseInt(value.replace(/[^0-9]/g, ""));
+    const count = useMotionValue(0);
+    const rounded = useTransform(count, (latest) => Math.round(latest));
+
+    useEffect(() => {
+        const unsubscribe = rounded.on("change", (latest) => {
+            setDisplayValue(latest);
+        });
+        return unsubscribe;
+    }, [rounded]);
+
+    useEffect(() => {
+        if (isInView) {
+            animate(count, numericValue, { duration: 2, ease: "easeOut" });
+        }
+    }, [isInView, count, numericValue]);
+
+    return (
+        <span ref={ref}>
+            {displayValue}
+            {value.includes("+") && "+"}
+        </span>
     );
 }
