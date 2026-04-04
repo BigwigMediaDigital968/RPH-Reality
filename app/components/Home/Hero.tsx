@@ -152,7 +152,7 @@ export default function Hero() {
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="max-w-[1320px] mx-auto md:p-12"
+                        className="max-w-[1320px] mx-auto p-4 md:p-12"
                     >
 
                         {/* Content */}
