@@ -69,7 +69,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
               List Property
             </Link>
             <Link
-              href="/contact-us"
+              href="/contact"
               className="text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded bg-gold-400 text-navy-900 hover:brightness-105 transition-all duration-200"
             >
               Contact Us

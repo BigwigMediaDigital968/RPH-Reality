@@ -95,7 +95,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 
-export const PropertyCard = ({ f, index }) => {
+export const PropertyCard = ({ f, index }: { f: any, index: number }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Animation variant for the initial staggered entrance

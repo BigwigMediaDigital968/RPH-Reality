@@ -45,7 +45,7 @@ const services = [
 ];
 
 export default function ServicesFan() {
-    const [hoveredId, setHoveredId] = useState(null);
+    const [hoveredId, setHoveredId] = useState<number | null>(null);
 
     return (
         <section className="py-24 bg-navy-950 overflow-hidden text-center">
