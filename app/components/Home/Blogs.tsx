@@ -43,7 +43,7 @@ export default function Blogs() {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={motionContainer}
-          className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4"
+          className=" text-center mb-14"
         >
           <div>
             <motion.div variants={fadeUp}>
@@ -51,9 +51,9 @@ export default function Blogs() {
             </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="font-display text-navy-900 font-semibold mt-4"
+              className="font-display text-navy-900  mt-4"
               style={{
-                fontSize: "clamp(2rem,4vw,3.25rem)",
+                fontSize: "clamp(2rem, 4vw, 3.25rem)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.1,
               }}
@@ -62,13 +62,6 @@ export default function Blogs() {
               <em className="text-gold-400 not-italic">News</em>
             </motion.h2>
           </div>
-          <motion.a
-            variants={fadeUp}
-            href="#"
-            className="text-xs font-sans font-semibold tracking-widest uppercase text-navy-900 border-b border-navy-900 pb-0.5 hover:text-gold-500 hover:border-gold-400 transition-colors duration-200 whitespace-nowrap"
-          >
-            View All Posts →
-          </motion.a>
         </motion.div>
 
         <motion.div
@@ -129,7 +122,19 @@ export default function Blogs() {
               </div>
             </motion.article>
           ))}
+
+
         </motion.div>
+
+        <div className="flex items-center justify-center mt-5 md:mt-10">
+          <motion.a
+            variants={fadeUp}
+            href="#"
+            className="text-xs font-sans font-semibold tracking-widest uppercase text-navy-900 border-b border-navy-900 pb-0.5 hover:text-gold-500 hover:border-gold-400 transition-colors duration-200 whitespace-nowrap"
+          >
+            View All Posts →
+          </motion.a>
+        </div>
       </div>
     </section>
   );

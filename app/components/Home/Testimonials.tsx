@@ -124,14 +124,14 @@ export default function Testimonials() {
           </motion.div>
           <motion.h2
             variants={fadeUp}
-            className="font-display text-navy-950 font-semibold mt-4"
+            className="font-display text-navy-950 mt-4"
             style={{
               fontSize: "clamp(2rem, 4vw, 3.25rem)",
               letterSpacing: "-0.02em",
               lineHeight: 1.1,
             }}
           >
-            What Our <em className="text-gold-500 not-italic">Clients Say</em>
+            What Our Clients <br /> <em className="text-gold-500 not-italic">Say About Us</em>
           </motion.h2>
         </motion.div>
 

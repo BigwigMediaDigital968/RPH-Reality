@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import SectionLabel from '../Ui/SectionLabel';
 
 const properties = [
     {
@@ -134,17 +135,11 @@ export default function PropertyListingSection3D() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        viewport={{ once: true }}
-                        className="inline-block mb-4"
-                    >
-                        <span className="inline-block px-6 py-2 bg-[#1B365D]/10 border border-[#1B365D]/20 rounded-full text-[#1B365D] text-sm font-semibold tracking-wider uppercase">
-                            Premium Collection
-                        </span>
-                    </motion.div>
+
+                    <div className='mb-4'>
+                        <SectionLabel>Premium Collection</SectionLabel>
+                    </div>
+
 
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -154,7 +149,7 @@ export default function PropertyListingSection3D() {
                         className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] mb-4"
                     >
                         Catalog of Our Properties
-                        <span className="block text-3xl md:text-4xl lg:text-5xl text-amber-600 mt-2">
+                        <span className="block text-3xl md:text-4xl lg:text-5xl text-gold-400 mt-2">
                             for 2026
                         </span>
                     </motion.h2>

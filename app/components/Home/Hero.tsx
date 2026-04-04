@@ -30,7 +30,7 @@ export default function Hero() {
 
     return (
         <>
-            <section className="relative h-[150vh]">
+            <section className="relative h-[100vh]">
                 {/* Sticky Video Background */}
                 <div className="sticky top-0 h-screen w-full overflow-hidden">
                     <motion.div
@@ -47,13 +47,15 @@ export default function Hero() {
                             <source src="https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4" type="video/mp4" />
                         </video>
 
-                        {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+                        {/* Overlay                         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+ */}
+                        <div className="absolute inset-0 bg-linear-to-bl from-black/20 via-white/30 to-white" />
                     </motion.div>
                 </div>
 
                 {/* Scrolling Content */}
-                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-11/12">
+                {/** */}
+                <div className="hidden absolute top-1/3 left-1/2 -translate-x-1/2 w-11/12">
                     <div className="">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -144,6 +146,68 @@ export default function Hero() {
                             <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-amber-500/20 rounded-3xl blur-2xl -z-10" />
                         </motion.div>
                     </div>
+                </div>
+                <div className="absolute w-full bottom-0 left-0 overflow-hidden">
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                        className="max-w-[1320px] mx-auto md:p-12"
+                    >
+
+                        {/* Content */}
+                        <div className="relative z-10">
+
+                            <motion.h1
+                                initial={{ y: 30, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.8, delay: 0.7 }}
+                                className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif text-white mb-6 leading-tight"
+                            >
+                                <span className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-amber-600">
+                                    Welcome to
+                                </span>
+                                <span className="block bg-gradient-to-r from-navy-700 via-navy-900 to-navy-700 bg-clip-text text-transparent">
+                                    Royal Prime Homes
+                                </span>
+                            </motion.h1>
+
+                            <motion.p
+                                initial={{ y: 30, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.8, delay: 0.9 }}
+                                className="text-lg md:text-xl text-navy-950/90 max-w-3xl mb-8 font-light leading-relaxed"
+                            >
+                                Looking for the perfect property in the breathtaking paradise of Goa?
+                                Look no further than GoaPropertyDeal.com, your trusted source for real
+                                estate and development opportunities in this tropical haven.
+                            </motion.p>
+
+                            <motion.div
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{ duration: 1, delay: 1.1 }}
+                                className="w-32 h-0.5 bg-gradient-to-r from-navy-700 to-transparent origin-left mb-8"
+                            />
+
+                            <motion.div
+                                initial={{ y: 30, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.8, delay: 1.2 }}
+                                className="flex flex-wrap gap-4"
+                            >
+                                <button className="cursor-pointer px-8 py-4 bg-navy-700 hover:bg-navy-900 text-white font-semibold rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                                    Explore Properties
+                                </button>
+                                <button className="cursor-pointer px-8 py-4 bg-navy-800/20 hover:bg-white/20 backdrop-blur-sm border border-navy-900 text-navy-900 font-semibold rounded-full transition-all">
+                                    Contact Us
+                                </button>
+                            </motion.div>
+                        </div>
+
+                        {/* Glow */}
+                        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-amber-500/20 rounded-3xl blur-2xl -z-10" />
+                    </motion.div>
                 </div>
             </section>
 

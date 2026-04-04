@@ -62,7 +62,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
                   <span className={`cursor-pointer text-sm font-sans font-medium tracking-widest uppercase transition-colors duration-200 relative ${scrolled ? "text-charcoal-700 hover:text-navy-900" : "text-white/85 hover:text-white"}`}>
                     {link.name}
                   </span>
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-amber-600 transition-all duration-300 group-hover:w-full" />
 
                   {/* Dropdown Menu */}
                   <div className="absolute top-full -left-4 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
@@ -89,14 +89,14 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
                     }`}
                 >
                   {link.name}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold-400 transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-amber-600 transition-all duration-300 group-hover:w-full" />
                 </Link>
               )
             ))}
           </div>
 
           {/* CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 pr-2">
             <Link
               href="#contact"
               className={`text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded border transition-all duration-200 ${scrolled

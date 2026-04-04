@@ -55,7 +55,7 @@ export default function Features() {
           </motion.div>
           <motion.h2
             variants={fadeUp}
-            className="font-display text-navy-900 font-semibold mt-4"
+            className="font-display text-navy-900 mt-4"
             style={{
               fontSize: "clamp(2rem,4vw,3.25rem)",
               letterSpacing: "-0.02em",
@@ -136,7 +136,7 @@ export const PropertyCard = ({ f, index }: { f: any, index: number }) => {
           <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">
             {f.desc}
           </p>
-          <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-600">
+          <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gold-400">
             {f.cta}
             <ArrowIcon />
           </div>

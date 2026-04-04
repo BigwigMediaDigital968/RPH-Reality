@@ -26,14 +26,14 @@ export default function LeadForm() {
             </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="font-display text-navy-900 font-semibold mt-4"
+              className="font-display text-navy-900 mt-4"
               style={{
-                fontSize: "clamp(1.75rem,3.5vw,2.75rem)",
+                fontSize: "clamp(2rem,4vw,3.25rem)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.1,
               }}
             >
-              Let's Find Your{" "}
+              Get Matched with Your{" "} <br />
               <em className="text-gold-400 not-italic">Perfect Property</em>
             </motion.h2>
             <motion.p
@@ -69,6 +69,6 @@ export default function LeadForm() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </section >
   );
 }
