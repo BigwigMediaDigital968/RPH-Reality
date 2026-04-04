@@ -10,32 +10,60 @@ import { fadeUp, motionContainer } from "@/app/utils/motion";
 
 const testimonials = [
   {
-    name: "Sarah Mitchell",
-    role: "Investor, London",
-    avatar: "SM",
+    name: "Vikram Malhotra",
+    role: "Tech Consultant, Bangalore",
+    avatar: "VM",
     rating: 5,
-    text: "Fortune Asia Realty made my Dubai property investment seamless. Their market knowledge is unparalleled — I found the perfect apartment in Downtown in just two weeks.",
+    text: "RPH Realty made my Goa property investment seamless. Their knowledge of local titles is unparalleled—I found the perfect luxury villa in Assagao in just two weeks.",
   },
   {
-    name: "Ahmed Al Rashid",
-    role: "Business Owner, Dubai",
-    avatar: "AR",
+    name: "Arjun Deshmukh",
+    role: "Business Owner, Pune",
+    avatar: "AD",
     rating: 5,
-    text: "Exceptional service from start to finish. The team understood exactly what I needed and delivered beyond expectations. Highly recommend for anyone looking to buy in Dubai.",
+    text: "Exceptional service from start to finish. The team understood I wanted a quiet retreat in South Goa and delivered beyond expectations. Highly recommend RPH for a holiday home.",
   },
   {
     name: "Priya Sharma",
-    role: "Expat, Mumbai",
+    role: "Creative Director, Mumbai",
     avatar: "PS",
     rating: 5,
-    text: "Moving to Dubai was daunting, but Fortune Asia made it effortless. They handled everything professionally. We found our dream villa in Palm Jumeirah within budget.",
+    text: "Finding a reliable partner in Goa was daunting, but RPH Realty made it effortless. They handled the paperwork professionally and found us a stunning heritage home in Siolim.",
   },
   {
-    name: "John Doe",
-    role: "Tech Lead, NYC",
-    avatar: "JD",
+    name: "Ananya Iyer",
+    role: "NRI Investor, Singapore",
+    avatar: "AI",
     rating: 5,
-    text: "The best real estate experience I've had. Their attention to detail and luxury portfolio is unmatched in the region.",
+    text: "The best real estate experience I've had in India. Their attention to detail and curated portfolio of coastal apartments is unmatched in the region.",
+  },
+  {
+    name: "Rohan Mehra",
+    role: "Restaurateur, Delhi",
+    avatar: "RM",
+    rating: 5,
+    text: "RPH Realty's network is incredible. They helped me secure a commercial plot for my new venture near Anjuna. Transparent, honest, and extremely efficient.",
+  },
+  {
+    name: "Sanjay Kulkarni",
+    role: "Retired Professional, Hyderabad",
+    avatar: "SK",
+    rating: 5,
+    text: "I was looking for a peaceful retirement spot. The team at RPH showed me beautiful gated communities in Porvorim that hit every requirement on my list.",
+  },
+  {
+    name: "Meera Reddy",
+    role: "Digital Nomad, Chennai",
+    avatar: "MR",
+    rating: 5,
+    text: "Buying a studio near the beach was a dream. RPH Realty helped me navigate the legalities of the coastal regulation zones with ease. Truly expert guidance.",
+  },
+  {
+    name: "Kabir Khan",
+    role: "Architect, Hyderabad",
+    avatar: "KK",
+    rating: 5,
+    text: "As an architect, I'm picky about design. RPH understood my aesthetic and only showed me high-end boutique projects that actually met my standards.",
   },
 ];
 
@@ -161,7 +189,7 @@ export default function Testimonials() {
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`h-1.5 transition-all duration-300 rounded-full ${index === selectedIndex ? "w-8 bg-gold-500" : "w-2 bg-navy-950"
+                className={`cursor-pointer h-1.5 transition-all duration-300 rounded-full ${index === selectedIndex ? "w-8 bg-gold-500" : "w-2 bg-navy-950"
                   }`}
               />
             ))}
@@ -171,13 +199,13 @@ export default function Testimonials() {
           <div className="flex gap-3">
             <button
               onClick={scrollPrev}
-              className="w-12 h-12 rounded-full border border-navy-200 flex items-center justify-center text-navy-900 hover:bg-gold-500 hover:border-gold-500 hover:text-white transition-all duration-300"
+              className="cursor-pointer w-12 h-12 rounded-full border border-navy-200 flex items-center justify-center text-navy-900 hover:bg-gold-500 hover:border-gold-500 hover:text-white transition-all duration-300"
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={scrollNext}
-              className="w-12 h-12 rounded-full border border-navy-200 flex items-center justify-center text-navy-900 hover:bg-gold-500 hover:border-gold-500 hover:text-white transition-all duration-300"
+              className="cursor-pointer w-12 h-12 rounded-full border border-navy-200 flex items-center justify-center text-navy-900 hover:bg-gold-500 hover:border-gold-500 hover:text-white transition-all duration-300"
             >
               <ChevronRight size={20} />
             </button>

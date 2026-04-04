@@ -1,3 +1,6 @@
+import Image from "next/image";
+import logo from "../assets/RPH-logo-nav.png"
+
 export default function Footer() {
   return (
     <footer className="bg-navy-950 pt-16 lg:pt-20 pb-8">
@@ -6,19 +9,18 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <div className="font-display text-white mb-4">
-              <div className="text-2xl leading-none font-semibold">
-                FORTUNE ASIA
-              </div>
-              <div className="flex items-center gap-1.5 mt-1">
-                <span className="block h-px w-5 bg-gold-400" />
-                <span className="text-xs tracking-[0.25em] font-sans font-medium text-white/60">
-                  REALTY
-                </span>
-                <span className="block h-px w-5 bg-gold-400" />
+              <div className="relative w-40 h-10 lg:w-48 lg:h-12">
+                <Image
+                  src={logo}
+                  alt="Royal Prime Homes"
+                  className={`object-contain w-full h-full invert brightness-0 invert`}
+                  fill
+                  priority
+                />
               </div>
             </div>
             <p className="font-sans text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
-              Dubai's trusted real estate partner. Helping clients find their
+              Goa's trusted real estate partner. Helping clients find their
               perfect home since 2013.
             </p>
             <div className="flex gap-3">
@@ -108,7 +110,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-white/40 text-sm font-sans leading-relaxed">
-                  Office 2403, Mazaya Business Avenue, JLT, Dubai, UAE
+                  RPH Realty Unit 402, Goa 403001, India
                 </span>
               </li>
               <li>
@@ -131,7 +133,7 @@ export default function Footer() {
                       d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
                     />
                   </svg>
-                  +971 4 123 4567
+                  +91 98200 12345
                 </a>
               </li>
               <li>
@@ -154,7 +156,7 @@ export default function Footer() {
                       d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                     />
                   </svg>
-                  hello@fortuneasiarealty.com
+                  info@royalprimehomes.com
                 </a>
               </li>
             </ul>
@@ -164,7 +166,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/25 text-xs font-sans">
-            © {new Date().getFullYear()} Fortune Asia Realty. All rights
+            © {new Date().getFullYear()} RPH Realty. All rights
             reserved. RERA Licensed.
           </p>
           <div className="flex gap-6">

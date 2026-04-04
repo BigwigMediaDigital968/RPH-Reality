@@ -59,7 +59,7 @@ export default function Hero() {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 1, delay: 0.3 }}
-                            className="relative w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 lg:p-10 shadow-2xl max-w-5xl mx-auto w-full"
+                            className="relative w-full backdrop-blur-xl bg-white/5 border border-navy-950/10 rounded-3xl p-6 md:p-8 lg:p-10 shadow-2xl max-w-5xl mx-auto w-full"
                         >
                             {/* Corners */}
                             <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-amber-400/50 rounded-tl-3xl" />
@@ -70,9 +70,10 @@ export default function Hero() {
                                 <div
                                     className="w-full h-full"
                                     style={{
-                                        backgroundImage: `linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)`,
+                                        backgroundImage: `linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px)`,
                                         backgroundSize: "50px 50px",
+                                        backgroundColor: "#f8fafc" // A very light "Ghost White" / Slate-50
                                     }}
                                 />
                             </div>
@@ -85,8 +86,8 @@ export default function Hero() {
                                     transition={{ duration: 0.8, delay: 0.5 }}
                                     className="mb-2"
                                 >
-                                    <div className="inline-block px-6 py-2 bg-amber-400/20 border border-amber-400/30 rounded-full">
-                                        <span className="text-amber-300 text-sm font-medium tracking-wider uppercase">
+                                    <div className="inline-block px-6 py-2 bg-[#1B365D]/20 border border-navy-950/30 rounded-full">
+                                        <span className="text-navy-700 text-sm font-semibold tracking-wider uppercase">
                                             Luxury Real Estate
                                         </span>
                                     </div>
@@ -101,7 +102,7 @@ export default function Hero() {
                                     <span className="text-lg md:text-xl lg:text-2xl xl:text-3xl">
                                         Welcome to
                                     </span>
-                                    <span className="block bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">
+                                    <span className="block bg-gradient-to-r from-navy-700 via-navy-800 to-navy-950 bg-clip-text text-transparent">
                                         Royal Prime Homes
                                     </span>
                                 </motion.h1>
@@ -121,7 +122,7 @@ export default function Hero() {
                                     initial={{ scaleX: 0 }}
                                     animate={{ scaleX: 1 }}
                                     transition={{ duration: 1, delay: 1.1 }}
-                                    className="w-32 h-0.5 bg-gradient-to-r from-amber-400 to-transparent origin-left mb-8"
+                                    className="w-32 h-0.5 bg-gradient-to-r from-navy-700 to-transparent origin-left mb-8"
                                 />
 
                                 <motion.div
@@ -130,10 +131,10 @@ export default function Hero() {
                                     transition={{ duration: 0.8, delay: 1.2 }}
                                     className="flex flex-wrap gap-4"
                                 >
-                                    <button className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                                    <button className="cursor-pointer px-8 py-4 bg-navy-700 hover:bg-navy-900 text-white font-semibold rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105">
                                         Explore Properties
                                     </button>
-                                    <button className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-full transition-all">
+                                    <button className="cursor-pointer px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-full transition-all">
                                         Contact Us
                                     </button>
                                 </motion.div>

@@ -7,66 +7,33 @@ import { useEffect, useRef, useState } from "react";
 const features = [
   {
     icon: (
-      <svg
-        width="28"
-        height="28"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-        />
+      <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
       </svg>
     ),
-    title: "Buy Property",
-    desc: "Explore thousands of ready and off-plan properties across Dubai's most sought-after communities.",
-    cta: "Browse Properties",
+    title: "Verified Titles",
+    desc: "Every property in our portfolio undergoes a rigorous 30-year title search and legal vetting to ensure a risk-free investment.",
+    cta: "Our Legal Process",
   },
   {
     icon: (
-      <svg
-        width="28"
-        height="28"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
-        />
+      <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
       </svg>
     ),
-    title: "Rent a Home",
-    desc: "Short or long-term rentals in premium locations — furnished, unfurnished, and holiday homes.",
-    cta: "View Rentals",
+    title: "Curated Portfolio",
+    desc: "From restored Portuguese mansions to sustainable modern villas, we only list homes that meet our 'Prime' standard.",
+    cta: "View Selection",
   },
   {
     icon: (
-      <svg
-        width="28"
-        height="28"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75"
-        />
+      <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
     ),
-    title: "Sell with Us",
-    desc: "Get the best market price for your property with our expert valuation and marketing services.",
-    cta: "List Your Property",
+    title: "Prime Management",
+    desc: "Our relationship doesn't end at the sale. We provide end-to-end property management and rental yield optimization for your home.",
+    cta: "Explore Services",
   },
 ];
 
@@ -95,8 +62,8 @@ export default function Features() {
               lineHeight: 1.1,
             }}
           >
-            Your Gateway to Dubai{" "}
-            <em className="text-gold-400 not-italic">Real Estate</em>
+            Elevating the Standard of <br />
+            <em className="text-gold-400 not-italic">Goan Luxury Living</em>
           </motion.h2>
         </motion.div>
 
@@ -150,6 +117,7 @@ export const PropertyCard = ({ f, index }) => {
       className="perspective-1000 w-full h-[380px] cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
+      key={index}
     >
       <motion.div
         className="relative w-full h-full preserve-3d"
@@ -180,13 +148,13 @@ export const PropertyCard = ({ f, index }) => {
             {f.icon}
           </div>
           <h3 className="font-serif text-white text-2xl font-semibold mb-3">
-            Royal Standard
+            {f.title}
           </h3>
           <p className="text-blue-100/80 text-sm leading-relaxed mb-6 flex-grow">
-            Elevating your Goan lifestyle with our "Prime-Only" selection of verified luxury estates.
+            {f.desc}
           </p>
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-400">
-            Check Availability
+            {f.cta}
             <ArrowIcon />
           </div>
         </div>

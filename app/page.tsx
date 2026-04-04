@@ -7,6 +7,8 @@ import Developers from "./components/Home/Developers";
 import Testimonials from "./components/Home/Testimonials";
 import ServicesFan from "./components/Home/ServicesFan";
 import DevelopersDesign from "./components/Home/DevelopersDesign";
+import LeadForm from "./components/Home/LeadForm";
+import Blogs from "./components/Home/Blogs";
 
 export default function Home() {
   return (
@@ -17,11 +19,11 @@ export default function Home() {
         <PropertyListingSection3D />
       </div>
       <Features />
-      <Developers />
       <ServicesFan />
       <DevelopersDesign />
+      <LeadForm />
       <Testimonials />
-
+      <Blogs />
     </>
   );
 }

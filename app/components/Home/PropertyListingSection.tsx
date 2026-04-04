@@ -155,7 +155,7 @@ export default function PropertyListingSection3D() {
                     >
                         Catalog of Our Properties
                         <span className="block text-3xl md:text-4xl lg:text-5xl text-amber-600 mt-2">
-                            for 2024
+                            for 2026
                         </span>
                     </motion.h2>
 
@@ -315,7 +315,7 @@ export default function PropertyListingSection3D() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={handlePrev}
-                            className=" z-20 w-14 h-14 backdrop-blur-xl bg-white/20 hover:bg-white/30 border border-navy-900/30 rounded-full flex items-center justify-center text-navy-900 transition-all shadow-lg"
+                            className="cursor-pointer z-20 w-14 h-14 backdrop-blur-xl bg-white/20 hover:bg-white/30 border border-navy-900/30 rounded-full flex items-center justify-center text-navy-900 transition-all shadow-lg"
                         >
                             <ChevronLeft className="w-6 h-6" />
                         </motion.button>
@@ -324,7 +324,7 @@ export default function PropertyListingSection3D() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={handleNext}
-                            className=" z-20 w-14 h-14 backdrop-blur-xl bg-white/20 hover:bg-white/30 border border-navy-900/30 rounded-full flex items-center justify-center text-navy-900 transition-all shadow-lg"
+                            className="cursor-pointer z-20 w-14 h-14 backdrop-blur-xl bg-white/20 hover:bg-white/30 border border-navy-900/30 rounded-full flex items-center justify-center text-navy-900 transition-all shadow-lg"
                         >
                             <ChevronRight className="w-6 h-6" />
                         </motion.button>
@@ -343,7 +343,7 @@ export default function PropertyListingSection3D() {
                                 className="relative"
                             >
                                 <div
-                                    className={`h-2 rounded-full transition-all duration-500 ${index === currentIndex
+                                    className={`cursor-pointer h-2 rounded-full transition-all duration-500 ${index === currentIndex
                                         ? 'w-12 bg-[#1B365D]'
                                         : 'w-2 bg-[#1B365D]/30 hover:bg-[#1B365D]/50'
                                         }`}
@@ -351,7 +351,7 @@ export default function PropertyListingSection3D() {
                                 {index === currentIndex && (
                                     <motion.div
                                         layoutId="activeDot"
-                                        className="absolute inset-0 rounded-full bg-[#1B365D]"
+                                        className="cursor-pointer absolute inset-0 rounded-full bg-[#1B365D]"
                                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                     />
                                 )}
@@ -389,7 +389,7 @@ export default function PropertyListingSection3D() {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="group inline-flex items-center gap-3 px-10 py-5 bg-[#1B365D] text-white font-semibold rounded-full hover:bg-[#2a4a7a] transition-all shadow-xl"
+                            className="cursor-pointer group inline-flex items-center gap-3 px-10 py-5 bg-[#1B365D] text-white font-semibold rounded-full hover:bg-[#2a4a7a] transition-all shadow-xl"
                         >
                             View Full Catalog
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
