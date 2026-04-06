@@ -4,13 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import logo from "../assets/RPH-logo-nav.png"
+import { NavLink } from "../types";
 
-type NavLink = {
-  name: string;
-  href?: string;
-  isDropdown?: boolean;
-  dropdownItems?: { name: string; href: string }[];
-};
+
 
 const navLinks: NavLink[] = [
   { name: "Home", href: "/" },
@@ -22,9 +18,10 @@ const navLinks: NavLink[] = [
       { name: "Buy", href: "/buy" },
       { name: "Sell", href: "/sell" },
       { name: "Rent", href: "/rent" },
-      { name: "Lease Property", href: "/lease" },
+      { name: "Lease", href: "/lease" },
     ],
   },
+  { name: "Projects", href: "/projects" },
   { name: "Blogs", href: "/blog" },
 ];
 
@@ -98,13 +95,13 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3 pr-2">
             <Link
-              href="#contact"
+              href="/explore-properties"
               className={`text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded border transition-all duration-200 ${scrolled
                 ? "border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white"
                 : "border-white/50 text-white hover:bg-white/10 hover:border-white"
                 }`}
             >
-              List Property
+              Explore Properties
             </Link>
             <Link
               href="/contact"
@@ -177,13 +174,13 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
               ))}
               <div className="flex flex-col gap-2 pt-2">
                 <Link
-                  href="#contact"
+                  href="/explore-properties"
                   className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded border border-navy-900 text-navy-900"
                 >
-                  List Property
+                  Explore Properties
                 </Link>
                 <Link
-                  href="#contact"
+                  href="/contact"
                   className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded bg-gold-400 text-navy-900"
                 >
                   Contact Us

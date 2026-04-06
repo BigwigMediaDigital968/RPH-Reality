@@ -1,5 +1,26 @@
 import Image from "next/image";
 import logo from "../assets/RPH-logo-nav.png"
+import { NavLink } from "../types";
+import Link from "next/link";
+
+
+const navLinks: NavLink[] = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about-us" },
+  {
+    name: "Properties",
+    isDropdown: true,
+    dropdownItems: [
+      { name: "Buy", href: "/buy" },
+      { name: "Sell", href: "/sell" },
+      { name: "Rent", href: "/rent" },
+      { name: "Lease", href: "/lease" },
+    ],
+  },
+  { name: "Projects", href: "/projects" },
+  { name: "Blogs", href: "/blog" },
+  { name: "Contact", href: "/contact" },
+];
 
 export default function Footer() {
   return (
@@ -42,20 +63,14 @@ export default function Footer() {
               Properties
             </h4>
             <ul className="flex flex-col gap-3">
-              {[
-                "Buy Property",
-                "Rent Property",
-                "Off-Plan",
-                "Commercial",
-                "Luxury Collection",
-              ].map((l) => (
-                <li key={l}>
-                  <a
-                    href="#"
+              {navLinks.filter((l) => l.name == 'Properties')[0].dropdownItems?.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href!}
                     className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors duration-200"
                   >
-                    {l}
-                  </a>
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -67,15 +82,16 @@ export default function Footer() {
               Company
             </h4>
             <ul className="flex flex-col gap-3">
-              {["About Us", "Meet the Team", "Careers", "Blog", "Contact"].map(
-                (l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
+              {navLinks.map(
+                (l) => l.isDropdown ? null : (
+                  <li key={l.name}>
+                    <Link
+                      key={l.name + 'key'}
+                      href={l.href!}
                       className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors duration-200"
                     >
-                      {l}
-                    </a>
+                      {l.name}
+                    </Link>
                   </li>
                 ),
               )}
@@ -115,7 +131,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="tel:+97141234567"
+                  href="tel:+919820012345"
                   className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors flex gap-3"
                 >
                   <svg
@@ -138,7 +154,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@fortuneasiarealty.com"
+                  href="mailto:info@royalprimehomes.com"
                   className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors flex gap-3 break-all"
                 >
                   <svg

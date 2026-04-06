@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 import { Home, Key, TrendingUp, Landmark, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const services = [
     {
@@ -120,7 +121,7 @@ export default function ServicesFan() {
                                                 href={service.link}
                                                 className="group/btn flex items-center gap-2 bg-[#002147] text-white px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest uppercase transition-all hover:bg-[#D4AF37] hover:shadow-xl"
                                             >
-                                                Learn More
+                                                Explore
                                                 <ArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
                                             </a>
                                         </motion.div>
@@ -134,7 +135,8 @@ export default function ServicesFan() {
                     </div>
                 </div>
 
-                <div className="relative flex md:hidden flex-col md:flex-row justify-center items-center md:items-end gap-8 md:gap-0 min-h-screen md:h-[350px] pt-10 md:pt-20 px-6">
+                {/* MOBILE:  Fan Cards Container */}
+                <div className="relative flex md:hidden flex-col justify-center items-center gap-8 min-h-screen pt-10 px-6">
                     {services.map((service, i) => {
                         const IconComponent = service.icon;
 
@@ -162,9 +164,7 @@ export default function ServicesFan() {
                                     amount: 0.6       // Triggers when 60% of the card is visible
                                 }}
                                 transition={{
-                                    type: "spring",
-                                    stiffness: 260,
-                                    damping: 20
+                                    type: "tween",
                                 }}
                                 /* On Mobile: relative, full width
                                    On Desktop: absolute with original X offset
@@ -192,13 +192,13 @@ export default function ServicesFan() {
                                 </p>
 
                                 {/* CTA Button */}
-                                <a
+                                <Link
                                     href={service.link}
                                     className="flex items-center gap-2 bg-[#002147] text-white px-8 py-3 rounded-full text-[10px] font-black tracking-widest uppercase transition-all hover:bg-[#D4AF37]"
                                 >
-                                    Learn More
+                                    Explore
                                     <ArrowRight size={14} />
-                                </a>
+                                </Link>
                             </motion.div>
                         );
                     })}

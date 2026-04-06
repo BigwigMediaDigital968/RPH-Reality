@@ -55,7 +55,7 @@ export default function PropertyListingSection3D() {
         if (!isHovered) {
             const interval = setInterval(() => {
                 handleNext();
-            }, 5000);
+            }, 3000);
 
             return () => clearInterval(interval);
         }
@@ -186,9 +186,7 @@ export default function PropertyListingSection3D() {
                                     className="absolute inset-0 flex items-center justify-center"
                                     animate={getSlideStyle(position)}
                                     transition={{
-                                        type: 'spring',
-                                        stiffness: 300,
-                                        damping: 30,
+                                        type: 'tween',
                                     }}
                                     style={{
                                         transformStyle: 'preserve-3d',
