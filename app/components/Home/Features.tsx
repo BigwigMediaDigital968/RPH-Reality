@@ -74,7 +74,7 @@ export default function Features() {
           className="grid md:grid-cols-3 gap-6"
         >
           {features.map((f, i) => (
-            <PropertyCard f={f} index={i} />
+            <PropertyCard key={f.title} f={f} index={i} />
           ))}
         </motion.div>
       </div>
