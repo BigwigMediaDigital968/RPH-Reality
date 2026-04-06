@@ -27,15 +27,6 @@ const services = [
     },
     {
         id: 3,
-        title: "Sell",
-        rotation: 5,
-        x: 15,
-        desc: "List your property with the experts in high-value Goan realty.",
-        link: "/sell",
-        icon: TrendingUp
-    },
-    {
-        id: 4,
         title: "Lease",
         rotation: 12,
         x: 40,
@@ -88,9 +79,8 @@ export default function ServicesFan() {
                                     backgroundColor: hoveredId === service.id ? "#ffffff" : "#adb5bd",
                                 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                className="absolute w-[240px] h-[280px] rounded-2xl border-2 border-white/40 shadow-2xl cursor-pointer flex flex-col items-center justify-center p-4"
+                                className="relative w-[250px] h-[300px] rounded-2xl border-2 border-white/40 shadow-2xl cursor-pointer flex flex-col items-center justify-center p-4"
                                 style={{
-                                    marginLeft: `${service.x}%`,
                                     transformOrigin: "bottom center",
                                 }}
                             >
@@ -117,13 +107,13 @@ export default function ServicesFan() {
                                                 {service.desc}
                                             </p>
 
-                                            <a
+                                            <Link
                                                 href={service.link}
                                                 className="group/btn flex items-center gap-2 bg-[#002147] text-white px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest uppercase transition-all hover:bg-[#D4AF37] hover:shadow-xl"
                                             >
                                                 Explore
                                                 <ArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
-                                            </a>
+                                            </Link>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>

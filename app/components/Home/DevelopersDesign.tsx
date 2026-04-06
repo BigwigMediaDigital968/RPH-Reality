@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 // 1. Define the Interface for our Data
 interface PaymentIcon {
@@ -120,9 +122,11 @@ export default function PaymentMethods() {
                             </p>
 
                             <div className="pt-8">
-                                <button className="cursor-pointer px-8 py-3 rounded-full border border-white text-white text-sm font-bold tracking-[0.2em] uppercase hover:bg-[#00D4FF]/10 transition-all duration-300">
-                                    View Details
-                                </button>
+                                <Link href={'/developers'} className="inline-flex cursor-pointer items-center gap-2 px-8 py-3 rounded-full border border-white text-white text-sm font-bold tracking-[0.2em] uppercase hover:bg-[#00D4FF]/10 transition-all duration-300">
+                                    Developers
+                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+
+                                </Link>
                             </div>
                         </motion.div>
                     </div>

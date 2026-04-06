@@ -197,7 +197,7 @@ export default function Hero() {
                                 transition={{ duration: 0.8, delay: 1.2 }}
                                 className="flex flex-wrap gap-4"
                             >
-                                <Link href={"/explore-properties"} className="cursor-pointer px-8 py-4 bg-navy-700 hover:bg-navy-900 text-white font-semibold rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105">
+                                <Link href={"/properties"} className="cursor-pointer px-8 py-4 bg-navy-700 hover:bg-navy-900 text-white font-semibold rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105">
                                     Explore Properties
                                 </Link>
                                 <Link href={"/contact"} className="cursor-pointer px-8 py-4 bg-navy-800/20 hover:bg-white/20 backdrop-blur-sm border border-navy-900 text-navy-900 font-semibold rounded-full transition-all">

@@ -8,6 +8,7 @@ import { useState } from "react";
 import PDFFlipbookModal from "../components/common/PDFFlipbookModal";
 import PdfFlipbook from "../components/common/PdfFlipbook";
 import PdfFlipbookModal from "../components/common/PDFFlipbookModal";
+import LeadFormModal from "../components/Modals/LeadFormModal";
 
 const projects = [
     {
@@ -178,6 +179,16 @@ export default function Projects() {
                     onClose={() => setPdfModal({ isOpen: false, project: null })}
                 />
             )}
+
+            <LeadFormModal
+                isOpen={leadFormModal.isOpen}
+                onClose={() => setLeadFormModal({ isOpen: false, project: null })}
+                onSubmit={handleLeadSubmit}
+                type="download"
+                projectTitle={leadFormModal.project?.title}
+                projectImage={leadFormModal.project?.image}
+                downloadFileName={leadFormModal.project?.pdfUrl}
+            />
 
         </>
     )

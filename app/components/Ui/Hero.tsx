@@ -21,7 +21,7 @@ export default function Hero({
                     className="object-cover"
                     unoptimized
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-navy-700/20 to-navy-700/40" />
+                <div className="absolute inset-0 bg-gradient-to-b from-navy-700/40 to-navy-700/60" />
 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

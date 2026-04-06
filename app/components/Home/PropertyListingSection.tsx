@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import SectionLabel from '../Ui/SectionLabel';
+import Link from 'next/link';
 
 const properties = [
     {
@@ -379,14 +380,17 @@ export default function PropertyListingSection3D() {
                         viewport={{ once: true }}
                         className="flex justify-center mt-12"
                     >
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                        <motion.div whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}>
+
+                        </motion.div>
+                        <Link
+                            href={"/properties"}
                             className="cursor-pointer group inline-flex items-center gap-3 px-10 py-5 bg-[#1B365D] text-white font-semibold rounded-full hover:bg-[#2a4a7a] transition-all shadow-xl"
                         >
                             View Full Catalog
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
+                        </Link>
                     </motion.div>
 
                 </motion.div>

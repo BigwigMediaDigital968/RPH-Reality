@@ -131,11 +131,12 @@ export default function BuyPage() {
             <Hero
                 title={
                     <>
-                        Buy Property
+                        Property for <br />
+                        <span className="italic text-gold-400"> Lease</span>
                     </>
                 }
                 image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80"
-                label="Properties for Sale"
+                label="Properties for lease"
             />
 
             {/* Main Content */}

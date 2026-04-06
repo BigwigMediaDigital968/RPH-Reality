@@ -13,7 +13,7 @@ const navLinks: NavLink[] = [
   { name: "About", href: "/about-us" },
 
   { name: "Projects", href: "/projects" },
-  { name: "Blogs", href: "/blog" },
+  { name: "Blogs", href: "/blogs" },
 ];
 
 export default function Navbar({ scrolled }: { scrolled: boolean }) {
@@ -86,7 +86,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3 pr-2">
             <Link
-              href="/explore-properties"
+              href="/properties"
               className={`text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded border transition-all duration-200 ${scrolled
                 ? "border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white"
                 : "border-white/50 text-white hover:bg-white/10 hover:border-white"
@@ -165,7 +165,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
               ))}
               <div className="flex flex-col gap-2 pt-2">
                 <Link
-                  href="/explore-properties"
+                  href="/properties"
                   className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded border border-navy-900 text-navy-900"
                 >
                   Explore Properties
