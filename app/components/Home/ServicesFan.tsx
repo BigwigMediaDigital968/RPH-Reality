@@ -69,7 +69,7 @@ export default function ServicesFan() {
                 </div>
 
                 {/* Fan Cards Container */}
-                <div className="relative flex justify-center items-end h-[350px] pt-20 mt-20">
+                <div className="relative hidden md:flex justify-center items-end h-[350px] pt-20 mt-20">
                     {services.map((service) => {
                         const IconComponent = service.icon; // Extract the component
                         const isHovered = hoveredId === service.id;
@@ -132,6 +132,79 @@ export default function ServicesFan() {
                     <div className="absolute w-full h-1/3 z-40 bg-navy-950 top-5/6">
 
                     </div>
+                </div>
+
+                <div className="relative flex md:hidden flex-col md:flex-row justify-center items-center md:items-end gap-8 md:gap-0 min-h-screen md:h-[350px] pt-10 md:pt-20 px-6">
+                    {services.map((service, i) => {
+                        const IconComponent = service.icon;
+
+                        return (
+                            <motion.div
+                                key={service.id}
+                                /* SCROLL ANIMATION LOGIC 
+                                   initial: skewed, grey, and slightly transparent
+                                   whileInView: upright, colored, and opaque
+                                */
+                                initial={{
+                                    rotate: -5,
+                                    scale: 0.9,
+                                    opacity: 0.6,
+                                    backgroundColor: "#adb5bd"
+                                }}
+                                whileInView={{
+                                    rotate: 0,
+                                    scale: 1,
+                                    opacity: 1,
+                                    backgroundColor: "#ffffff"
+                                }}
+                                viewport={{
+                                    once: false,      // Animates every time it comes into view
+                                    amount: 0.6       // Triggers when 60% of the card is visible
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 260,
+                                    damping: 20
+                                }}
+                                /* On Mobile: relative, full width
+                                   On Desktop: absolute with original X offset
+                                */
+                                className="relative md:absolute w-full max-w-[300px] md:w-[240px] h-[320px] md:h-[280px] rounded-2xl border-2 border-white/40 shadow-2xl flex flex-col items-center justify-center p-6"
+                                style={{
+                                    // Apply specific desktop logic only on md+ screens
+                                    marginLeft: typeof window !== 'undefined' && window.innerWidth > 768 ? `${service.x}%` : '0',
+                                    transformOrigin: "center center",
+                                }}
+                            >
+                                {/* Icon Container - Auto-colors via whileInView parent state or local CSS */}
+                                <div className="mb-6 text-[#002147] transition-transform duration-500 group-hover:scale-110">
+                                    <IconComponent size={48} strokeWidth={1.5} />
+                                </div>
+
+                                {/* Headline */}
+                                <h3 className="font-display text-2xl font-bold tracking-tight mb-2 text-[#002147] text-center">
+                                    {service.title}
+                                </h3>
+
+                                {/* Description - Visible on mobile by default for better UX, or use whileInView */}
+                                <p className="text-[12px] leading-relaxed text-slate-500 mb-6 px-4 font-medium text-center">
+                                    {service.desc}
+                                </p>
+
+                                {/* CTA Button */}
+                                <a
+                                    href={service.link}
+                                    className="flex items-center gap-2 bg-[#002147] text-white px-8 py-3 rounded-full text-[10px] font-black tracking-widest uppercase transition-all hover:bg-[#D4AF37]"
+                                >
+                                    Learn More
+                                    <ArrowRight size={14} />
+                                </a>
+                            </motion.div>
+                        );
+                    })}
+
+                    {/* Decorative navy background block */}
+                    <div className="hidden md:block absolute w-full h-1/3 z-[-1] bg-[#002147] bottom-0" />
                 </div>
 
                 {/* Action Button */}
