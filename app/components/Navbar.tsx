@@ -11,16 +11,7 @@ import { NavLink } from "../types";
 const navLinks: NavLink[] = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about-us" },
-  {
-    name: "Properties",
-    isDropdown: true,
-    dropdownItems: [
-      { name: "Buy", href: "/buy" },
-      { name: "Sell", href: "/buy" },
-      { name: "Rent", href: "/buy" },
-      { name: "Lease", href: "/buy" },
-    ],
-  },
+
   { name: "Projects", href: "/projects" },
   { name: "Blogs", href: "/blog" },
 ];
