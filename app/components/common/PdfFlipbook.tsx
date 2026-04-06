@@ -1,52 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
-import * as pdfjs from 'pdfjs-dist';
-// Using Lucide icons for a premium look, or you can use your own SVG
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// --- DUMMY IMAGES ---
+// Using high-quality real estate placeholders to keep the "Royal" feel
+const DUMMY_PAGES = [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80", // Cover
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+    "https://images.unsplash.com/photo-1600607687940-c52fb0729a5c?w=800&q=80",
+    "https://images.unsplash.com/photo-1600566753190-17f0bb2a6c3e?w=800&q=80",
+    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80",
+    "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=800&q=80", // Back Cover
+];
 
-export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
-    const [pages, setPages] = useState<string[]>([]);
-    const [loading, setLoading] = useState(true);
-    // Properly type the ref for pageflip
+export default function PdfFlipbook() {
     const bookRef = useRef<any>(null);
-
-    useEffect(() => {
-        const loadPdf = async () => {
-            try {
-                const loadingTask = pdfjs.getDocument(pdfUrl);
-                const pdf = await loadingTask.promise;
-                const totalPages = pdf.numPages;
-                const images: string[] = [];
-
-                for (let i = 1; i <= totalPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({ scale: 2 });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-
-                    if (context) {
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-                        await page.render({
-                            canvasContext: context,
-                            viewport: viewport,
-                            canvas: canvas,
-                        }).promise;
-                        images.push(canvas.toDataURL('image/webp', 0.8));
-                    }
-                }
-                setPages(images);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error rendering PDF:", error);
-            }
-        };
-        loadPdf();
-    }, [pdfUrl]);
 
     // --- NAVIGATION HANDLERS ---
     const handlePrev = () => {
@@ -57,17 +27,6 @@ export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
         bookRef.current?.pageFlip().flipNext();
     };
 
-    if (loading) {
-        return (
-            <div className="h-[400px] flex items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-slate-500 font-serif">Preparing Royal Brochure...</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="relative group max-w-6xl mx-auto py-10">
 
@@ -77,7 +36,7 @@ export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
                 {/* PREVIOUS BUTTON */}
                 <button
                     onClick={handlePrev}
-                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-navy-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
+                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
                     aria-label="Previous Page"
                 >
                     <ChevronLeft size={24} />
@@ -99,12 +58,12 @@ export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
                         className="shadow-2xl"
                         ref={bookRef}
                     >
-                        {pages.map((image, index) => (
+                        {DUMMY_PAGES.map((image, index) => (
                             <div key={index} className="bg-white">
                                 <img
                                     src={image}
                                     alt={`Page ${index + 1}`}
-                                    className="w-full h-full object-contain"
+                                    className="w-full h-full object-cover"
                                 />
                             </div>
                         ))}
@@ -114,7 +73,7 @@ export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
                 {/* NEXT BUTTON */}
                 <button
                     onClick={handleNext}
-                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-navy-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
+                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
                     aria-label="Next Page"
                 >
                     <ChevronRight size={24} />
@@ -123,8 +82,12 @@ export default function PdfFlipbook({ pdfUrl }: { pdfUrl: string }) {
 
             {/* MOBILE CONTROLS (Floating at the bottom) */}
             <div className="flex justify-center gap-6 mt-8 md:hidden">
-                <button onClick={handlePrev} className="cursor-pointer bg-white p-4 rounded-full shadow-md"><ChevronLeft /></button>
-                <button onClick={handleNext} className="cursor-pointer bg-white p-4 rounded-full shadow-md"><ChevronRight /></button>
+                <button onClick={handlePrev} className="cursor-pointer bg-white p-4 rounded-full shadow-md">
+                    <ChevronLeft size={24} />
+                </button>
+                <button onClick={handleNext} className="cursor-pointer bg-white p-4 rounded-full shadow-md">
+                    <ChevronRight size={24} />
+                </button>
             </div>
         </div>
     );

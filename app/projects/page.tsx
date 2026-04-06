@@ -32,7 +32,7 @@ const projects = [
         title: "The Banyan Grove",
         location: "Assagao",
         category: "Boutique Estates",
-        image: "https://images.unsplash.com/photo-1580587767303-93693f17ca0a?w=800&q=80",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
         pdfUrl: "https://hwb.gov.wales/api/storage/3f708892-2cfe-4b78-bed2-2ec90ce5fc52/Section1-IntroducingTourism.pdf"
 
     },

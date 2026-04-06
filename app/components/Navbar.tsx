@@ -16,9 +16,9 @@ const navLinks: NavLink[] = [
     isDropdown: true,
     dropdownItems: [
       { name: "Buy", href: "/buy" },
-      { name: "Sell", href: "/sell" },
-      { name: "Rent", href: "/rent" },
-      { name: "Lease", href: "/lease" },
+      { name: "Sell", href: "/buy" },
+      { name: "Rent", href: "/buy" },
+      { name: "Lease", href: "/buy" },
     ],
   },
   { name: "Projects", href: "/projects" },

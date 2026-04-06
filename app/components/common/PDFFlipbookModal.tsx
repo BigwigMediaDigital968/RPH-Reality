@@ -26,7 +26,7 @@ export default function PdfFlipbookModal({ pdfUrl, onClose }: { pdfUrl: string, 
 
                 {/* Flipbook Container */}
                 <div className="shadow-2xl rounded-sm overflow-hidden">
-                    <PdfFlipbook pdfUrl="/brochures/Report_July.pdf" />
+                    <PdfFlipbook />
 
                 </div>
 
