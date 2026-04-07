@@ -136,7 +136,7 @@ export const PropertyCard = ({ f, index }: { f: any, index: number }) => {
           <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">
             {f.desc}
           </p>
-          <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gold-400">
+          <div className=" hidden items-center gap-2 text-xs font-bold tracking-widest uppercase text-gold-400">
             {f.cta}
             <ArrowIcon />
           </div>
@@ -153,7 +153,7 @@ export const PropertyCard = ({ f, index }: { f: any, index: number }) => {
           <p className="text-blue-100/80 text-sm leading-relaxed mb-6 flex-grow">
             {f.desc}
           </p>
-          <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-400">
+          <div className=" hidden items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-400">
             {f.cta}
             <ArrowIcon />
           </div>

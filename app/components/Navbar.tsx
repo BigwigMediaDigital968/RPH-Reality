@@ -14,6 +14,7 @@ const navLinks: NavLink[] = [
 
   { name: "Projects", href: "/projects" },
   { name: "Blogs", href: "/blogs" },
+  { name: "Career", href: "/career" },
 ];
 
 export default function Navbar({ scrolled }: { scrolled: boolean }) {
