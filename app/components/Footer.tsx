@@ -1,8 +1,9 @@
-'use'
+"use client";
 import Image from "next/image";
 import logo from "../assets/RPH-logo-nav.png"
 import { NavLink } from "../types";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 
 const navLinks: NavLink[] = [
@@ -40,6 +41,8 @@ const legalLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/admin")) return null;
   return (
     <footer className="bg-navy-950 pt-16 lg:pt-20 pb-8">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12">

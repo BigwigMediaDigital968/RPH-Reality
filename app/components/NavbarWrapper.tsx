@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import { usePathname } from "next/navigation";
 
 export default function NavbarWrapper() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  if (pathname.startsWith("/admin")) return null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
