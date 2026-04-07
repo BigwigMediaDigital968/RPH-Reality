@@ -73,7 +73,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
                   href={link.href!}
                   className={`text-sm font-sans font-medium tracking-widest uppercase transition-colors duration-200 relative group ${scrolled
                     ? "text-charcoal-700 hover:text-navy-900"
-                    : "text-white/85 hover:text-white"
+                    : "text-white hover:text-white"
                     }`}
                 >
                   {link.name}

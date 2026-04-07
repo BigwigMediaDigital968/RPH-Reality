@@ -198,14 +198,15 @@ export default function ServicesFan() {
                 </div>
 
                 {/* Action Button */}
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="cursor-pointer mt-5 z-50 relative px-8 py-3 rounded-full border border-white text-white flex items-center gap-2 mx-auto hover:bg-[#00d4ff]/10 transition-all text-sm font-semibold tracking-widest uppercase"
+
+                <Link
+                    href={"/properties"}
+                    className="cursor-pointer mt-5 z-50 relative px-8 py-3 rounded-full border border-white text-white inline-flex items-center gap-2 mx-auto hover:bg-[#00d4ff]/10 transition-all text-sm font-semibold tracking-widest uppercase"
                 >
-                    View More Details
+                    Explore Properties
                     <span>→</span>
-                </motion.button>
+                </Link>
+
             </div>
         </section>
     );

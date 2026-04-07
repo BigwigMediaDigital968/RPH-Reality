@@ -1,3 +1,4 @@
+'use'
 import Image from "next/image";
 import logo from "../assets/RPH-logo-nav.png"
 import { NavLink } from "../types";
@@ -12,7 +13,6 @@ const navLinks: NavLink[] = [
     isDropdown: true,
     dropdownItems: [
       { name: "Buy", href: "/buy" },
-      { name: "Sell", href: "/sell" },
       { name: "Rent", href: "/rent" },
       { name: "Lease", href: "/lease" },
     ],
@@ -21,6 +21,21 @@ const navLinks: NavLink[] = [
   { name: "Developers", href: "/developers" },
   { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact" },
+];
+
+const legalLinks = [
+  {
+    title: "Privacy Policy",
+    href: "/privacy-policy",
+  },
+  {
+    title: "Terms of Use",
+    href: "/terms-of-use",
+  },
+  {
+    title: "Cookie Policy",
+    href: "/cookie-policy",
+  },
 ];
 
 export default function Footer() {
@@ -41,7 +56,7 @@ export default function Footer() {
                 />
               </div>
             </div>
-            <p className="font-sans text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
+            <p className="font-sans text-white text-sm leading-relaxed mb-5 max-w-xs">
               Goa's trusted real estate partner. Helping clients find their
               perfect home since 2013.
             </p>
@@ -50,7 +65,7 @@ export default function Footer() {
                 <a
                   key={s}
                   href="#"
-                  className="w-8 h-8 rounded-full border border-navy-700 flex items-center justify-center text-white/40 hover:border-gold-400 hover:text-gold-400 transition-all duration-200 text-xs font-sans font-semibold"
+                  className="w-8 h-8 rounded-full border border-navy-700 flex items-center justify-center text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-200 text-xs font-sans font-semibold"
                 >
                   {s}
                 </a>
@@ -68,7 +83,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href!}
-                    className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors duration-200"
+                    className="text-white text-sm font-sans hover:text-gold-400 transition-colors duration-200"
                   >
                     {item.name}
                   </Link>
@@ -89,7 +104,7 @@ export default function Footer() {
                     <Link
                       key={l.name + 'key'}
                       href={l.href!}
-                      className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors duration-200"
+                      className="text-white text-sm font-sans hover:text-gold-400 transition-colors duration-200"
                     >
                       {l.name}
                     </Link>
@@ -126,14 +141,14 @@ export default function Footer() {
                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                   />
                 </svg>
-                <span className="text-white/40 text-sm font-sans leading-relaxed">
+                <span className="text-white text-sm font-sans leading-relaxed">
                   RPH Realty Unit 402, Goa 403001, India
                 </span>
               </li>
               <li>
                 <a
                   href="tel:+919820012345"
-                  className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors flex gap-3"
+                  className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3"
                 >
                   <svg
                     className="text-gold-400 flex-shrink-0"
@@ -156,7 +171,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:info@royalprimehomes.com"
-                  className="text-white/40 text-sm font-sans hover:text-gold-400 transition-colors flex gap-3 break-all"
+                  className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3 break-all"
                 >
                   <svg
                     className="text-gold-400 flex-shrink-0"
@@ -182,19 +197,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-white/25 text-xs font-sans">
+          <p className="text-white/60 text-xs font-sans">
             © {new Date().getFullYear()} RPH Realty. All rights
             reserved. RERA Licensed.
           </p>
           <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Use", "Cookie Policy"].map((l) => (
-              <a
-                key={l}
-                href="#"
-                className="text-white/25 text-xs font-sans hover:text-white/50 transition-colors duration-200"
+            {legalLinks.map((item, index) => (
+              <Link
+                key={"legal-item-" + index}
+                href={item.href}
+                className="text-white/60 text-xs font-sans hover:text-white/50 transition-colors duration-200"
               >
-                {l}
-              </a>
+                {item.title}
+              </Link>
             ))}
           </div>
         </div>
