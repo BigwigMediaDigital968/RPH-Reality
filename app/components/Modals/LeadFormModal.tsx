@@ -68,13 +68,23 @@ export default function LeadFormModal({
         setIsSubmitting(false);
         setSubmitted(true);
 
-        // For download type, trigger download after submission
         if (type === "download" && downloadFileName) {
-            setTimeout(() => {
-                // Trigger download logic here
-                console.log("Downloading:", downloadFileName);
-                // Example: window.open(downloadFileName, '_blank');
-            }, 1000);
+            try {
+                const link = document.createElement('a');
+                link.href = downloadFileName;
+
+                // Set the suggested filename
+                const fileNameOnly = downloadFileName.split('/').pop() || 'brochure.pdf';
+                link.setAttribute('download', fileNameOnly);
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                console.log("Download triggered successfully");
+            } catch (error) {
+                console.error("Download failed:", error);
+            }
         }
 
         // Reset and close after 2 seconds
