@@ -15,6 +15,7 @@ import {
     X,
     User,
     ChevronDown,
+    Users2,
 } from "lucide-react";
 
 interface MenuItem {
@@ -26,6 +27,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Lead Management", href: "/admin/leads", icon: Users },
+    { name: "Employee Management", href: "/admin/employees", icon: Users2 },
     { name: "Career Applications", href: "/admin/careers", icon: Briefcase },
     { name: "Projects", href: "/admin/projects", icon: FileText },
     { name: "Settings", href: "/admin/settings", icon: Settings },
@@ -87,8 +89,8 @@ export default function AdminLayout({
                                             href={item.href}
                                             onClick={() => setSidebarOpen(false)}
                                             className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-sans font-medium transition-all ${isActive
-                                                    ? "bg-gold-400 text-navy-900"
-                                                    : "text-navy-100 hover:bg-navy-800 hover:text-white"
+                                                ? "bg-gold-400 text-navy-900"
+                                                : "text-navy-100 hover:bg-navy-800 hover:text-white"
                                                 }`}
                                         >
                                             <Icon size={20} />

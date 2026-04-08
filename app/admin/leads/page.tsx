@@ -428,7 +428,7 @@ export default function LeadManagement() {
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={() => handleViewLead(lead._id)}
-                                                        className="cursor-pointer p-2 text-gold-500 hover:bg-gold-50 rounded-lg transition-colors"
+                                                        className=" p-2 text-gold-500 hover:bg-gold-50 rounded-lg transition-colors"
                                                         title="View Details"
                                                     >
                                                         <Eye size={18} />
@@ -437,7 +437,7 @@ export default function LeadManagement() {
                                                         onClick={() =>
                                                             setAssignModal({ open: true, leadId: lead._id })
                                                         }
-                                                        className="cursor-pointer p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                                                        className=" p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                                                         title="Assign Lead"
                                                     >
                                                         <UserPlus size={18} />
@@ -446,7 +446,7 @@ export default function LeadManagement() {
                                                         onClick={() =>
                                                             setDeleteModal({ open: true, leadId: lead._id })
                                                         }
-                                                        className="cursor-pointer p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                        className=" p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                         title="Delete Lead"
                                                     >
                                                         <Trash2 size={18} />
