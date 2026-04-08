@@ -62,7 +62,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             placeholder="Your full name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
         </div>
 
@@ -76,7 +76,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             placeholder="+971 50 000 0000"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
         </div>
 
@@ -90,7 +90,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             placeholder="Your email address"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
         </div>
 
@@ -104,7 +104,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             placeholder="Your city"
             value={form.city}
             onChange={(e) => setForm({ ...form, city: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <select
             value={form.purpose}
             onChange={(e) => setForm({ ...form, purpose: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 bg-white"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 bg-white"
           >
             <option value="">Select purpose</option>
             <option value="buy">Buy</option>
@@ -136,7 +136,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             rows={4}
             value={form.note}
             onChange={(e) => setForm({ ...form, note: e.target.value })}
-            className="w-full px-4 py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 resize-none"
+            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 resize-none"
           />
         </div>
       </div>
@@ -146,7 +146,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
         onClick={() => {
           if (form.name && form.phone) setSubmitted(true);
         }}
-        className="cursor-pointer w-full py-4 bg-navy-900 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg hover:bg-navy-800 transition-colors duration-200 mt-2"
+        className="cursor-pointer w-full py-2 sm:py-4 bg-navy-900 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg hover:bg-navy-800 transition-colors duration-200 mt-2"
       >
         {btnText}
       </button>

@@ -9,6 +9,7 @@ import SectionLabel from "../components/Ui/SectionLabel";
 import { ArrowUpRight } from "lucide-react";
 import AwardSection from "../components/common/AwardSection";
 import CoreValuesSection from "../components/common/CoreValuesSection";
+import Hero from "../components/Ui/Hero";
 
 // Data following the "Royal Prime" Array of Objects pattern
 const stats = [
@@ -38,27 +39,15 @@ export default function AboutUsPage() {
         <main className="bg-navy-950 text-white">
 
             {/* SECTION 1: HERO [Ref: image_4f29e3] */}
-            <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-                <Image
-                    src="https://s7ap1.scene7.com/is/image/incredibleindia/vagator-beach-goa-city-1-hero?qlt=82&ts=1742158909874"
-                    alt="Luxury Office"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-navy-700/20 to-navy-700/40" />
-
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="relative z-10 text-center space-y-4"
-                >
-                    <SectionLabel>Our Story</SectionLabel>
-                    <h1 className="text-5xl md:text-7xl font-bold font-display tracking-tight">
+            <Hero
+                title={
+                    <>
                         About <span className="text-gold-500">Us</span>
-                    </h1>
-                </motion.div>
-            </section>
+                    </>
+                }
+                image="https://s7ap1.scene7.com/is/image/incredibleindia/vagator-beach-goa-city-1-hero?qlt=82&ts=1742158909874"
+                label="Our Story"
+            />
 
 
             {/* SECTION 3: COMPANY PROFILE [Ref: image_4f29e3] */}
