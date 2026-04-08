@@ -2,22 +2,65 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { createLead } from "../lib/api/leads";
+import { PURPOSE_OPTIONS } from "../constants";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 interface EnquiryFormProps {
   variant?: "default" | "minimal";
   btnText?: string;
 }
 
+const leadSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(50),
+  phone: z.string().regex(/^\+?[0-9\s-]{7,15}$/, "Invalid Number"),
+  email: z.string().email("Invalid email address").optional().or(z.literal("")),
+  city: z.string().optional().or(z.literal("")),
+  purpose: z.string().min(1, "Please select a purpose"),
+  note: z.string().max(500, "Note is too long").optional(),
+});
+
+// Extract Type from Schema
+type LeadFormValues = z.infer<typeof leadSchema>;
+
+
 export default function EnquiryForm({ variant = "default", btnText = "Submit" }: EnquiryFormProps) {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    city: "",
-    purpose: "",
-    note: "",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<LeadFormValues>({
+    resolver: zodResolver(leadSchema),
+    mode: "onTouched", // Validates as user interacts
+    defaultValues: {
+      purpose: "buy",
+    },
   });
+
+  const onSubmit = async (data: LeadFormValues) => {
+
+    try {
+      console.log(data)
+      const result = await createLead(data);
+
+      if (result.success) {
+        setSubmitted(true);
+
+        reset();
+
+        console.log("Lead created:", result.data);
+        //alert(result.message);
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      console.error("Submission failed:", errorMessage);
+      //alert(`Error: ${errorMessage}`);
+    }
+  };
 
   if (submitted) {
     return (
@@ -49,7 +92,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {/* Grid wrapper */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Name */}
@@ -60,10 +103,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <input
             type="text"
             placeholder="Your full name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            {...register("name")}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.name ? "border-red-500 focus:ring-red-500/20" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+              }`}
           />
+          {errors.name && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.name.message}</p>}
         </div>
 
         {/* Phone */}
@@ -74,10 +118,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <input
             type="tel"
             placeholder="+971 50 000 0000"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            {...register("phone")}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.phone ? "border-red-500 focus:ring-red-500/20" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+              }`}
           />
+          {errors.phone && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.phone.message}</p>}
         </div>
 
         {/* Email */}
@@ -88,10 +133,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <input
             type="email"
             placeholder="Your email address"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
+            {...register("email")}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.email ? "border-red-500" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+              }`}
           />
+          {errors.email && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.email.message}</p>}
         </div>
 
         {/* City */}
@@ -102,27 +148,28 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <input
             type="text"
             placeholder="Your city"
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
+            {...register("city")}
             className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
+          {errors.city && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.city.message}</p>}
+
         </div>
       </div>
+
       <div className="grid gap-4">
         <div className="w-full lg:col-span-2">
           <label className="block text-xs font-sans font-semibold tracking-wider uppercase text-charcoal-600 mb-1.5">
             Purpose
           </label>
           <select
-            value={form.purpose}
-            onChange={(e) => setForm({ ...form, purpose: e.target.value })}
+            {...register("purpose")}
             className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 bg-white"
           >
-            <option value="">Select purpose</option>
-            <option value="buy">Buy</option>
-            <option value="sell">Sell</option>
-            <option value="rent">Rent</option>
-            <option value="invest">Invest</option>
+            {PURPOSE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -134,8 +181,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           <textarea
             placeholder="Write your requirement..."
             rows={4}
-            value={form.note}
-            onChange={(e) => setForm({ ...form, note: e.target.value })}
+            {...register("note")}
             className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 resize-none"
           />
         </div>
@@ -143,17 +189,17 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
 
       {/* Button */}
       <button
-        onClick={() => {
-          if (form.name && form.phone) setSubmitted(true);
-        }}
-        className="cursor-pointer w-full py-2 sm:py-4 bg-navy-900 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg hover:bg-navy-800 transition-colors duration-200 mt-2"
+        type="submit"
+        disabled={isSubmitting}
+        className={`w-full py-2 sm:py-4 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg transition-colors duration-200 mt-2 ${isSubmitting ? "bg-charcoal-400 cursor-not-allowed" : "bg-navy-900 hover:bg-navy-800 cursor-pointer"
+          }`}
       >
-        {btnText}
+        {isSubmitting ? "Submitting..." : btnText}
       </button>
 
       <p className="text-center text-xs font-sans text-charcoal-400">
         By submitting, you agree to our Privacy Policy.
       </p>
-    </div>
+    </form>
   );
 }

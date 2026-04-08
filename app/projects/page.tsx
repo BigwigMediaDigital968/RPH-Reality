@@ -183,7 +183,6 @@ export default function Projects() {
             <LeadFormModal
                 isOpen={leadFormModal.isOpen}
                 onClose={() => setLeadFormModal({ isOpen: false, project: null })}
-                onSubmit={handleLeadSubmit}
                 type="download"
                 projectTitle={leadFormModal.project?.title}
                 projectImage={leadFormModal.project?.image}

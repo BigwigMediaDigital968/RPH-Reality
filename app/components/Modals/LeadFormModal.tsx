@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, Phone, Mail, User, MapPin, FileText, Home } from "lucide-react";
 import { useState, FormEvent } from "react";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { createLead } from "@/app/lib/api/leads";
 
 export interface LeadFormData {
     name: string;
@@ -26,47 +30,54 @@ interface LeadFormModalProps {
     downloadFileName?: string;
 }
 
+const leadSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters").max(50),
+    phone: z.string().regex(/^\+?[0-9\s-]{7,15}$/, "Invalid Number"),
+    email: z.string().email("Invalid email address").optional().or(z.literal("")),
+    city: z.string().optional().or(z.literal("")),
+    purpose: z.string().min(1, "Please select a purpose"),
+    note: z.string().max(500, "Note is too long").optional(),
+});
+
+type LeadFormValues = z.infer<typeof leadSchema>;
+
+
 export default function LeadFormModal({
     isOpen,
     onClose,
-    onSubmit,
     type = "general",
     projectTitle,
     projectImage,
     downloadFileName,
 }: LeadFormModalProps) {
-    const [formData, setFormData] = useState<LeadFormData>({
-        name: "",
-        phone: "",
-        email: "",
-        city: "",
-        purpose: "",
-        propertyType: "",
-        note: "",
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting, isValid },
+    } = useForm<LeadFormValues>({
+        resolver: zodResolver(leadSchema),
+        mode: "onTouched", // Validates as user interacts
+        defaultValues: {
+            purpose: "buy",
+        },
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: LeadFormValues) => {
 
-        // Basic validation
-        if (!formData.name || !formData.phone || !formData.email) {
-            alert("Please fill in all required fields");
-            return;
+        // API call
+        const result = await createLead(data);
+
+        if (result.success) {
+            setSubmitted(true);
+
+            reset();
+
+            console.log("Lead created:", result.data);
+            //alert(result.message);
         }
-
-        setIsSubmitting(true);
-
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        if (onSubmit) {
-            onSubmit(formData);
-        }
-
-        setIsSubmitting(false);
-        setSubmitted(true);
 
         if (type === "download" && downloadFileName) {
             try {
@@ -94,23 +105,9 @@ export default function LeadFormModal({
     };
 
     const handleClose = () => {
-        setFormData({
-            name: "",
-            phone: "",
-            email: "",
-            city: "",
-            purpose: "",
-            propertyType: "",
-            note: "",
-        });
+        reset();
         setSubmitted(false);
         onClose();
-    };
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     // Success state
@@ -225,7 +222,7 @@ export default function LeadFormModal({
                                         </p>
                                     </div>
 
-                                    <form onSubmit={handleSubmit} className="space-y-2">
+                                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                                         {/* Name & Phone */}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                             <div>
@@ -239,12 +236,11 @@ export default function LeadFormModal({
                                                     />
                                                     <input
                                                         type="text"
-                                                        name="name"
                                                         required
                                                         placeholder="John Doe"
-                                                        value={formData.name}
-                                                        onChange={handleChange}
-                                                        className="w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+                                                        {...register("name")}
+                                                        className={`w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all ${errors.name ? "border-red-500 focus:ring-red-500/20" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+                                                            }`}
                                                     />
                                                 </div>
                                             </div>
@@ -260,12 +256,11 @@ export default function LeadFormModal({
                                                     />
                                                     <input
                                                         type="tel"
-                                                        name="phone"
                                                         required
                                                         placeholder="+91 98765 43210"
-                                                        value={formData.phone}
-                                                        onChange={handleChange}
-                                                        className="w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+                                                        {...register("phone")}
+
+                                                        className={`${errors.phone ? "border-red-500 focus:ring-red-500/20" : ""} w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all`}
                                                     />
                                                 </div>
                                             </div>
@@ -284,12 +279,10 @@ export default function LeadFormModal({
                                                     />
                                                     <input
                                                         type="email"
-                                                        name="email"
                                                         required
                                                         placeholder="john@example.com"
-                                                        value={formData.email}
-                                                        onChange={handleChange}
-                                                        className="w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+                                                        {...register("email")}
+                                                        className={`w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all ${errors.email ? "border-red-500 focus:ring-red-500/20" : ""}`}
                                                     />
                                                 </div>
                                             </div>
@@ -305,11 +298,9 @@ export default function LeadFormModal({
                                                     />
                                                     <input
                                                         type="text"
-                                                        name="city"
                                                         placeholder="Your city"
-                                                        value={formData.city}
-                                                        onChange={handleChange}
-                                                        className="w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+                                                        {...register("city")}
+                                                        className={`w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all ${errors.email ? "border-red-500 focus:ring-red-500/20" : ""}`}
                                                     />
                                                 </div>
                                             </div>
@@ -322,10 +313,9 @@ export default function LeadFormModal({
                                                     Purpose
                                                 </label>
                                                 <select
-                                                    name="purpose"
-                                                    value={formData.purpose}
-                                                    onChange={handleChange}
-                                                    className="w-full px-4 py-3 text-sm font-sans text-navy-900 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all bg-white"
+                                                    {...register("purpose")}
+
+                                                    className={`w-full px-4 py-3 text-sm font-sans text-navy-900 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all bg-white ${errors.purpose ? "border-red-500 focus:ring-red-500/20" : ""}`}
                                                 >
                                                     <option value="">Select purpose</option>
                                                     <option value="buy">Buy</option>
@@ -347,12 +337,10 @@ export default function LeadFormModal({
                                                     size={16}
                                                 />
                                                 <textarea
-                                                    name="note"
                                                     placeholder="Any specific requirements..."
                                                     rows={3}
-                                                    value={formData.note}
-                                                    onChange={handleChange}
-                                                    className="w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all resize-none"
+                                                    {...register("note")}
+                                                    className={`w-full pl-8 pr-2 py-2 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-slate-200 rounded-lg outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all resize-none`}
                                                 />
                                             </div>
                                         </div>
