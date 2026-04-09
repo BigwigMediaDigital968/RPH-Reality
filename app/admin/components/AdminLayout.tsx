@@ -43,8 +43,7 @@ const menuItems: MenuItem[] = [
         icon: Building2,
         children: [
             { name: "All Properties", href: "/admin/properties" },
-            { name: "Add Property", href: "/admin/properties/add" },
-            { name: "Categories", href: "/admin/properties/categories" },
+            { name: "Add Property", href: "/admin/properties/create" },
         ]
     },
     {

@@ -171,6 +171,34 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     };
 
     // Array manipulation helpers
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
+
+        const newImages: string[] = [];
+        const fileArray = Array.from(files);
+
+        fileArray.forEach((file) => {
+            // Create a temporary local URL for preview
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (event.target?.result) {
+                    setFormData((prev) => ({
+                        ...prev,
+                        images: [...prev.images, event.target?.result as string],
+                    }));
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const removeImage = (index: number) => {
+        setFormData((prev) => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index),
+        }));
+    };
     const addImage = () => {
         if (imageInput.trim()) {
             setFormData((prev) => ({
@@ -180,12 +208,17 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             setImageInput("");
         }
     };
+    const moveImage = (index: number, direction: 'left' | 'right') => {
+        const newImages = [...formData.images];
+        const targetIndex = direction === 'left' ? index - 1 : index + 1;
 
-    const removeImage = (index: number) => {
-        setFormData((prev) => ({
-            ...prev,
-            images: prev.images.filter((_, i) => i !== index),
-        }));
+        // Boundary check
+        if (targetIndex < 0 || targetIndex >= newImages.length) return;
+
+        // Swap elements
+        [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]];
+
+        setFormData(prev => ({ ...prev, images: newImages }));
     };
 
     const addHighlight = () => {
@@ -532,151 +565,171 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
                         Property Images
                     </h2>
-                    <div className="space-y-4">
-                        <div className="flex gap-2">
-                            <input
-                                type="url"
-                                value={imageInput}
-                                onChange={(e) => setImageInput(e.target.value)}
-                                onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addImage())}
-                                className="flex-1 px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                                placeholder="Enter image URL and press Enter"
-                            />
-                            <button
-                                type="button"
-                                onClick={addImage}
-                                className="px-4 py-3 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
-                            >
-                                <Plus size={20} />
-                            </button>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Left Side: Upload Zone */}
+                        <div className="lg:col-span-1">
+                            <label className="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border rounded-xl hover:border-gold-400 hover:bg-gold-50/30 transition-all cursor-pointer group">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <div className="p-3 bg-gold-100 rounded-full text-gold-600 group-hover:scale-110 transition-transform mb-3">
+                                        <Plus size={24} />
+                                    </div>
+                                    <p className="text-sm font-medium text-navy-900">Click to upload</p>
+                                    <p className="text-xs text-text-muted mt-1">PNG, JPG or WEBP</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={handleImageUpload}
+                                />
+                            </label>
                         </div>
 
-                        {formData.images.length > 0 && (
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {formData.images.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className="relative group rounded-lg border border-border overflow-hidden aspect-square"
-                                    >
-                                        <img
-                                            src={image}
-                                            alt={`Property ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage(index)}
-                                            className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        {/* Right Side: Image Previews (Ordered) */}
+                        <div className="lg:col-span-2">
+                            {formData.images.length > 0 ? (
+                                <div className="flex flex-wrap gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                    {formData.images.map((image, index) => (
+                                        <div
+                                            key={index}
+                                            className="cur relative max-w-40 group rounded-lg border border-border overflow-hidden aspect-square bg-gray-50"
                                         >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                            <div className="absolute top-2 left-2 z-10 bg-navy-900/60 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                                {index + 1}
+                                            </div>
+                                            <img
+                                                src={image}
+                                                alt={`Preview ${index + 1}`}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeImage(index)}
+                                                    className="cursor-pointer p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="h-48 flex items-center justify-center border border-dashed border-border rounded-xl bg-gray-50 text-text-muted text-sm italic">
+                                    No images selected yet
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
-                {/* Highlights */}
-                <div className="bg-white rounded-lg border border-border p-6">
-                    <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
-                        Highlights
-                    </h2>
-                    <div className="space-y-4">
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                value={highlightInput}
-                                onChange={(e) => setHighlightInput(e.target.value)}
-                                onKeyPress={(e) =>
-                                    e.key === "Enter" && (e.preventDefault(), addHighlight())
-                                }
-                                className="flex-1 px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                                placeholder="Add a highlight and press Enter"
-                            />
-                            <button
-                                type="button"
-                                onClick={addHighlight}
-                                className="px-4 py-3 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
-                            >
-                                <Plus size={20} />
-                            </button>
-                        </div>
 
-                        {formData.highlights.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {formData.highlights.map((highlight, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-2 px-3 py-2 bg-cream rounded-lg"
-                                    >
-                                        <span className="font-sans text-sm text-navy-900">
-                                            {highlight}
-                                        </span>
-                                        <button
-                                            type="button"
-                                            onClick={() => removeHighlight(index)}
-                                            className="text-red-500 hover:text-red-700"
-                                        >
-                                            <X size={16} />
-                                        </button>
-                                    </div>
-                                ))}
+
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Highlights */}
+                    <div className="bg-white rounded-lg border border-border p-6">
+                        <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
+                            Highlights
+                        </h2>
+                        <div className="space-y-4">
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={highlightInput}
+                                    onChange={(e) => setHighlightInput(e.target.value)}
+                                    onKeyPress={(e) =>
+                                        e.key === "Enter" && (e.preventDefault(), addHighlight())
+                                    }
+                                    className="flex-1 px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
+                                    placeholder="Add a highlight and press Enter"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={addHighlight}
+                                    className="cursor-pointer px-4 py-3 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
+                                >
+                                    <Plus size={20} />
+                                </button>
                             </div>
-                        )}
-                    </div>
-                </div>
 
-                {/* Features & Amenities */}
-                <div className="bg-white rounded-lg border border-border p-6">
-                    <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
-                        Features & Amenities
-                    </h2>
-                    <div className="space-y-4">
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                value={featureInput}
-                                onChange={(e) => setFeatureInput(e.target.value)}
-                                onKeyPress={(e) =>
-                                    e.key === "Enter" && (e.preventDefault(), addFeature())
-                                }
-                                className="flex-1 px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                                placeholder="Add a feature and press Enter"
-                            />
-                            <button
-                                type="button"
-                                onClick={addFeature}
-                                className="px-4 py-3 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
-                            >
-                                <Plus size={20} />
-                            </button>
-                        </div>
-
-                        {formData.featuresAmenities.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {formData.featuresAmenities.map((feature, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-2 px-3 py-2 bg-cream rounded-lg"
-                                    >
-                                        <span className="font-sans text-sm text-navy-900">
-                                            {feature}
-                                        </span>
-                                        <button
-                                            type="button"
-                                            onClick={() => removeFeature(index)}
-                                            className="text-red-500 hover:text-red-700"
+                            {formData.highlights.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                    {formData.highlights.map((highlight, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center gap-2 px-2 py-1 bg-cream rounded-lg"
                                         >
-                                            <X size={16} />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                            <span className="font-sans text-sm text-navy-900">
+                                                {highlight}
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeHighlight(index)}
+                                                className="text-red-500 hover:text-red-700 cursor-pointer"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
 
+                    {/* Features & Amenities */}
+                    <div className="bg-white rounded-lg border border-border p-6">
+                        <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
+                            Features & Amenities
+                        </h2>
+                        <div className="space-y-4">
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={featureInput}
+                                    onChange={(e) => setFeatureInput(e.target.value)}
+                                    onKeyPress={(e) =>
+                                        e.key === "Enter" && (e.preventDefault(), addFeature())
+                                    }
+                                    className="flex-1 px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
+                                    placeholder="Add a feature and press Enter"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={addFeature}
+                                    className="px-4 py-3 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
+                                >
+                                    <Plus size={20} />
+                                </button>
+                            </div>
+
+                            {formData.featuresAmenities.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                    {formData.featuresAmenities.map((feature, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center gap-2 px-3 py-2 bg-cream rounded-lg"
+                                        >
+                                            <span className="font-sans text-sm text-navy-900">
+                                                {feature}
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeFeature(index)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                </div>
                 {/* Nearby Places */}
                 <div className="bg-white rounded-lg border border-border p-6">
                     <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
