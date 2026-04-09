@@ -16,22 +16,130 @@ import {
     User,
     ChevronDown,
     Users2,
+    Building2,
 } from "lucide-react";
+
+interface SubMenuItem {
+    name: string;
+    href: string;
+}
 
 interface MenuItem {
     name: string;
     href: string;
     icon: React.ElementType;
+    children?: SubMenuItem[]; // Optional array for dropdowns
 }
 
 const menuItems: MenuItem[] = [
-    { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Lead Management", href: "/admin/leads", icon: Users },
-    { name: "Employee Management", href: "/admin/employees", icon: Users2 },
-    { name: "Career Applications", href: "/admin/careers", icon: Briefcase },
-    { name: "Projects", href: "/admin/projects", icon: FileText },
-    { name: "Settings", href: "/admin/settings", icon: Settings },
+    {
+        name: "Dashboard",
+        href: "/admin",
+        icon: LayoutDashboard
+    },
+    {
+        name: "Property Management",
+        href: "/admin/properties",
+        icon: Building2,
+        children: [
+            { name: "All Properties", href: "/admin/properties" },
+            { name: "Add Property", href: "/admin/properties/add" },
+            { name: "Categories", href: "/admin/properties/categories" },
+        ]
+    },
+    {
+        name: "Lead Management",
+        href: "/admin/leads",
+        icon: Users
+    },
+    {
+        name: "Employee Management",
+        href: "/admin/employees",
+        icon: Users2
+    },
+    {
+        name: "Career Applications",
+        href: "/admin/careers",
+        icon: Briefcase
+    },
+    {
+        name: "Projects",
+        href: "/admin/projects",
+        icon: FileText
+    },
+    {
+        name: "Settings",
+        href: "/admin/settings",
+        icon: Settings
+    },
 ];
+
+function NavMenuItem({ item, pathname, setSidebarOpen }: { item: MenuItem, pathname: string, setSidebarOpen: (open: boolean) => void }) {
+    const [isOpen, setIsOpen] = useState(pathname.startsWith(item.href));
+    const Icon = item.icon;
+    const hasChildren = item.children && item.children.length > 0;
+
+    const isActive = pathname === item.href ||
+        (item.href !== "/admin" && pathname.startsWith(item.href));
+
+    return (
+        <li>
+            {hasChildren ? (
+                /* Collapsible Parent */
+                <div>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={`w-full flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm font-medium transition-all ${isActive ? "text-white bg-navy-800/50" : "text-navy-100 hover:bg-navy-800 hover:text-white"
+                            }`}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Icon size={20} />
+                            <span className="text-nowrap">{item.name}</span>
+                        </div>
+                        <ChevronDown
+                            size={16}
+                            className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                        />
+                    </button>
+
+                    {/* Sub-menu Items */}
+                    <div className={`mt-1 ml-4 border-l border-navy-700 overflow-hidden transition-all ${isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                        }`}>
+                        <ul className="pl-4 py-1 space-y-1">
+                            {item?.children?.map((child) => (
+                                <li key={child.href}>
+                                    <Link
+                                        href={child.href}
+                                        onClick={() => setSidebarOpen(false)}
+                                        className={`block text-white py-2 px-3 text-xs rounded-md transition-colors ${pathname === child.href
+                                            ? "text-gold-400 font-bold"
+                                            : "text-navy-200 hover:text-white hover:bg-navy-800"
+                                            }`}
+                                    >
+                                        {child.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            ) : (
+                /* Standard Link */
+                <Link
+                    href={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all ${isActive
+                        ? "bg-gold-400 text-navy-900 shadow-md"
+                        : "text-navy-100 hover:bg-navy-800 hover:text-white"
+                        }`}
+                >
+                    <Icon size={20} />
+                    {item.name}
+                </Link>
+            )}
+        </li>
+    );
+}
 
 export default function AdminLayout({
     children,
@@ -76,29 +184,11 @@ export default function AdminLayout({
                     {/* Navigation */}
                     <nav className="flex-1 overflow-y-auto px-4 py-6">
                         <ul className="space-y-2">
-                            {menuItems.map((item) => {
-                                const Icon = item.icon;
-                                const isActive =
-                                    pathname === item.href ||
-                                    (item.href !== "/admin" &&
-                                        pathname.startsWith(item.href));
+                            {menuItems.map((item) => (
 
-                                return (
-                                    <li key={item.href}>
-                                        <Link
-                                            href={item.href}
-                                            onClick={() => setSidebarOpen(false)}
-                                            className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-sans font-medium transition-all ${isActive
-                                                ? "bg-gold-400 text-navy-900"
-                                                : "text-navy-100 hover:bg-navy-800 hover:text-white"
-                                                }`}
-                                        >
-                                            <Icon size={20} />
-                                            {item.name}
-                                        </Link>
-                                    </li>
-                                );
-                            })}
+                                <NavMenuItem key={item.name} item={item} pathname={pathname} setSidebarOpen={setSidebarOpen} />
+
+                            ))}
                         </ul>
                     </nav>
 
