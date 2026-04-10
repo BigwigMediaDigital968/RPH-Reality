@@ -4,34 +4,44 @@
 import { useState } from "react";
 import { motion, setDragLock } from "framer-motion";
 import { ChevronDown, Upload, CheckCircle, ArrowRight } from "lucide-react";
-import { useCreateApplication } from "../admin/Hooks/useApplications";
-import axios from "axios";
 import api from "../lib/api/axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import Link from "next/link";
+
+const applicationSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters").max(50),
+    phone: z.string().regex(/^\+?[0-9\s-]{7,15}$/, "Invalid Number"),
+    email: z.string().email("Invalid email address").optional().or(z.literal("")),
+    city: z.string().optional().or(z.literal("")),
+    position: z.string().min(1, "Please select a position"),
+    experience: z.string().max(500, "Select experience"),
+});
+
+type ApplicationFormValues = z.infer<typeof applicationSchema>;
 
 export default function CareerApplicationForm() {
     const [fileName, setFileName] = useState("");
-    const [fileBase64, setFileBase64] = useState("");
+    const [resume, setResume] = useState<File | null>(null);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isLoading, seLoading] = useState<boolean>(false);
-
-    // Form state
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        city: "",
-        position: "",
-        experience: "",
+    const [formError, setFromError] = useState({
+        resume: "",
+        error: ""
     });
-
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    // Form state
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting, isValid } } = useForm<ApplicationFormValues>({
+        resolver: zodResolver(applicationSchema),
+        mode: "onTouched",
+    })
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             // Check file size (5MB limit)
-            if (file.size > 5 * 1024 * 1024) {
-                setErrors((prev) => ({ ...prev, resume: "File size must be less than 5MB" }));
+            if (file.size > 10 * 1024 * 1024) {
+                setFromError((prev) => ({ ...prev, resume: "File size must be less than 5MB" }));
                 return;
             }
 
@@ -42,112 +52,49 @@ export default function CareerApplicationForm() {
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             ];
             if (!allowedTypes.includes(file.type)) {
-                setErrors((prev) => ({
+                setFromError((prev) => ({
                     ...prev,
                     resume: "Only PDF and DOC files are allowed",
                 }));
                 return;
             }
 
-            setFileName(file.name);
-            setErrors((prev) => ({ ...prev, resume: "" }));
-
-            // Convert file to base64
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFileBase64(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            setResume(file);
+            setFromError((prev) => ({ ...prev, resume: "" }));
         }
     };
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-        // Clear error for this field
-        if (errors[name]) {
-            setErrors((prev) => ({ ...prev, [name]: "" }));
-        }
-    };
 
-    const validateForm = () => {
-        const newErrors: Record<string, string> = {};
+    const onSubmit = async (data: ApplicationFormValues) => {
 
-        if (!formData.name.trim()) {
-            newErrors.name = "Full name is required";
-        }
-
-        if (!formData.email.trim()) {
-            newErrors.email = "Email is required";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = "Please enter a valid email";
-        }
-
-        if (!formData.phone.trim()) {
-            newErrors.phone = "Phone number is required";
-        }
-
-        if (!formData.city.trim()) {
-            newErrors.city = "City is required";
-        }
-
-        if (!formData.position) {
-            newErrors.position = "Please select a position";
-        }
-
-        if (!formData.experience) {
-            newErrors.experience = "Experience level is required";
-        }
-
-        if (!fileBase64) {
-            newErrors.resume = "Please upload your resume";
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!validateForm()) {
+        if (!resume) {
+            setFromError((prev) => ({ ...prev, resume: "Please upload your resume" }));
             return;
         }
 
-        const applicationData = {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            city: formData.city,
-            position: formData.position,
-            experience: formData.experience, // In production, you might want to upload to cloud storage and store URL
-        };
+        const applicationData = data;
 
         try {
             seLoading(true);
             console.log(applicationData)
-            const res = await api.post(`/applications`, applicationData);
+            const formData = new FormData();
 
-            // success
-            setIsSuccess(true);
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key as keyof ApplicationFormValues] as string);
+            });
+            formData.append("resume", resume);
 
-            // Reset form
-            setFormData({
-                name: "",
-                email: "",
-                phone: "",
-                city: "",
-                position: "",
-                experience: "",
+            const res = await api.post(`/applications`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
 
-            setFileName("");
-            setFileBase64("");
+            setIsSuccess(true);
+            reset();
         } catch (error) {
             console.error("Error creating application:", error);
-            setErrors((prev) => ({ ...prev, submit: "Failed to submit application" }));
+            setFromError((prev) => ({ ...prev, error: "Something went wrong" }));
         } finally {
             seLoading(false);
         }
@@ -197,84 +144,6 @@ export default function CareerApplicationForm() {
                         </p>
                     </motion.div>
 
-                    {/* Details Card */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                        className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-green-100"
-                    >
-                        <h4 className="text-sm font-bold text-navy-900/60 uppercase tracking-widest mb-4">
-                            Application Details
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                                <span className="text-sm text-slate-500">Name</span>
-                                <span className="text-sm font-semibold text-navy-900">
-                                    {formData.name}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                                <span className="text-sm text-slate-500">Email</span>
-                                <span className="text-sm font-semibold text-navy-900">
-                                    {formData.email}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                                <span className="text-sm text-slate-500">Position</span>
-                                <span className="text-sm font-semibold text-navy-900">
-                                    {formData.position}
-                                </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500">Status</span>
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold">
-                                    <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
-                                    Pending Review
-                                </span>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* What's Next */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8 }}
-                        className="bg-navy-900 rounded-2xl p-6 mb-6 text-white"
-                    >
-                        <h4 className="text-sm font-bold uppercase tracking-widest mb-4 text-gold-400">
-                            What's Next?
-                        </h4>
-                        <ul className="space-y-3">
-                            <li className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-gold-400 text-navy-900 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
-                                    1
-                                </div>
-                                <p className="text-sm text-slate-200">
-                                    Our HR team will review your application within 2-3 business days
-                                </p>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-gold-400 text-navy-900 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
-                                    2
-                                </div>
-                                <p className="text-sm text-slate-200">
-                                    If shortlisted, we'll contact you via email to schedule an
-                                    interview
-                                </p>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-gold-400 text-navy-900 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
-                                    3
-                                </div>
-                                <p className="text-sm text-slate-200">
-                                    Check your email regularly for updates on your application status
-                                </p>
-                            </li>
-                        </ul>
-                    </motion.div>
-
                     {/* Action Buttons */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -288,13 +157,13 @@ export default function CareerApplicationForm() {
                         >
                             Apply for Another Position
                         </button>
-                        <a
-                            href="/"
+                        <Link
+                            href="/careers"
                             className="flex items-center justify-center gap-2 px-6 py-3.5 bg-navy-900 text-white font-bold uppercase text-xs tracking-[0.2em] rounded-xl hover:bg-gold-400 hover:text-navy-900 transition-all shadow-lg"
                         >
                             Back to Home
                             <ArrowRight size={16} />
-                        </a>
+                        </Link>
                     </motion.div>
                 </motion.div>
             </div >
@@ -315,7 +184,7 @@ export default function CareerApplicationForm() {
                     Complete the form below and we'll be in touch.
                 </p>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
+                <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
                     {/* Full Name */}
                     <div className="md:col-span-1">
                         <label className="text-[10px] uppercase font-bold text-navy-900/80 tracking-widest ml-1">
@@ -323,15 +192,13 @@ export default function CareerApplicationForm() {
                         </label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
+                            {...register("name")}
                             placeholder="John Doe"
                             className={`w-full mt-1 px-4 py-2.5 rounded-xl bg-white border ${errors.name ? "border-red-400" : "border-slate-200"
                                 } outline-none focus:border-gold-400 transition-colors text-sm`}
                         />
                         {errors.name && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.name}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.name?.message}</p>
                         )}
                     </div>
 
@@ -342,15 +209,13 @@ export default function CareerApplicationForm() {
                         </label>
                         <input
                             type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
+                            {...register("email")}
                             placeholder="john@example.com"
                             className={`w-full mt-1 px-4 py-2.5 rounded-xl bg-white border ${errors.email ? "border-red-400" : "border-slate-200"
                                 } outline-none focus:border-gold-400 transition-colors text-sm`}
                         />
                         {errors.email && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.email}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.name?.message}</p>
                         )}
                     </div>
 
@@ -361,15 +226,13 @@ export default function CareerApplicationForm() {
                         </label>
                         <input
                             type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
+                            {...register("phone")}
                             placeholder="+91 98467 32587"
                             className={`w-full mt-1 px-4 py-2.5 rounded-xl bg-white border ${errors.phone ? "border-red-400" : "border-slate-200"
                                 } outline-none focus:border-gold-400 transition-colors text-sm`}
                         />
                         {errors.phone && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.phone?.message}</p>
                         )}
                     </div>
 
@@ -380,15 +243,13 @@ export default function CareerApplicationForm() {
                         </label>
                         <input
                             type="text"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleInputChange}
+                            {...register("city")}
                             placeholder="e.g. Panjim"
                             className={`w-full mt-1 px-4 py-2.5 rounded-xl bg-white border ${errors.city ? "border-red-400" : "border-slate-200"
                                 } outline-none focus:border-gold-400 transition-colors text-sm`}
                         />
                         {errors.city && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.city}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.city?.message}</p>
                         )}
                     </div>
 
@@ -399,9 +260,7 @@ export default function CareerApplicationForm() {
                         </label>
                         <div className="relative mt-1 group">
                             <select
-                                name="position"
-                                value={formData.position}
-                                onChange={handleInputChange}
+                                {...register("position")}
                                 className={`w-full px-4 py-2.5 rounded-xl bg-white border ${errors.position ? "border-red-400" : "border-slate-200"
                                     } outline-none focus:border-gold-400 transition-all text-sm appearance-none cursor-pointer pr-10`}
                             >
@@ -420,7 +279,7 @@ export default function CareerApplicationForm() {
                             </div>
                         </div>
                         {errors.position && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.position}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.position?.message}</p>
                         )}
                     </div>
 
@@ -431,9 +290,7 @@ export default function CareerApplicationForm() {
                         </label>
                         <div className="relative mt-1 group">
                             <select
-                                name="experience"
-                                value={formData.experience}
-                                onChange={handleInputChange}
+                                {...register("experience")}
                                 className={`w-full px-4 py-2.5 rounded-xl bg-white border ${errors.experience ? "border-red-400" : "border-slate-200"
                                     } outline-none focus:border-gold-400 transition-all text-sm appearance-none cursor-pointer pr-10`}
                             >
@@ -450,7 +307,7 @@ export default function CareerApplicationForm() {
                             </div>
                         </div>
                         {errors.experience && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.experience}</p>
+                            <p className="text-xs text-red-500 mt-1 ml-1">{errors?.experience?.message}</p>
                         )}
                     </div>
 
@@ -469,24 +326,24 @@ export default function CareerApplicationForm() {
                             />
                             <label
                                 htmlFor="resume"
-                                className={`flex items-center justify-between w-full px-5 py-4 border-2 border-dashed ${errors.resume ? "border-red-400" : "border-slate-200"
+                                className={`flex items-center justify-between w-full px-5 py-4 border-2 border-dashed ${formError.resume ? "border-red-400" : "border-slate-200"
                                     } rounded-xl bg-white hover:bg-slate-50 hover:border-gold-400 transition-all cursor-pointer`}
                             >
                                 <div className="flex items-center gap-3">
                                     <Upload className="text-navy-900/80" size={18} />
                                     <span className="text-xs font-bold text-slate-500">
-                                        {fileName ? fileName : "Upload PDF or Doc"}
+                                        {resume ? resume.name : "Upload PDF or Doc"}
                                     </span>
                                 </div>
-                                {!fileName && (
+                                {!resume && (
                                     <span className="text-[10px] text-slate-300 font-medium">
                                         Max 5MB
                                     </span>
                                 )}
                             </label>
                         </div>
-                        {errors.resume && (
-                            <p className="text-xs text-red-500 mt-1 ml-1">{errors.resume}</p>
+                        {formError?.resume && (
+                            <p className="text-xs text-red-500 mt-1 ml-1">{formError?.resume}</p>
                         )}
                     </div>
 
@@ -494,11 +351,11 @@ export default function CareerApplicationForm() {
                     <div className="md:col-span-2 mt-2">
                         <motion.button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isSubmitting}
                             whileTap={{ scale: 0.98 }}
                             className="cursor-pointer w-full py-3.5 bg-navy-900 text-white font-bold uppercase text-xs tracking-[0.2em] rounded-xl hover:bg-gold-400 hover:text-navy-900 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
-                            {isLoading ? (
+                            {isSubmitting ? (
                                 <>
                                     <svg
                                         className="animate-spin h-4 w-4"
