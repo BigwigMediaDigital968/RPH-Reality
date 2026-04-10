@@ -1,3 +1,4 @@
+import { ImageItem, ImagePayload } from "@/app/types";
 import axios from "axios";
 
 const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api` || "http://localhost:5000/api";
@@ -68,6 +69,77 @@ export interface PropertiesResponse {
   };
 }
 
+
+
+
+export const createProperty = async (data: Partial<Property>, images: ImageItem[]) => {
+  const formData = new FormData();
+
+  // Add property data
+  formData.append("data", JSON.stringify(data));
+
+  // Build images payload
+  const imagesPayload: ImagePayload[] = images.map((img) => ({
+    id: img.id,
+    type: img.isNew ? "new" : "existing",
+    url: img.isNew ? undefined : img.url,
+    order: img.order,
+  }));
+
+  formData.append("imagesPayload", JSON.stringify(imagesPayload));
+
+  // Add new image files
+  images.forEach((img) => {
+    if (img.isNew && img.file) {
+      formData.append(`images[${img.id}]`, img.file);
+    }
+  });
+
+  const response = await axios.post(`${API_BASE_URL}/properties`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+export const updateProperty = async (
+  id: string,
+  data: Partial<Property>,
+  images: ImageItem[]
+) => {
+  const formData = new FormData();
+
+  // Add property data
+  formData.append("data", JSON.stringify(data));
+
+  // Build images payload
+  const imagesPayload: ImagePayload[] = images.map((img) => ({
+    id: img.id,
+    type: img.isNew ? "new" : "existing",
+    url: img.isNew ? undefined : img.url,
+    order: img.order,
+  }));
+
+  formData.append("imagesPayload", JSON.stringify(imagesPayload));
+
+  // Add new image files
+  images.forEach((img) => {
+    if (img.isNew && img.file) {
+      formData.append(`images[${img.id}]`, img.file);
+    }
+  });
+
+  const response = await axios.put(`${API_BASE_URL}/properties/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
 export const getProperties = async (filters: PropertyFilters = {}): Promise<PropertiesResponse> => {
   const params = new URLSearchParams();
   
@@ -91,7 +163,7 @@ export const getPropertyBySlug = async (slug: string) => {
   return response.data;
 };
 
-export const createProperty = async (data: Partial<Property>) => {
+{/**export const createProperty = async (data: Partial<Property>) => {
   const response = await axios.post(`${API_BASE_URL}/properties`, data);
   return response.data;
 };
@@ -99,7 +171,7 @@ export const createProperty = async (data: Partial<Property>) => {
 export const updateProperty = async (id: string, data: Partial<Property>) => {
   const response = await axios.put(`${API_BASE_URL}/properties/${id}`, data);
   return response.data;
-};
+}; */}
 
 export const deleteProperty = async (id: string) => {
   const response = await axios.delete(`${API_BASE_URL}/properties/${id}`);

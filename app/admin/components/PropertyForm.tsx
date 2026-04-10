@@ -20,6 +20,8 @@ import {
     type Property,
     type FAQ,
 } from "@/app/lib/api/properties";
+import { ImageItem } from "@/app/types";
+import ImageUploader from "./ImageUploader";
 
 interface PropertyFormProps {
     mode: "create" | "edit";
@@ -28,6 +30,7 @@ interface PropertyFormProps {
 
 export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     const router = useRouter();
+    const [images, setImages] = useState<ImageItem[]>([]);
 
     // Toast state
     const [toast, setToast] = useState<{
@@ -114,17 +117,24 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 metatitle: property.metatitle || "",
                 metadescription: property.metadescription || "",
             });
+            const existingImages: ImageItem[] = (property.images || []).map((url: string, index: number) => ({
+                id: `existing-${index}`,
+                url,
+                isNew: false,
+                order: index,
+            }));
+
+            setImages(existingImages);
         }
     }, [mode, propertyData]);
 
     // Mutations
     const createMutation = useMutation({
-        mutationFn: createProperty,
+        mutationFn: ({ data, images }: { data: Partial<Property>; images: ImageItem[] }) =>
+            createProperty(data, images),
         onSuccess: () => {
             showToast("Property created successfully", "success");
-            setTimeout(() => {
-                router.push("/admin/properties");
-            }, 1500);
+            setTimeout(() => router.push("/admin/properties"), 1500);
         },
         onError: (error: any) => {
             showToast(
@@ -135,13 +145,11 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     });
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }: { id: string; data: Partial<Property> }) =>
-            updateProperty(id, data),
+        mutationFn: ({ id, data, images }: { id: string; data: Partial<Property>; images: ImageItem[] }) =>
+            updateProperty(id, data, images),
         onSuccess: () => {
             showToast("Property updated successfully", "success");
-            setTimeout(() => {
-                router.push("/admin/properties");
-            }, 1500);
+            setTimeout(() => router.push("/admin/properties"), 1500);
         },
         onError: (error: any) => {
             showToast(
@@ -163,10 +171,15 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (images.length === 0) {
+            showToast("Please upload at least one property image", "error");
+            return;
+        }
+
         if (mode === "create") {
-            createMutation.mutate(formData);
+            createMutation.mutate({ data: formData, images });
         } else if (mode === "edit" && propertyId) {
-            updateMutation.mutate({ id: propertyId, data: formData });
+            updateMutation.mutate({ id: propertyId, data: formData, images });
         }
     };
 
@@ -563,66 +576,14 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 {/* Images */}
                 <div className="bg-white rounded-lg border border-border p-6">
                     <h2 className="font-display text-xl font-bold text-navy-900 mb-4">
-                        Property Images
+                        Property Images <span className="text-red-500">*</span>
                     </h2>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        {/* Left Side: Upload Zone */}
-                        <div className="lg:col-span-1">
-                            <label className="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border rounded-xl hover:border-gold-400 hover:bg-gold-50/30 transition-all cursor-pointer group">
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <div className="p-3 bg-gold-100 rounded-full text-gold-600 group-hover:scale-110 transition-transform mb-3">
-                                        <Plus size={24} />
-                                    </div>
-                                    <p className="text-sm font-medium text-navy-900">Click to upload</p>
-                                    <p className="text-xs text-text-muted mt-1">PNG, JPG or WEBP</p>
-                                </div>
-                                <input
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={handleImageUpload}
-                                />
-                            </label>
-                        </div>
-
-                        {/* Right Side: Image Previews (Ordered) */}
-                        <div className="lg:col-span-2">
-                            {formData.images.length > 0 ? (
-                                <div className="flex flex-wrap gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                                    {formData.images.map((image, index) => (
-                                        <div
-                                            key={index}
-                                            className="cur relative max-w-40 group rounded-lg border border-border overflow-hidden aspect-square bg-gray-50"
-                                        >
-                                            <div className="absolute top-2 left-2 z-10 bg-navy-900/60 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm">
-                                                {index + 1}
-                                            </div>
-                                            <img
-                                                src={image}
-                                                alt={`Preview ${index + 1}`}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeImage(index)}
-                                                    className="cursor-pointer p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                                                >
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="h-48 flex items-center justify-center border border-dashed border-border rounded-xl bg-gray-50 text-text-muted text-sm italic">
-                                    No images selected yet
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <ImageUploader
+                        images={images}
+                        onChange={setImages}
+                        maxImages={10}
+                        maxSizeMB={5}
+                    />
                 </div>
 
 
