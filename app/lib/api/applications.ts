@@ -12,7 +12,10 @@ export interface Application {
   city: string;
   position: string;
   experience: string;
-  resume: string;
+  resume: {
+    url: string;
+    pupublicId: string;
+  };
   status: "pending" | "reviewed" | "interviewed" | "rejected" | "hired";
   appliedDate: string;
   createdAt: string;
