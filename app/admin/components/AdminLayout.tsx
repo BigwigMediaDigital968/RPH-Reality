@@ -17,6 +17,7 @@ import {
     ChevronDown,
     Users2,
     Building2,
+    FileTextIcon,
 } from "lucide-react";
 
 interface SubMenuItem {
@@ -38,6 +39,11 @@ const menuItems: MenuItem[] = [
         icon: LayoutDashboard
     },
     {
+        name: "Lead Management",
+        href: "/admin/leads",
+        icon: Users
+    },
+    {
         name: "Property Management",
         href: "/admin/properties",
         icon: Building2,
@@ -47,9 +53,13 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
-        name: "Lead Management",
-        href: "/admin/leads",
-        icon: Users
+        name: "Blog Management",
+        href: "/admin/blogs",
+        icon: FileTextIcon,
+        children: [
+            { name: "All Blogs", href: "/admin/blogs" },
+            { name: "Add Blog", href: "/admin/blogs/create" },
+        ]
     },
     {
         name: "Employee Management",
@@ -57,20 +67,22 @@ const menuItems: MenuItem[] = [
         icon: Users2
     },
     {
-        name: "Career Applications",
+        name: "Job Applications",
         href: "/admin/careers",
         icon: Briefcase
     },
-    {
+    /**{
         name: "Projects",
         href: "/admin/projects",
         icon: FileText
     },
+    
+    
     {
         name: "Settings",
         href: "/admin/settings",
         icon: Settings
-    },
+    }, */
 ];
 
 function NavMenuItem({ item, pathname, setSidebarOpen }: { item: MenuItem, pathname: string, setSidebarOpen: (open: boolean) => void }) {
