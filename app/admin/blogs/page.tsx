@@ -58,7 +58,7 @@ export default function BlogsListPage() {
       ? "bg-green-100 text-green-700"
       : "bg-yellow-100 text-yellow-700";
   };
-
+  console.log(data?.data)
   return (
     <div className="space-y-6">
       {/* Header with Stats */}
@@ -165,7 +165,7 @@ export default function BlogsListPage() {
               className="px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent bg-white"
             >
               <option value="all">All Categories</option>
-              {data?.filters.categories.map((category:any) => (
+              {data?.filters.categories.map((category: any) => (
                 <option key={category} value={category}>
                   {category}
                 </option>
@@ -232,7 +232,7 @@ export default function BlogsListPage() {
                   </td>
                 </tr>
               ) : (
-                data?.data.map((blog:any) => (
+                data?.data.map((blog: any) => (
                   <tr key={blog._id} className="hover:bg-cream/30">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">

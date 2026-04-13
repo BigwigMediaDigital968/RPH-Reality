@@ -90,3 +90,66 @@
     scroll-snap-align: center;
   }
 }
+
+/* Image resize cursor */
+.ProseMirror img[data-resizable="true"] {
+  cursor: nwse-resize;
+  position: relative;
+}
+
+.ProseMirror img[data-resizable="true"]:hover {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+}
+
+/* Preserve formatting on paste */
+.ProseMirror {
+  white-space: pre-wrap;
+}
+
+.ProseMirror * {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+  color: inherit;
+  background-color: inherit;
+}
+
+/* Preserve specific formatting */
+.ProseMirror strong,
+.ProseMirror b {
+  font-weight: bold;
+}
+
+.ProseMirror em,
+.ProseMirror i {
+  font-style: italic;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+.ProseMirror s,
+.ProseMirror strike {
+  text-decoration: line-through;
+}
+
+.ProseMirror mark {
+  background-color: yellow;
+  color: inherit;
+}
+
+.ProseMirror span[style*="color"] {
+  color: inherit !important;
+}
+
+.ProseMirror span[style*="background"] {
+  background-color: inherit !important;
+}
+
+.ProseMirror span[style*="font-size"] {
+  font-size: inherit !important;
+}

@@ -22,6 +22,7 @@ export default function EditBlogPage() {
       }
     );
   };
+  console.log(blogData?.data)
 
   if (isBlogLoading) {
     return (
