@@ -1,6 +1,4 @@
-// components/RichTextEditor.tsx
 "use client";
-
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -8,8 +6,6 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
-import {TextStyle} from "@tiptap/extension-text-style";
-import Color from "@tiptap/extension-color";
 import Heading from "@tiptap/extension-heading";
 import { useState, useCallback } from "react";
 import {
@@ -32,6 +28,8 @@ import {
   AlignCenter,
   AlignRight,
   Loader2,
+  Eye,
+  FileCode,
 } from "lucide-react";
 import { uploadContentImage } from "@/app/lib/api/blogs";
 
@@ -51,6 +49,8 @@ export default function RichTextEditor({
   const [showImageInput, setShowImageInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [viewMode, setViewMode] = useState<"editor" | "preview" | "code">("editor");
+  const [codeContent, setCodeContent] = useState("");
 
   const editor = useEditor({
     extensions: [
@@ -79,34 +79,48 @@ export default function RichTextEditor({
         types: ["heading", "paragraph"],
       }),
       Underline,
-      TextStyle,
-      Color,
     ],
     immediatelyRender: false,
     content,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      const html = editor.getHTML();
+      onChange(html);
+      setCodeContent(html);
     },
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none max-w-none min-h-[400px] p-4",
+          "prose prose-sm sm:prose lg:prose-lg focus:outline-none max-w-none min-h-[400px] p-4",
       },
     },
   });
+
+  // Sync code content when switching to code view
+  const handleViewModeChange = (mode: "editor" | "preview" | "code") => {
+    if (mode === "code" && editor) {
+      setCodeContent(editor.getHTML());
+    } else if (mode === "editor" && viewMode === "code") {
+      // Update editor content from code view
+      editor?.commands.setContent(codeContent);
+      onChange(codeContent);
+    }
+    setViewMode(mode);
+  };
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCodeContent(e.target.value);
+  };
 
   const handleImageUpload = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file || !editor) return;
 
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         alert("Please select an image file");
         return;
       }
 
-      // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert("Image size should be less than 5MB");
         return;
@@ -142,12 +156,7 @@ export default function RichTextEditor({
     if (!editor) return;
 
     if (linkUrl) {
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: linkUrl })
-        .run();
+      editor.chain().focus().extendMarkRange("link").setLink({ href: linkUrl }).run();
     } else {
       editor.chain().focus().unsetLink().run();
     }
@@ -178,175 +187,209 @@ export default function RichTextEditor({
       onClick={onClick}
       disabled={disabled}
       title={title}
-      className={`p-2 rounded hover:bg-slate-100 transition-colors ${
-        isActive ? "bg-gold-100 text-gold-600" : "text-slate-600"
-      } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`p-2 rounded hover:bg-cream transition-colors ${isActive ? "bg-gold-100 text-gold-600" : "text-text-secondary"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
       {children}
     </button>
   );
 
   return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+    <div className="border border-border rounded-xl overflow-hidden bg-white">
       {/* Toolbar */}
-      <div className="border-b border-slate-200 bg-slate-50 p-2 flex flex-wrap gap-1">
-        {/* Text Formatting */}
-        <div className="flex gap-1 border-r border-slate-300 pr-2">
+      <div className="border-b border-border bg-cream p-2 flex flex-wrap gap-1">
+        {/* View Mode Toggles */}
+        <div className="flex gap-1 border-r border-border pr-2">
           <MenuButton
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            isActive={editor.isActive("bold")}
-            title="Bold"
+            onClick={() => handleViewModeChange("editor")}
+            isActive={viewMode === "editor"}
+            title="Editor"
           >
             <Bold size={18} />
           </MenuButton>
           <MenuButton
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            isActive={editor.isActive("italic")}
-            title="Italic"
+            onClick={() => handleViewModeChange("preview")}
+            isActive={viewMode === "preview"}
+            title="Preview"
           >
-            <Italic size={18} />
+            <Eye size={18} />
           </MenuButton>
           <MenuButton
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            isActive={editor.isActive("underline")}
-            title="Underline"
+            onClick={() => handleViewModeChange("code")}
+            isActive={viewMode === "code"}
+            title="Code View"
           >
-            <UnderlineIcon size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            isActive={editor.isActive("strike")}
-            title="Strikethrough"
-          >
-            <Strikethrough size={18} />
+            <FileCode size={18} />
           </MenuButton>
         </div>
 
-        {/* Headings */}
-        <div className="flex gap-1 border-r border-slate-300 pr-2">
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-            isActive={editor.isActive("heading", { level: 1 })}
-            title="Heading 1"
-          >
-            <Heading1 size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            isActive={editor.isActive("heading", { level: 2 })}
-            title="Heading 2"
-          >
-            <Heading2 size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            isActive={editor.isActive("heading", { level: 3 })}
-            title="Heading 3"
-          >
-            <Heading3 size={18} />
-          </MenuButton>
-        </div>
+        {viewMode === "editor" && (
+          <>
+            {/* Text Formatting */}
+            <div className="flex gap-1 border-r border-border pr-2">
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                isActive={editor.isActive("bold")}
+                title="Bold"
+              >
+                <Bold size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                isActive={editor.isActive("italic")}
+                title="Italic"
+              >
+                <Italic size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleUnderline().run()}
+                isActive={editor.isActive("underline")}
+                title="Underline"
+              >
+                <UnderlineIcon size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                isActive={editor.isActive("strike")}
+                title="Strikethrough"
+              >
+                <Strikethrough size={18} />
+              </MenuButton>
+            </div>
 
-        {/* Lists & Quotes */}
-        <div className="flex gap-1 border-r border-slate-300 pr-2">
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            isActive={editor.isActive("bulletList")}
-            title="Bullet List"
-          >
-            <List size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            isActive={editor.isActive("orderedList")}
-            title="Numbered List"
-          >
-            <ListOrdered size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            isActive={editor.isActive("blockquote")}
-            title="Quote"
-          >
-            <Quote size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            isActive={editor.isActive("codeBlock")}
-            title="Code Block"
-          >
-            <Code size={18} />
-          </MenuButton>
-        </div>
+            {/* Headings */}
+            <div className="flex gap-1 border-r border-border pr-2">
+              <MenuButton
+                onClick={() =>
+                  editor.chain().focus().toggleHeading({ level: 1 }).run()
+                }
+                isActive={editor.isActive("heading", { level: 1 })}
+                title="Heading 1"
+              >
+                <Heading1 size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() =>
+                  editor.chain().focus().toggleHeading({ level: 2 }).run()
+                }
+                isActive={editor.isActive("heading", { level: 2 })}
+                title="Heading 2"
+              >
+                <Heading2 size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() =>
+                  editor.chain().focus().toggleHeading({ level: 3 }).run()
+                }
+                isActive={editor.isActive("heading", { level: 3 })}
+                title="Heading 3"
+              >
+                <Heading3 size={18} />
+              </MenuButton>
+            </div>
 
-        {/* Alignment */}
-        <div className="flex gap-1 border-r border-slate-300 pr-2">
-          <MenuButton
-            onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            isActive={editor.isActive({ textAlign: "left" })}
-            title="Align Left"
-          >
-            <AlignLeft size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            isActive={editor.isActive({ textAlign: "center" })}
-            title="Align Center"
-          >
-            <AlignCenter size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            isActive={editor.isActive({ textAlign: "right" })}
-            title="Align Right"
-          >
-            <AlignRight size={18} />
-          </MenuButton>
-        </div>
+            {/* Lists & Quotes */}
+            <div className="flex gap-1 border-r border-border pr-2">
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                isActive={editor.isActive("bulletList")}
+                title="Bullet List"
+              >
+                <List size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                isActive={editor.isActive("orderedList")}
+                title="Numbered List"
+              >
+                <ListOrdered size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                isActive={editor.isActive("blockquote")}
+                title="Quote"
+              >
+                <Quote size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                isActive={editor.isActive("codeBlock")}
+                title="Code Block"
+              >
+                <Code size={18} />
+              </MenuButton>
+            </div>
 
-        {/* Link & Image */}
-        <div className="flex gap-1 border-r border-slate-300 pr-2">
-          <MenuButton
-            onClick={() => setShowLinkInput(!showLinkInput)}
-            isActive={editor.isActive("link")}
-            title="Add Link"
-          >
-            <LinkIcon size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => setShowImageInput(!showImageInput)}
-            title="Add Image"
-          >
-            {isUploadingImage ? (
-              <Loader2 size={18} className="animate-spin" />
-            ) : (
-              <ImageIcon size={18} />
-            )}
-          </MenuButton>
-        </div>
+            {/* Alignment */}
+            <div className="flex gap-1 border-r border-border pr-2">
+              <MenuButton
+                onClick={() => editor.chain().focus().setTextAlign("left").run()}
+                isActive={editor.isActive({ textAlign: "left" })}
+                title="Align Left"
+              >
+                <AlignLeft size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().setTextAlign("center").run()}
+                isActive={editor.isActive({ textAlign: "center" })}
+                title="Align Center"
+              >
+                <AlignCenter size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().setTextAlign("right").run()}
+                isActive={editor.isActive({ textAlign: "right" })}
+                title="Align Right"
+              >
+                <AlignRight size={18} />
+              </MenuButton>
+            </div>
 
-        {/* Undo/Redo */}
-        <div className="flex gap-1">
-          <MenuButton
-            onClick={() => editor.chain().focus().undo().run()}
-            disabled={!editor.can().undo()}
-            title="Undo"
-          >
-            <Undo size={18} />
-          </MenuButton>
-          <MenuButton
-            onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().redo()}
-            title="Redo"
-          >
-            <Redo size={18} />
-          </MenuButton>
-        </div>
+            {/* Link & Image */}
+            <div className="flex gap-1 border-r border-border pr-2">
+              <MenuButton
+                onClick={() => setShowLinkInput(!showLinkInput)}
+                isActive={editor.isActive("link")}
+                title="Add Link"
+              >
+                <LinkIcon size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => setShowImageInput(!showImageInput)}
+                title="Add Image"
+              >
+                {isUploadingImage ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <ImageIcon size={18} />
+                )}
+              </MenuButton>
+            </div>
+
+            {/* Undo/Redo */}
+            <div className="flex gap-1">
+              <MenuButton
+                onClick={() => editor.chain().focus().undo().run()}
+                disabled={!editor.can().undo()}
+                title="Undo"
+              >
+                <Undo size={18} />
+              </MenuButton>
+              <MenuButton
+                onClick={() => editor.chain().focus().redo().run()}
+                disabled={!editor.can().redo()}
+                title="Redo"
+              >
+                <Redo size={18} />
+              </MenuButton>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Link Input */}
-      {showLinkInput && (
-        <div className="border-b border-slate-200 bg-slate-50 p-3 flex gap-2">
+      {showLinkInput && viewMode === "editor" && (
+        <div className="border-b border-border bg-cream p-3 flex gap-2">
           <input
             type="url"
             placeholder="Enter URL"
@@ -358,7 +401,7 @@ export default function RichTextEditor({
                 handleSetLink();
               }
             }}
-            className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+            className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
           />
           <button
             type="button"
@@ -370,7 +413,7 @@ export default function RichTextEditor({
           <button
             type="button"
             onClick={() => setShowLinkInput(false)}
-            className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors"
+            className="px-4 py-2 border border-border rounded-lg text-sm font-semibold hover:bg-cream transition-colors"
           >
             Cancel
           </button>
@@ -378,8 +421,8 @@ export default function RichTextEditor({
       )}
 
       {/* Image Input */}
-      {showImageInput && (
-        <div className="border-b border-slate-200 bg-slate-50 p-3">
+      {showImageInput && viewMode === "editor" && (
+        <div className="border-b border-border bg-cream p-3">
           <div className="flex gap-2 mb-2">
             <input
               type="url"
@@ -392,7 +435,7 @@ export default function RichTextEditor({
                   handleImageUrl();
                 }
               }}
-              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+              className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
             />
             <button
               type="button"
@@ -403,7 +446,7 @@ export default function RichTextEditor({
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-500">OR</span>
+            <span className="text-sm text-text-muted">OR</span>
             <label className="flex-1">
               <input
                 type="file"
@@ -412,14 +455,14 @@ export default function RichTextEditor({
                 disabled={isUploadingImage}
                 className="hidden"
               />
-              <div className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors cursor-pointer text-center">
+              <div className="px-4 py-2 border border-border rounded-lg text-sm font-semibold hover:bg-white transition-colors cursor-pointer text-center">
                 {isUploadingImage ? "Uploading..." : "Upload from Computer"}
               </div>
             </label>
             <button
               type="button"
               onClick={() => setShowImageInput(false)}
-              className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors"
+              className="px-4 py-2 border border-border rounded-lg text-sm font-semibold hover:bg-white transition-colors"
             >
               Cancel
             </button>
@@ -427,8 +470,31 @@ export default function RichTextEditor({
         </div>
       )}
 
-      {/* Editor */}
-      <EditorContent editor={editor} className="bg-white" />
+      {/* Content Area */}
+      {viewMode === "editor" && <EditorContent editor={editor} className="bg-white" />}
+
+      {viewMode === "preview" && (
+        <div className="p-4 min-h-[400px] max-h-[600px] overflow-y-auto">
+          <div
+            className="prose prose-sm sm:prose lg:prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
+      )}
+
+      {viewMode === "code" && (
+        <div className="p-4">
+          <textarea
+            value={codeContent}
+            onChange={handleCodeChange}
+            className="w-full min-h-[400px] max-h-[600px] p-4 font-mono text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400"
+            spellCheck={false}
+          />
+          <p className="text-xs text-text-muted mt-2">
+            Edit the HTML code directly. Switch back to Editor mode to apply changes.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
