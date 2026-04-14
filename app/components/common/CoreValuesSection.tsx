@@ -188,7 +188,7 @@ export default function CoreValuesSection() {
                             whileTap={{ scale: 0.95 }}
                             className="cursor-pointer inline-flex items-center gap-2 px-10 py-4 bg-[#1B365D] text-white font-bold uppercase text-xs tracking-widest rounded-full transition-all shadow-lg hover:shadow-[#1B365D]/20"
                         >
-                            <Link href={'/contact-us'}>Contact Our Experts</Link>
+                            <Link href={'/contact'}>Contact Our Experts</Link>
                         </motion.button>
 
                         <motion.button
@@ -196,7 +196,7 @@ export default function CoreValuesSection() {
                             whileTap={{ scale: 0.95 }}
                             className="cursor-pointer inline-flex items-center gap-2 px-10 py-4 bg-transparent border border-navy-700 text-navy-700 font-bold uppercase text-xs tracking-widest rounded-full transition-all hover:border-gold-500 hover:text-gold-500"
                         >
-                            View Properties
+                            <Link href={'/properties'}>Explore Properties</Link>
                         </motion.button>
                     </div>
                 </motion.div>
