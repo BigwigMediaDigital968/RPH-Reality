@@ -7,6 +7,9 @@ import { motion, Variants } from "framer-motion";
 import SectionLabel from "../components/Ui/SectionLabel";
 import { MapPin, Bed, Bath, Square, Heart, Share2, Eye } from "lucide-react";
 import { useState } from "react";
+import { getProperties } from "../lib/api/properties";
+import { useQuery } from "@tanstack/react-query";
+import PropertyCard, { PropertyCardLoader } from "../components/common/PropertyCard";
 
 // Property type interface
 interface Property {
@@ -125,6 +128,15 @@ export default function BuyPage() {
         );
     };
 
+    const { data: propertiesData, isLoading, error } = useQuery({
+        queryKey: ["properties", 'buy'],
+        queryFn: () => getProperties({
+            purpose: 'lease'
+        }),
+    });
+
+    const properties = propertiesData?.data;
+
     return (
         <>
             {/* Hero Section */}
@@ -169,22 +181,27 @@ export default function BuyPage() {
                     </header>
 
                     {/* Property Grid */}
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    >
-                        {properties.map((property) => (
-                            <PropertyCard
-                                key={property.id}
-                                property={property}
-                                isFavorite={favorites.includes(property.id)}
-                                onToggleFavorite={() => toggleFavorite(property.id)}
-                            />
-                        ))}
-                    </motion.div>
+                    {isLoading ? (<>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[...Array(6)].map((_, i) => (
+                                <PropertyCardLoader key={i} />
+                            ))}
+                        </div></>) : (<>
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true, margin: "-100px" }}
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            >
+                                {properties?.map((property, index) => (
+                                    <PropertyCard
+                                        key={property?._id}
+                                        property={property}
+                                    />
+                                ))}
+                            </motion.div>
+                        </>)}
 
                     {/* Load More Button */}
                     <motion.div
@@ -200,126 +217,5 @@ export default function BuyPage() {
                 </div>
             </main>
         </>
-    );
-}
-
-// Property Card Component
-function PropertyCard({
-    property,
-    isFavorite,
-    onToggleFavorite,
-}: {
-    property: Property;
-    isFavorite: boolean;
-    onToggleFavorite: () => void;
-}) {
-    return (
-        <motion.div variants={cardVariants} className="group relative">
-            {/* Image Container */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-slate-200 shadow-lg">
-                <Image
-                    src={property.image}
-                    alt={property.title}
-                    fill
-                    unoptimized
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
-
-                {/* Tag Badge */}
-                {property.tag && (
-                    <div className="absolute top-4 left-4 z-10">
-                        <span
-                            className={`px-3 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase ${property.featured
-                                ? "bg-gold-400 text-navy-900"
-                                : "bg-white/95 text-navy-900 backdrop-blur-sm"
-                                }`}
-                        >
-                            {property.tag}
-                        </span>
-                    </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={onToggleFavorite}
-                        className="p-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all"
-                    >
-                        <Heart
-                            size={18}
-                            className={`transition-colors ${isFavorite
-                                ? "fill-red-500 stroke-red-500"
-                                : "stroke-navy-900"
-                                }`}
-                        />
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all"
-                    >
-                        <Share2 size={18} className="stroke-navy-900" />
-                    </motion.button>
-                </div>
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
-                        <button className="w-full bg-white text-navy-900 py-3 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-gold-400 transition-all duration-300 flex items-center justify-center gap-2">
-                            <Eye size={18} />
-                            View Details
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Property Info */}
-            <div className="mt-5 px-1">
-                {/* Price */}
-                <div className="flex items-center justify-between mb-3">
-                    <span className="text-2xl font-serif font-bold text-navy-900">
-                        {property.price}
-                    </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-serif text-navy-900 mb-2 group-hover:text-gold-600 transition-colors duration-300">
-                    {property.title}
-                </h3>
-
-                {/* Location */}
-                <div className="flex items-center gap-2 mb-4 text-charcoal-600">
-                    <MapPin size={16} className="text-gold-500 flex-shrink-0" />
-                    <span className="text-sm font-sans">{property.location}</span>
-                </div>
-
-                {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-4" />
-
-                {/* Property Features */}
-                <div className="flex items-center justify-between text-charcoal-600">
-                    <div className="flex items-center gap-1.5">
-                        <Bed size={18} className="text-gold-500" />
-                        <span className="text-sm font-sans font-medium">
-                            {property.bedrooms}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Bath size={18} className="text-gold-500" />
-                        <span className="text-sm font-sans font-medium">
-                            {property.bathrooms}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Square size={18} className="text-gold-500" />
-                        <span className="text-sm font-sans font-medium">
-                            {property.area}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </motion.div>
     );
 }

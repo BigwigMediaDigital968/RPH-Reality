@@ -3,19 +3,12 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
+import { Blog } from '@/app/lib/api/blogs';
 
-// 1. Define the shape of the Blog Post data
-export interface BlogPost {
-    img: string;
-    category: string;
-    date: string;
-    title: string;
-    excerpt?: string; // Optional field using '?'
-}
 
 // 2. Define the Props for the Component
 interface BlogCardProps {
-    post: BlogPost;
+    post: Blog;
     index?: number; // Optional index for staggered animation
 }
 
@@ -50,7 +43,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index = 0 }) => {
             {/* Image Container with aspect ratio box */}
             <div className="overflow-hidden aspect-[16/10] relative">
                 <img
-                    src={post.img}
+                    src={post?.blogImage?.url}
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     loading="lazy"
@@ -65,7 +58,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index = 0 }) => {
                     </span>
                     <span className="text-slate-300">·</span>
                     <span className="text-xs font-sans text-slate-500 font-medium">
-                        {post.date}
+                        {post.updatedAt}
                     </span>
                 </div>
 
@@ -80,7 +73,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index = 0 }) => {
                 )}
 
                 {/* Footer/Read More */}
-                <Link href={'/blogs/read-blog'} className="pt-2 flex items-center gap-2 text-[11px] font-sans font-bold tracking-widest uppercase text-navy-900 group-hover:text-gold-500 transition-all duration-300">
+                <Link href={`/blogs/${post.slug}`} className="pt-2 flex items-center gap-2 text-[11px] font-sans font-bold tracking-widest uppercase text-navy-900 group-hover:text-gold-500 transition-all duration-300">
                     <span>Explore Article</span>
                     <svg
                         width="16"

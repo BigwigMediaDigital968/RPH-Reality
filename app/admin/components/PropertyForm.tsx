@@ -49,7 +49,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         slug: "",
         description: "",
         type: "",
-        purpose: "buy" as "buy" | "rent" | "lease",
+        purpose: "sale" as "sale" | "rent" | "lease",
         location: "",
         brochure: "",
         builder: "",
@@ -69,6 +69,12 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         faqs: [] as FAQ[],
         metatitle: "",
         metadescription: "",
+        listingStatus: "standard" as
+            | "featured"
+            | "new"
+            | "hot"
+            | "premium"
+            | "standard",
     });
 
     // Temporary input states for arrays
@@ -96,7 +102,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 slug: property.slug || "",
                 description: property.description || "",
                 type: property.type || "",
-                purpose: property.purpose || "buy",
+                purpose: property.purpose || "sale",
                 location: property.location || "",
                 brochure: property.brochure || "",
                 builder: property.builder || "",
@@ -116,6 +122,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 faqs: property.faqs || [],
                 metatitle: property.metatitle || "",
                 metadescription: property.metadescription || "",
+                listingStatus: property.listingStatus || "standard",
             });
             const existingImages: ImageItem[] = (property.images || []).map((url: string, index: number) => ({
                 id: `existing-${index}`,
@@ -175,6 +182,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             showToast("Please upload at least one property image", "error");
             return;
         }
+        console.log(formData)
 
         if (mode === "create") {
             createMutation.mutate({ data: formData, images });
@@ -420,43 +428,6 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                                 Leave empty to auto-generate from title
                             </p>
                         </div>
-
-                        <div>
-                            <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
-                                Purpose <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                required
-                                value={formData.purpose}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        purpose: e.target.value as "buy" | "rent" | "lease",
-                                    })
-                                }
-                                className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                            >
-                                <option value="buy">For Sale</option>
-                                <option value="rent">For Rent</option>
-                                <option value="lease">For Lease</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
-                                Property Type
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.type}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, type: e.target.value })
-                                }
-                                className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                                placeholder="e.g., Apartment, Villa, Plot"
-                            />
-                        </div>
-
                         <div>
                             <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
                                 Location <span className="text-red-500">*</span>
@@ -472,6 +443,74 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                                 placeholder="e.g., South Delhi, Gurgaon"
                             />
                         </div>
+
+                        <div className="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
+                                    Purpose <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    required
+                                    value={formData.purpose}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            purpose: e.target.value as "sale" | "rent" | "lease",
+                                        })
+                                    }
+                                    className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
+                                >
+                                    <option value="sale">For Sale</option>
+                                    <option value="rent">For Rent</option>
+                                    <option value="lease">For Lease</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
+                                    Listing Status <span className="text-red-500">*</span>
+                                </label>
+
+                                <select
+                                    required
+                                    value={formData.listingStatus}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            listingStatus: e.target.value as
+                                                | "featured"
+                                                | "new"
+                                                | "hot"
+                                                | "premium"
+                                                | "standard",
+                                        })
+                                    }
+                                    className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
+                                >
+                                    <option value="standard">Standard</option>
+                                    <option value="featured">Featured</option>
+                                    <option value="new">New</option>
+                                    <option value="hot">Hot</option>
+                                    <option value="premium">Premium</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
+                                    Property Type
+                                </label>
+                                <input
+                                    type="text"
+                                    value={formData.type}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, type: e.target.value })
+                                    }
+                                    className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
+                                    placeholder="e.g., Apartment, Villa, Plot"
+                                />
+                            </div>
+                        </div>
+
+
 
                         <div className="md:col-span-2">
                             <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
@@ -840,7 +879,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                             />
                         </div>
 
-                        <div>
+                        <div className="hidden">
                             <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
                                 Instagram Link
                             </label>

@@ -7,8 +7,18 @@ import Link from 'next/link';
 import { Calendar, Clock, User, Share2, Link2, ArrowLeft } from 'lucide-react';
 import { fadeUp } from '@/app/utils/motion';
 import BlogCard from '@/app/components/Ui/BlogCard';
+import { useQuery } from '@tanstack/react-query';
+import { Blog, getBlogBySlug } from '@/app/lib/api/blogs';
+import { useParams } from "next/navigation";
+import { GoldLoader } from '@/app/components/Ui/GoldLoader';
+import RelatedBlogs from '@/app/components/common/RelatedBlogs';
 
 export default function BlogDetail() {
+    const params = useParams();
+    const slug = Array.isArray(params.slug)
+        ? params.slug[0]
+        : params.slug;
+    console.log(slug)
     // Scroll progress bar logic
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
@@ -16,46 +26,22 @@ export default function BlogDetail() {
         damping: 30,
         restDelta: 0.001
     });
+    const { data: response, isLoading, error } = useQuery({
+        queryKey: ["blog", slug],
+        queryFn: () => getBlogBySlug(slug as string),
+        enabled: !!slug,
+    });
+    const blog = response?.data;
 
-    const blog = {
-        title: "The Renaissance of Assagao: Why Global Investors are Flocking to North Goa",
-        category: "Real Estate Trends",
-        author: "Sarah D'Souza",
-        date: "April 12, 2026",
-        readTime: "6 min read",
-        image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200",
-        content: `
-            Assagao, often referred to as the 'Beverly Hills of Goa,' has undergone a remarkable transformation...
-            [Your long-form content here]
-        `
-    };
 
-    const relatedBlogs = [
-        {
-            img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80", // Coastal Goa View
-            category: "Market Insight",
-            date: "02 Apr 2026",
-            title: "Why North Goa is the New Investment Capital for Second Homes",
-            excerpt:
-                "Rental yields in Assagao and Siolim have seen a 25% uptick as digital nomads and luxury travelers shift toward boutique villa living.",
-        },
-        {
-            img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80", // Portuguese Heritage Villa
-            category: "Buying Guide",
-            date: "25 Mar 2026",
-            title: "Navigating Land Titles and Heritage Laws in Goa: A 2026 Guide",
-            excerpt:
-                "Understanding Form I & XIV, Nil-Encumbrance certificates, and the essentials of safely purchasing ancestral Goan property.",
-        },
-        {
-            img: "https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?w=600&q=80", // Modern Goa Interior
-            category: "Lifestyle",
-            date: "18 Mar 2026",
-            title: "The Ultimate Guide: Choosing Between North and South Goa",
-            excerpt:
-                "From the vibrant social hubs of Anjuna to the pristine, quiet stretches of Palolem—finding the perfect neighborhood for your lifestyle.",
-        },
-    ];
+
+    const relatedBlogs = [response?.data];
+
+
+    if (error) return <div>Something went wrong</div>;
+    if (!blog) return <div>No blog found</div>;
+
+    console.log(blog)
 
     return (
         <main className="bg-white min-h-screen">
@@ -68,8 +54,8 @@ export default function BlogDetail() {
             {/* --- HERO SECTION --- */}
             <header className="relative h-[60vh] w-full">
                 <Image
-                    src={blog.image}
-                    alt={blog.title}
+                    src={blog?.blogImage?.url}
+                    alt={blog?.title}
                     fill
                     className="object-cover"
                     priority
@@ -82,7 +68,7 @@ export default function BlogDetail() {
                             animate={{ opacity: 1, y: 0 }}
                             className="hidden px-4 py-2 bg-gold-500 text-navy-900 text-xs font-bold uppercase tracking-widest rounded-full"
                         >
-                            {blog.category}
+                            {blog?.category}
                         </motion.span>
                     </div>
                 </div>
@@ -103,49 +89,52 @@ export default function BlogDetail() {
                 </aside>
 
                 {/* --- MIDDLE: CONTENT --- */}
-                <article className="lg:col-span-8 space-y-10">
-                    <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm border-b border-slate-100 pb-8">
-                        <div className="flex items-center gap-2"><User size={16} className="text-gold-600" /> {blog.author}</div>
-                        <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {blog.date}</div>
-                        <div className="flex items-center gap-2"><Clock size={16} className="text-gold-600" /> {blog.readTime}</div>
-                    </div>
+                {isLoading ? (<>
+                    <GoldLoader /></>) : (<>
 
-                    <div>
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-navy-900 leading-tight"
-                        >
-                            {blog.title}
-                        </motion.h1>
-                    </div>
-
-                    <div className="prose prose-lg prose-slate max-w-none">
-                        <p className="text-xl text-slate-600 leading-relaxed font-serif italic border-l-4 border-gold-500 pl-6 py-2">
-                            Goa is no longer just a holiday destination; it is the new frontier for luxury living. As the demand for boutique villas rises, we look at the quiet village of Assagao.
-                        </p>
-
-                        <h2 className="text-2xl font-bold text-navy-900 mt-12 mb-6">The Shift Toward Boutique Luxury</h2>
-                        <p className="text-slate-700 leading-loose">
-                            {/* Content text would go here */}
-                            The architectural landscape of North Goa has shifted significantly over the past decade. Modern buyers are looking for a blend of historical integrity and smart technology...
-                        </p>
-                    </div>
-
-                    {/* Newsletter Opt-in */}
-                    <div className="hidden bg-navy-900 rounded-3xl p-10 text-white relative overflow-hidden">
-                        <div className="relative z-10 max-w-md">
-                            <h3 className="text-2xl font-bold mb-4">Get the Royal Gazette</h3>
-                            <p className="text-slate-300 mb-6">Exclusive Goan real estate insights delivered to your inbox weekly.</p>
-                            <div className="flex gap-2">
-                                <input type="email" placeholder="Your Email" className="bg-white/10 border border-white/20 px-4 py-3 rounded-xl flex-grow focus:outline-none focus:border-gold-500" />
-                                <button className="bg-gold-500 text-navy-900 px-6 py-3 rounded-xl font-bold">Join</button>
+                        <article className="lg:col-span-8 space-y-10">
+                            <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm border-b border-slate-100 pb-8">
+                                <div className="flex items-center gap-2"><User size={16} className="text-gold-600" /> {blog?.author}</div>
+                                <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {blog?.date}</div>
+                                <div className="flex items-center gap-2"><Clock size={16} className="text-gold-600" /> {blog?.readTime}</div>
                             </div>
-                        </div>
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-                    </div>
-                </article>
+
+                            <div>
+                                <motion.h1
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 }}
+                                    className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-navy-900 leading-tight"
+                                >
+                                    {blog?.title}
+                                </motion.h1>
+                            </div>
+
+                            <div className="prose prose-lg prose-slate max-w-none">
+                                <p className="text-xl text-slate-600 leading-relaxed font-serif italic border-l-4 border-gold-500 pl-6 py-2">
+                                    {blog?.excerpt}
+                                </p>
+
+                                <h2 className="text-2xl font-bold text-navy-900 mt-12 mb-6">The Shift Toward Boutique Luxury</h2>
+                                <div
+                                    className="prose prose-lg prose-slate max-w-none"
+                                    dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
+                                />
+                            </div>
+
+                            {/* Newsletter Opt-in */}
+                            <div className="hidden bg-navy-900 rounded-3xl p-10 text-white relative overflow-hidden">
+                                <div className="relative z-10 max-w-md">
+                                    <h3 className="text-2xl font-bold mb-4">Get the Royal Gazette</h3>
+                                    <p className="text-slate-300 mb-6">Exclusive Goan real estate insights delivered to your inbox weekly.</p>
+                                    <div className="flex gap-2">
+                                        <input type="email" placeholder="Your Email" className="bg-white/10 border border-white/20 px-4 py-3 rounded-xl flex-grow focus:outline-none focus:border-gold-500" />
+                                        <button className="bg-gold-500 text-navy-900 px-6 py-3 rounded-xl font-bold">Join</button>
+                                    </div>
+                                </div>
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                            </div>
+                        </article></>)}
 
                 {/* --- RIGHT: PROPERTY AD --- */}
                 <aside className="lg:col-span-3 space-y-8">
@@ -162,31 +151,7 @@ export default function BlogDetail() {
             </div>
 
             {/* --- RELATED BLOGS SECTION --- */}
-            <section className="bg-slate-50 py-24">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex justify-between items-end mb-12">
-                        <div>
-                            <h2 className="text-4xl font-display font-bold text-navy-900">Continue Reading</h2>
-                            <p className="text-slate-500 mt-2">More insights from our real estate experts</p>
-                        </div>
-                        <Link href="/blog" className="text-navy-900 font-bold border-b-2 border-gold-500 hover:text-gold-600 transition-colors">
-                            View All News
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        {relatedBlogs.map((post, index) => (
-                            <>
-                                <BlogCard
-                                    key={post.title}
-                                    post={post}
-                                    index={index}
-                                />
-                            </>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <RelatedBlogs blogId={blog?._id} limit={5} />
         </main>
     );
 }

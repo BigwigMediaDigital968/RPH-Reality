@@ -7,37 +7,20 @@ import { fadeUp, motionContainer } from "@/app/utils/motion";
 import { ArrowRight } from "lucide-react";
 import BlogCard from "../Ui/BlogCard";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getBlogs } from "@/app/lib/api/blogs";
 
 export default function Blogs() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
-  const blogs = [
-    {
-      img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80", // Coastal Goa View
-      category: "Market Insight",
-      date: "02 Apr 2026",
-      title: "Why North Goa is the New Investment Capital for Second Homes",
-      excerpt:
-        "Rental yields in Assagao and Siolim have seen a 25% uptick as digital nomads and luxury travelers shift toward boutique villa living.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80", // Portuguese Heritage Villa
-      category: "Buying Guide",
-      date: "25 Mar 2026",
-      title: "Navigating Land Titles and Heritage Laws in Goa: A 2026 Guide",
-      excerpt:
-        "Understanding Form I & XIV, Nil-Encumbrance certificates, and the essentials of safely purchasing ancestral Goan property.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?w=600&q=80", // Modern Goa Interior
-      category: "Lifestyle",
-      date: "18 Mar 2026",
-      title: "The Ultimate Guide: Choosing Between North and South Goa",
-      excerpt:
-        "From the vibrant social hubs of Anjuna to the pristine, quiet stretches of Palolem—finding the perfect neighborhood for your lifestyle.",
-    },
-  ];
+  const { data: res, isLoading, error } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: () => getBlogs({ page: 1, limit: 3 }),
+  })
+
+  const blogs = res?.data;
+
 
   return (
     <section ref={ref} className="py-20 lg:py-28 bg-white">
@@ -73,10 +56,10 @@ export default function Blogs() {
           variants={motionContainer}
           className="grid md:grid-cols-3 gap-6"
         >
-          {blogs.map((post, index) => (
+          {blogs?.map((post, index) => (
             <>
               <BlogCard
-                key={post.title}
+                key={post?.title}
                 post={post}
                 index={index}
               />

@@ -1,36 +1,55 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import BlogCard from '../components/Ui/BlogCard';
 import Hero from '../components/Ui/Hero';
+import { getBlogs } from '../lib/api/blogs';
+import { GoldLoader } from '../components/Ui/GoldLoader';
 
 // Dummy Data - In a real app, this comes from an API or CMS
-const ALL_POSTS: BlogPost[] = Array.from({ length: 14 }).map((_, i) => ({
-    img: `https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80&sig=${i}`,
-    category: i % 2 === 0 ? "Market Insight" : "Lifestyle",
-    date: "02 Apr 2026",
-    title: `Exploring the Hidden Gems of North Goa - Part ${i + 1}`,
-    excerpt: "Discover why the architectural landscape of Goa is shifting toward sustainable luxury villas and boutique heritage stays.",
-}));
+
 
 const POSTS_PER_PAGE = 6;
 
 export default function BlogsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [blogs, setBlogs] = useState<any[]>([]);
+    const [totalPages, setTotalPages] = useState(1);
 
-    // Filter logic
-    const filteredPosts = ALL_POSTS.filter(post =>
-        post.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                setLoading(true);
+
+                const res = await getBlogs({
+                    page: currentPage,
+                    limit: POSTS_PER_PAGE,
+                    search: searchQuery, // 👈 search query inside object
+                });
+
+                setBlogs(res.data || []);
+                setTotalPages(res.pagination?.totalPages || 1);
+            } catch (error) {
+                console.error("Failed to fetch blogs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogs();
+    }, [currentPage, searchQuery]);
+
+    console.log(blogs)
 
     // Pagination logic
-    const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
     const indexOfLastPost = currentPage * POSTS_PER_PAGE;
     const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
-    const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = blogs.slice(indexOfFirstPost, indexOfLastPost);
 
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -67,16 +86,26 @@ export default function BlogsPage() {
                         />
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <AnimatePresence mode="wait">
-                        {currentPosts.map((post, index) => (
-                            <BlogCard key={post.title} post={post} index={index} />
-                        ))}
-                    </AnimatePresence>
-                </div>
+                {
+                    loading ? (
+                        <>
+                            <GoldLoader />
+                        </>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <AnimatePresence mode="wait">
+                                    {currentPosts.map((post, index) => (
+                                        <BlogCard key={post.title} post={post} index={index} />
+                                    ))}
+                                </AnimatePresence>
+                            </div>
+                        </>
+                    )
+                }
 
                 {/* Empty State */}
-                {filteredPosts.length === 0 && (
+                {blogs.length === 0 && (
                     <div className="text-center py-20">
                         <p className="text-slate-400 text-lg">No articles found matching your search.</p>
                     </div>

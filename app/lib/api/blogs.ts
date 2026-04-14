@@ -136,3 +136,8 @@ export const uploadContentImage = async (file: File) => {
   );
   return response.data;
 };
+
+export const getRelatedBlogs = async (blogId: string, limit: number = 4): Promise<BlogsResponse> => {
+  const response = await axios.get(`${API_BASE_URL}/blogs/${blogId}?limit=${limit}`);
+  return response.data;
+};

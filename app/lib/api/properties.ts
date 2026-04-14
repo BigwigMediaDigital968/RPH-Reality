@@ -14,7 +14,7 @@ export interface Property {
   slug: string;
   description: string;
   type: string;
-  purpose: "buy" | "rent" | "lease";
+  purpose: "sale" | "rent" | "lease";
   location: string;
   brochure: string;
   builder: string;
@@ -48,6 +48,7 @@ export interface PropertyFilters {
   bedrooms?: string;
   sort?: "asc" | "desc";
   sortBy?: string;
+  listingStatus?: "featured"| "new"| "hot"| "premium"| "standard"
 }
 
 export interface PropertiesResponse {
@@ -63,7 +64,7 @@ export interface PropertiesResponse {
   };
   stats: {
     all: number;
-    buy: number;
+    sale: number;
     rent: number;
     lease: number;
   };

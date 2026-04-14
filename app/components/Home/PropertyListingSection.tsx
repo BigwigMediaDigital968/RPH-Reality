@@ -6,50 +6,25 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import SectionLabel from '../Ui/SectionLabel';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { getProperties } from '@/app/lib/api/properties';
 
-const properties = [
-    {
-        id: 1,
-        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-        title: "Coastal Villa Estate",
-        size: "77m²",
-        price: "₹5,800,000",
-        location: "North Goa",
-        description: "Luxury beachfront villa with panoramic ocean views",
-    },
-    {
-        id: 2,
-        image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        title: "Modern Beach House",
-        size: "94m²",
-        price: "₹7,200,000",
-        location: "Candolim",
-        description: "Contemporary design with private beach access",
-    },
-    {
-        id: 3,
-        image: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e",
-        title: "Oceanview Residence",
-        size: "65m²",
-        price: "₹6,000,000",
-        location: "Anjuna",
-        description: "Stunning architecture with infinity pool",
-    },
-    {
-        id: 4,
-        image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
-        title: "Sunset Paradise Villa",
-        size: "60m²",
-        price: "₹5,200,000",
-        location: "Calangute",
-        description: "Modern tropical living at its finest",
-    },
-];
 
 export default function PropertyListingSection3D() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const dragX = useMotionValue(0);
+
+    const { data: propertiesData, isLoading, error } = useQuery({
+        queryKey: ["featured-properties", "featured"],
+        queryFn: () => getProperties({
+            page: 1,
+            limit: 5,
+            listingStatus: "featured",
+        }),
+    });
+    console.log("filter", propertiesData)
+    const properties = propertiesData?.data || [];
 
     // Auto-slide functionality
     useEffect(() => {
@@ -63,11 +38,11 @@ export default function PropertyListingSection3D() {
     }, [currentIndex, isHovered]);
 
     const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % properties.length);
+        setCurrentIndex((prev) => (prev + 1) % properties?.length);
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + properties.length) % properties.length);
+        setCurrentIndex((prev) => (prev - 1 + properties?.length) % properties?.length);
     };
 
     const handleDotClick = (index: number) => {
@@ -78,8 +53,8 @@ export default function PropertyListingSection3D() {
     const getSlidePosition = (index: number) => {
         const diff = index - currentIndex;
         if (diff === 0) return 'center';
-        if (diff === 1 || diff === -(properties.length - 1)) return 'right';
-        if (diff === -1 || diff === properties.length - 1) return 'left';
+        if (diff === 1 || diff === -(properties?.length - 1)) return 'right';
+        if (diff === -1 || diff === properties?.length - 1) return 'left';
         return 'hidden';
     };
 
@@ -177,13 +152,13 @@ export default function PropertyListingSection3D() {
                 >
                     {/* 3D Carousel */}
                     <div className="relative h-[600px] md:h-[500px] lg:h-[500px]">
-                        {properties.map((property, index) => {
+                        {properties?.map((property, index) => {
                             const position = getSlidePosition(index);
                             const isCenter = position === 'center';
 
                             return (
                                 <motion.div
-                                    key={property.id}
+                                    key={property._id}
                                     className="absolute inset-0 flex items-center justify-center"
                                     animate={getSlideStyle(position)}
                                     transition={{
@@ -203,7 +178,7 @@ export default function PropertyListingSection3D() {
                                     >
                                         {/* Property Image */}
                                         <Image
-                                            src={property.image}
+                                            src={property.images?.[0]}
                                             alt={property.title}
                                             fill
                                             className="object-cover"
@@ -225,7 +200,7 @@ export default function PropertyListingSection3D() {
                                                     className="max-w-2xl"
                                                 >
                                                     {/* Property Title */}
-                                                    <h3 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-serif text-white mb-4">
+                                                    <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif text-white mb-4">
                                                         {property.title}
                                                     </h3>
 
@@ -240,7 +215,7 @@ export default function PropertyListingSection3D() {
                                                             <div className="w-1 h-8 bg-amber-400 rounded-full" />
                                                             <div>
                                                                 <div className="text-sm text-gray-400 uppercase tracking-wider">Size</div>
-                                                                <div className="text-xl font-semibold text-white">{property.size}</div>
+                                                                <div className="text-xl font-semibold text-white">{property?.areaSqft}</div>
                                                             </div>
                                                         </div>
 
@@ -249,7 +224,7 @@ export default function PropertyListingSection3D() {
                                                             <div className="w-1 h-8 bg-amber-400 rounded-full" />
                                                             <div>
                                                                 <div className="text-sm text-gray-400 uppercase tracking-wider">Price from</div>
-                                                                <div className="text-xl font-semibold text-amber-400">{property.price}</div>
+                                                                <div className="text-xl font-semibold text-amber-400">{property?.price}</div>
                                                             </div>
                                                         </div>
 
@@ -258,20 +233,19 @@ export default function PropertyListingSection3D() {
                                                             <div className="w-1 h-8 bg-amber-400 rounded-full" />
                                                             <div>
                                                                 <div className="text-sm text-gray-400 uppercase tracking-wider">Location</div>
-                                                                <div className="text-xl font-semibold text-white">{property.location}</div>
+                                                                <div className="text-xl font-semibold text-white">{property?.location}</div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     {/* View Details Button */}
-                                                    <motion.button
-                                                        whileHover={{ scale: 1.05 }}
-                                                        whileTap={{ scale: 0.95 }}
+                                                    <Link
+                                                        href={`/properties/${property?.slug}`}
                                                         className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#1B365D] font-semibold rounded-full hover:bg-amber-400 hover:text-white transition-all shadow-lg"
                                                     >
                                                         View Details
                                                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                                    </motion.button>
+                                                    </Link>
                                                 </motion.div>
                                             </div>
                                         )}
@@ -328,7 +302,7 @@ export default function PropertyListingSection3D() {
 
                     <div className="flex items-center justify-center gap-3 mt-8">
 
-                        {properties.map((_, index) => (
+                        {properties?.map((_, index) => (
                             <motion.button
                                 key={index}
                                 onClick={() => handleDotClick(index)}
