@@ -137,11 +137,11 @@ export default function PropertiesPage() {
 
     const getPurposeColor = (purpose: string) => {
         const colors: Record<string, string> = {
-            buy: "bg-green-100 text-green-700",
+            sale: "bg-green-100 text-green-700",
             rent: "bg-blue-100 text-blue-700",
             lease: "bg-purple-100 text-purple-700",
         };
-        return colors[purpose] || colors.buy;
+        return colors[purpose] || colors.sale;
     };
 
     // Reset page when filters change
@@ -210,13 +210,13 @@ export default function PropertiesPage() {
                     </div>
                     <div
                         className="bg-white rounded-lg border border-border p-4 cursor-pointer hover:shadow-md transition-shadow"
-                        onClick={() => setPurposeFilter("buy")}
+                        onClick={() => setPurposeFilter("sale")}
                     >
                         <p className="text-sm font-sans text-text-muted uppercase">
                             For Sale
                         </p>
                         <p className="text-2xl font-display font-bold text-green-600 mt-1">
-                            {propertiesData.stats.buy}
+                            {propertiesData.stats.sale}
                         </p>
                     </div>
                     <div
@@ -272,7 +272,7 @@ export default function PropertiesPage() {
                             className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent appearance-none bg-white"
                         >
                             <option value="all">All Purposes</option>
-                            <option value="buy">For Sale</option>
+                            <option value="sale">For Sale</option>
                             <option value="rent">For Rent</option>
                             <option value="lease">For Lease</option>
                         </select>

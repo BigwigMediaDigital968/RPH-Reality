@@ -295,10 +295,9 @@ export default function LeadManagement() {
                                 className="w-full px-4 py-2.5 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 appearance-none bg-white cursor-pointer"
                             >
                                 <option value="all">All Purpose</option>
-                                <option value="buy">Buy</option>
-                                <option value="sell">Sell</option>
+                                <option value="sale">Sale</option>
                                 <option value="rent">Rent</option>
-                                <option value="invest">Invest</option>
+                                <option value="lease">Lease</option>
                             </select>
                         </div>
 
