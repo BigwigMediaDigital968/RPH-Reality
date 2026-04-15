@@ -1,7 +1,11 @@
 // app/admin/page.tsx
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { Users, FileText, Briefcase, TrendingUp } from "lucide-react";
+import { getLeads } from "../lib/api/leads";
+import { formatDate } from "../utils/date";
+import Link from "next/link";
 
 interface StatCardProps {
     title: string;
@@ -34,6 +38,20 @@ const StatCard = ({ title, value, change, icon: Icon, trend }: StatCardProps) =>
 };
 
 export default function AdminDashboard() {
+
+    const filters = {
+        page: 1,
+        limit: 5,
+    }
+
+    const { data: leadsData, isLoading, error } = useQuery({
+        queryKey: ["leads", filters],
+        queryFn: () => getLeads(filters)
+    });
+
+    console.log(leadsData)
+
+
     const stats = [
         {
             title: "Total Leads",
@@ -65,32 +83,7 @@ export default function AdminDashboard() {
         },
     ];
 
-    const recentLeads = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john@example.com",
-            phone: "+91 98765 43210",
-            purpose: "Buy",
-            date: "2024-01-15",
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            email: "jane@example.com",
-            phone: "+91 98765 43211",
-            purpose: "Rent",
-            date: "2024-01-15",
-        },
-        {
-            id: 3,
-            name: "Mike Johnson",
-            email: "mike@example.com",
-            phone: "+91 98765 43212",
-            purpose: "Invest",
-            date: "2024-01-14",
-        },
-    ];
+    const recentLeads = leadsData?.data;
 
     return (
         <div className="space-y-6">
@@ -136,8 +129,8 @@ export default function AdminDashboard() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
-                            {recentLeads.map((lead) => (
-                                <tr key={lead.id} className="hover:bg-cream/50">
+                            {recentLeads?.map((lead) => (
+                                <tr key={lead._id} className="hover:bg-cream/50">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-sans font-medium text-navy-900">
                                         {lead.name}
                                     </td>
@@ -153,7 +146,7 @@ export default function AdminDashboard() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-sans text-text-secondary">
-                                        {lead.date}
+                                        {formatDate(lead.createdAt)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
                                         <button className="text-gold-500 hover:text-gold-600 font-semibold">
@@ -166,9 +159,9 @@ export default function AdminDashboard() {
                     </table>
                 </div>
                 <div className="border-t border-border px-6 py-4">
-                    <button className="text-sm font-sans font-semibold text-gold-500 hover:text-gold-600">
+                    <Link href={`/admin/leads`} className="text-sm font-sans font-semibold text-gold-500 hover:text-gold-600">
                         View All Leads →
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
