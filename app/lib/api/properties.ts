@@ -73,7 +73,7 @@ export interface PropertiesResponse {
 
 
 
-export const createProperty = async (data: Partial<Property>, images: ImageItem[]) => {
+export const createProperty = async (data: Partial<Property>, images: ImageItem[], brochure?: File | null) => {
   const formData = new FormData();
 
   // Add property data
@@ -96,6 +96,10 @@ export const createProperty = async (data: Partial<Property>, images: ImageItem[
     }
   });
 
+  if (brochure) {
+    formData.append("brochure", brochure);
+  }
+
   const response = await axios.post(`${API_BASE_URL}/properties`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -108,7 +112,9 @@ export const createProperty = async (data: Partial<Property>, images: ImageItem[
 export const updateProperty = async (
   id: string,
   data: Partial<Property>,
-  images: ImageItem[]
+  images: ImageItem[],
+  brochure?: File | null,
+  removeBrochure?: boolean
 ) => {
   const formData = new FormData();
 
@@ -131,6 +137,15 @@ export const updateProperty = async (
       formData.append(`images[${img.id}]`, img.file);
     }
   });
+
+   if (brochure) {
+    formData.append("brochure", brochure);
+  }
+
+  // Add remove brochure flag
+  if (removeBrochure) {
+    formData.append("removeBrochure", "true");
+  }
 
   const response = await axios.put(`${API_BASE_URL}/properties/${id}`, formData, {
     headers: {

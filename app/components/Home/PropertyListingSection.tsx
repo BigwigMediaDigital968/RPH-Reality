@@ -205,8 +205,11 @@ export default function PropertyListingSection3D() {
                                                     </h3>
 
                                                     {/* Property Details */}
-                                                    <p className="hidden md:block md:text-lg text-gray-200 mb-6">
-                                                        {property.description}
+                                                    <p className="hidden md:block md:text-lg text-gray-200 mb-6 line-clamp-2">
+                                                        {property.description
+                                                            ?.split(" ")
+                                                            .slice(0, 20)
+                                                            .join(" ") + (property.description?.split(" ").length > 20 ? "..." : "")}
                                                     </p>
 
                                                     <div className="flex flex-wrap items-center gap-6 mb-6">

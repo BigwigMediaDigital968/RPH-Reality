@@ -85,6 +85,9 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     const [extraHighlightInput, setExtraHighlightInput] = useState("");
     const [faqQuestion, setFaqQuestion] = useState("");
     const [faqAnswer, setFaqAnswer] = useState("");
+    const [brochureFile, setBrochureFile] = useState<File | null>(null);
+    const [brochurePreview, setBrochurePreview] = useState<string>("");
+    const [removeBrochure, setRemoveBrochure] = useState(false);
 
     // Fetch property data for edit mode
     const { data: propertyData, isLoading: isLoadingProperty } = useQuery({
@@ -130,6 +133,9 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 isNew: false,
                 order: index,
             }));
+            if (property.brochure) {
+                setBrochurePreview(property.brochure.split('/').pop() || "Existing brochure");
+            }
 
             setImages(existingImages);
         }
@@ -137,8 +143,8 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
     // Mutations
     const createMutation = useMutation({
-        mutationFn: ({ data, images }: { data: Partial<Property>; images: ImageItem[] }) =>
-            createProperty(data, images),
+        mutationFn: ({ data, images, brochure }: { data: Partial<Property>; images: ImageItem[], brochure: File | null }) =>
+            createProperty(data, images, brochure),
         onSuccess: () => {
             showToast("Property created successfully", "success");
             setTimeout(() => router.push("/admin/properties"), 1500);
@@ -152,8 +158,8 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     });
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data, images }: { id: string; data: Partial<Property>; images: ImageItem[] }) =>
-            updateProperty(id, data, images),
+        mutationFn: ({ id, data, images, brochure, removeBrochure }: { id: string; data: Partial<Property>; images: ImageItem[], brochure: File | null, removeBrochure: boolean }) =>
+            updateProperty(id, data, images, brochure, removeBrochure),
         onSuccess: () => {
             showToast("Property updated successfully", "success");
             setTimeout(() => router.push("/admin/properties"), 1500);
@@ -185,9 +191,12 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         console.log(formData)
 
         if (mode === "create") {
-            createMutation.mutate({ data: formData, images });
+            createMutation.mutate({ data: formData, images, brochure: brochureFile });
         } else if (mode === "edit" && propertyId) {
-            updateMutation.mutate({ id: propertyId, data: formData, images });
+            updateMutation.mutate({
+                id: propertyId, data: formData, images, brochure: brochureFile,
+                removeBrochure
+            });
         }
     };
 
@@ -240,6 +249,36 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]];
 
         setFormData(prev => ({ ...prev, images: newImages }));
+    };
+
+    // Add after your existing handler functions (around line 150)
+    const handleBrochureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Validate file type
+        const allowedTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+        if (!allowedTypes.includes(file.type)) {
+            showToast("Only PDF, DOC, and DOCX files are allowed", "error");
+            return;
+        }
+
+        // Validate file size (40MB)
+        if (file.size > 40 * 1024 * 1024) {
+            showToast("Brochure size should be less than 40MB", "error");
+            return;
+        }
+
+        setBrochureFile(file);
+        setBrochurePreview(file.name);
+        setRemoveBrochure(false);
+    };
+
+    const handleRemoveBrochure = () => {
+        setBrochureFile(null);
+        setBrochurePreview("");
+        setRemoveBrochure(true);
+        setFormData({ ...formData, brochure: "" });
     };
 
     const addHighlight = () => {
@@ -834,20 +873,59 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                         Links & Media
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        <div className="md:col-span-2">
                             <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
-                                Brochure URL
+                                Property Brochure (PDF/DOC/DOCX)
                             </label>
-                            <input
-                                type="url"
-                                value={formData.brochure}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, brochure: e.target.value })
-                                }
-                                className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                                placeholder="https://example.com/brochure.pdf"
-                            />
+
+                            {brochurePreview ? (
+                                <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-cream">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-gold-100 rounded">
+                                            <svg className="w-6 h-6 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-sans font-semibold text-navy-900">
+                                                {brochurePreview}
+                                            </p>
+                                            <p className="text-xs font-sans text-text-muted">
+                                                {brochureFile ? `${(brochureFile.size / 1024 / 1024).toFixed(2)} MB` : "Uploaded"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveBrochure}
+                                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-cream transition-colors">
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <svg className="w-10 h-10 mb-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p className="mb-2 text-sm font-sans text-text-secondary">
+                                            <span className="font-semibold">Click to upload</span> or drag and drop
+                                        </p>
+                                        <p className="text-xs font-sans text-text-muted">
+                                            PDF, DOC, DOCX up to 40MB
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="file"
+                                        onChange={handleBrochureChange}
+                                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                        className="hidden"
+                                    />
+                                </label>
+                            )}
                         </div>
+
 
                         <div>
                             <label className="text-sm font-sans font-semibold text-navy-900 mb-2 block">
