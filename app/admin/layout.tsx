@@ -1,3 +1,4 @@
+import AdminGuard from "../components/AdminGuard";
 import AdminLayout from "./components/AdminLayout";
 import Providers from "./components/queryProvider";
 
@@ -8,9 +9,11 @@ export default function AdminLayoutWrapper({
 }) {
     return (
         <>
-            <Providers>
-                <AdminLayout>{children}</AdminLayout>
-            </Providers>
+            <AdminGuard>
+                <Providers>
+                    <AdminLayout>{children}</AdminLayout>
+                </Providers>
+            </AdminGuard>
         </>
     );
 }

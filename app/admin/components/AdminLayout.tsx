@@ -1,7 +1,7 @@
 // app/admin/layout.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -93,6 +93,7 @@ function NavMenuItem({ item, pathname, setSidebarOpen }: { item: MenuItem, pathn
     const isActive = pathname === item.href ||
         (item.href !== "/admin" && pathname.startsWith(item.href));
 
+
     return (
         <li>
             {hasChildren ? (
@@ -164,8 +165,10 @@ export default function AdminLayout({
 
     const handleLogout = () => {
         // Add your logout logic here
+        localStorage.removeItem("admin-auth");
+        window.location.href = "/login";
         console.log("Logging out...");
-        router.push("/admin/login");
+        router.push("/login");
     };
 
     return (
@@ -207,7 +210,7 @@ export default function AdminLayout({
                     <div className="border-t border-navy-800 p-4">
                         <button
                             onClick={handleLogout}
-                            className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-sans font-medium text-navy-100 hover:bg-red-900/20 hover:text-red-400 transition-all"
+                            className="cursor-pointer flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-sans font-medium text-navy-100 hover:bg-red-900/20 hover:text-red-400 transition-all"
                         >
                             <LogOut size={20} />
                             Logout
@@ -282,22 +285,24 @@ export default function AdminLayout({
                         {profileOpen && (
                             <div className="absolute right-0 mt-2 w-48 rounded-lg border border-border bg-white shadow-lg">
                                 <div className="p-2">
-                                    <Link
-                                        href="/admin/profile"
-                                        className="block rounded px-4 py-2 text-sm font-sans text-navy-900 hover:bg-cream"
-                                    >
-                                        Profile
-                                    </Link>
-                                    <Link
-                                        href="/admin/settings"
-                                        className="block rounded px-4 py-2 text-sm font-sans text-navy-900 hover:bg-cream"
-                                    >
-                                        Settings
-                                    </Link>
+                                    <div className="hidden">
+                                        <Link
+                                            href="/admin/profile"
+                                            className="block rounded px-4 py-2 text-sm font-sans text-navy-900 hover:bg-cream"
+                                        >
+                                            Profile
+                                        </Link>
+                                        <Link
+                                            href="/admin/settings"
+                                            className="block rounded px-4 py-2 text-sm font-sans text-navy-900 hover:bg-cream"
+                                        >
+                                            Settings
+                                        </Link>
+                                    </div>
                                     <hr className="my-2 border-border" />
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full rounded px-4 py-2 text-left text-sm font-sans text-red-600 hover:bg-red-50"
+                                        className="cursor-pointer w-full rounded px-4 py-2 text-left text-sm font-sans text-red-600 hover:bg-red-50"
                                     >
                                         Logout
                                     </button>
