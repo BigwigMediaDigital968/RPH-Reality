@@ -152,6 +152,9 @@ export default function PropertyListingSection3D() {
                 >
                     {/* 3D Carousel */}
                     <div className="relative h-[600px] md:h-[500px] lg:h-[500px]">
+                        {isLoading ? <div className='h-[500px]  lg:h-[400px]'>
+                            <CardSkeleton />
+                        </div> : null}
                         {properties?.map((property, index) => {
                             const position = getSlidePosition(index);
                             const isCenter = position === 'center';
@@ -393,3 +396,82 @@ export default function PropertyListingSection3D() {
         </section>
     );
 }
+
+const CardSkeleton = () => {
+    return (
+        <div className="max-w-7xl mx-auto px-4 py-10">
+            {/* Responsive Container 
+        Mobile: Vertical layout
+        Desktop: Wide aspect ratio
+      */}
+            <div className="relative w-full h-[500px] md:h-[450px] lg:h-[550px] bg-gray-200 rounded-[2rem] overflow-hidden animate-pulse shadow-xl">
+
+                {/* Shimmer Effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+
+                {/* ── TOP RIGHT INDICATOR (01/02) ── */}
+                <div className="absolute top-6 right-6 md:top-8 md:right-8 w-16 h-20 bg-black/10 backdrop-blur-md rounded-2xl" />
+
+                {/* ── BOTTOM CONTENT AREA ── */}
+                <div className="absolute bottom-0 left-0 w-full p-8 md:p-12 lg:p-16 flex flex-col gap-6">
+
+                    {/* Main Title Lines */}
+                    <div className="flex flex-col gap-3">
+                        <div className="h-8 md:h-10 lg:h-12 w-3/4 md:w-2/3 bg-white/30 rounded-lg" />
+                        <div className="h-8 md:h-10 lg:h-12 w-1/2 md:w-1/3 bg-white/30 rounded-lg" />
+                    </div>
+
+                    {/* Subtitle/Description */}
+                    <div className="hidden md:flex flex-col gap-2">
+                        <div className="h-4 w-5/6 bg-white/20 rounded" />
+                        <div className="h-4 w-4/6 bg-white/20 rounded" />
+                    </div>
+
+                    {/* ── INFO GRID (SIZE, PRICE, LOCATION) ── */}
+                    <div className="flex flex-wrap gap-8 md:gap-12 mt-4">
+                        {/* Size */}
+                        <div className="flex gap-3">
+                            <div className="w-1 h-10 bg-yellow-500/50 rounded-full" />
+                            <div className="flex flex-col gap-2">
+                                <div className="h-3 w-10 bg-white/20 rounded" />
+                                <div className="h-5 w-16 bg-white/40 rounded" />
+                            </div>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex gap-3">
+                            <div className="w-1 h-10 bg-yellow-500/50 rounded-full" />
+                            <div className="flex flex-col gap-2">
+                                <div className="h-3 w-16 bg-white/20 rounded" />
+                                <div className="h-5 w-20 bg-white/40 rounded" />
+                            </div>
+                        </div>
+
+                        {/* Location */}
+                        <div className="flex gap-3">
+                            <div className="w-1 h-10 bg-yellow-500/50 rounded-full" />
+                            <div className="flex flex-col gap-2">
+                                <div className="h-3 w-16 bg-white/20 rounded" />
+                                <div className="h-5 w-32 bg-white/40 rounded" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ── CTA BUTTON (VIEW DETAILS) ── */}
+                    <div className="mt-4">
+                        <div className="w-48 h-14 bg-white/90 rounded-full shadow-lg" />
+                    </div>
+                </div>
+            </div>
+
+            {/* CSS for the shimmer effect */}
+            <style jsx>{`
+        @keyframes shimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+      `}</style>
+        </div>
+    );
+};

@@ -56,15 +56,20 @@ export default function Blogs() {
           variants={motionContainer}
           className="grid md:grid-cols-3 gap-6"
         >
-          {blogs?.map((post, index) => (
-            <>
-              <BlogCard
-                key={post?.title}
-                post={post}
-                index={index}
-              />
-            </>
+          {isLoading ? [1, 2, 3].map((item, index) => (
+            <BlogCardSkeleton key={index} />
+          )) : blogs?.map((post, index) => (
+            <BlogCard
+              key={post?.title}
+              post={post}
+              index={index}
+            />
           ))}
+          {!isLoading && !blogs && (
+            <div className="text-center w-full col-span-3">
+              <p className="text-navy-900/50 my-5">No Blogs Found</p>
+            </div>
+          )}
 
 
         </motion.div>
@@ -94,3 +99,38 @@ export default function Blogs() {
     </section>
   );
 }
+
+const BlogCardSkeleton = () => {
+  return (
+    <div className="max-w-md bg-white rounded-3xl p-8 shadow-sm border border-gray-100 animate-pulse">
+
+      {/* ── CATEGORY BADGE & DATE ── */}
+      <div className="flex items-center gap-4 mb-8">
+        {/* Real Estate Badge */}
+        <div className="h-8 w-28 bg-amber-50 rounded-lg" />
+        {/* Date Placeholder */}
+        <div className="h-4 w-32 bg-gray-100 rounded" />
+      </div>
+
+      {/* ── MAIN TITLE (hello how are you) ── */}
+      <div className="space-y-3 mb-6">
+        <div className="h-10 w-full bg-slate-200 rounded-md" />
+        <div className="h-10 w-2/3 bg-slate-200 rounded-md" />
+      </div>
+
+      {/* ── DESCRIPTION TEXT ── */}
+      <div className="space-y-2 mb-10">
+        <div className="h-4 w-full bg-gray-100 rounded" />
+        <div className="h-4 w-full bg-gray-100 rounded" />
+        <div className="h-4 w-4/5 bg-gray-100 rounded" />
+      </div>
+
+      {/* ── EXPLORE ARTICLE LINK ── */}
+      <div className="flex items-center gap-2 border-t border-gray-50 pt-6">
+        <div className="h-5 w-32 bg-slate-200 rounded" />
+        {/* Arrow Icon Placeholder */}
+        <div className="h-4 w-4 bg-slate-200 rounded-sm" />
+      </div>
+    </div>
+  );
+};
