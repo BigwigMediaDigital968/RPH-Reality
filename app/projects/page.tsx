@@ -147,10 +147,10 @@ export default function Projects() {
                                         />
 
                                         {/* Modern Aesthetic Hover Overlay */}
-                                        <div className="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-all duration-500 flex flex-col justify-end p-8">
+                                        <div className="absolute inset-0 bg-blue-900/0 md:bg-blue-900/40 opacity-100 md:opacity-0 group-hover:opacity-100 md:backdrop-blur-[2px] transition-all duration-500 flex flex-col justify-end p-4 md:p-8">
 
                                             {/* Action Buttons */}
-                                            <div className="flex flex-col gap-3 translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                                            <div className="flex flex-col gap-3 md:translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out">
                                                 <button
                                                     onClick={() => handleDownloadClick(project)}
 
