@@ -59,13 +59,13 @@ export default function PropertiesPage() {
             />
 
             {/* Filter Section */}
-            <section className="py-16 px-4">
+            <section className="py-8 md:py-16 px-4">
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-12"
+                        className="text-center mb-6 md:mb-12"
                     >
                         <SectionLabel>Filter By Type</SectionLabel>
                     </motion.div>
@@ -75,7 +75,7 @@ export default function PropertiesPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="flex flex-wrap justify-center gap-4 mb-16"
+                        className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-16"
                     >
                         {filters.map((filter, index) => (
                             <motion.button
@@ -87,7 +87,7 @@ export default function PropertiesPage() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => setSelectedFilter(filter)}
-                                className={`px-6 py-3 border rounded-full font-semibold transition-all duration-300 ${selectedFilter === filter
+                                className={`px-3 py-2 md:px-6 md:py-3 text-sm sm:text-base border rounded-full font-semibold transition-all duration-300 ${selectedFilter === filter
                                     ? "bg-gold-500 text-navy-900 shadow-lg shadow-gold-500/30"
                                     : "bg-white text-navy-900 border-navy-900 hover:bg-navy-700 hover:text-white border"
                                     }`}

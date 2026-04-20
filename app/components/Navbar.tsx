@@ -167,12 +167,14 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
               <div className="flex flex-col gap-2 pt-2">
                 <Link
                   href="/properties"
+                  onClick={() => setMenuOpen(false)}
                   className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded border border-navy-900 text-navy-900"
                 >
                   Explore Properties
                 </Link>
                 <Link
                   href="/contact"
+                  onClick={() => setMenuOpen(false)}
                   className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded bg-gold-400 text-navy-900"
                 >
                   Contact Us

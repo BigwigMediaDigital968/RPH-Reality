@@ -50,35 +50,33 @@ const Contact = () => {
                                 <p className="uppercase tracking-widest text-sm text-gold-500 mb-4 font-heading">
                                     Get in touch
                                 </p>
-
                                 <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy-900 mb-6">
                                     Let’s start a conversation
                                 </h2>
-
                                 <p className="text-gray-600 max-w-md mb-12">
-                                    Get in touch with Crownpoint Estates for expert guidance in
-                                    buying, selling, renting, or investing in real estate across
-                                    Gurugram and Delhi NCR.
+                                    Get in touch with RPH Realty for expert guidance in
+                                    buying, selling, or investing in premium real estate across
+                                    the beautiful coastal landscapes of Goa.
                                 </p>
 
                                 <div className="space-y-8">
                                     <div className="flex gap-4">
                                         <MapPin className="text-navy-950 mt-1" />
                                         <p>
-                                            Crownpoint Estates <br />
-                                            65, Lower Ground Floor, Akashneem Marg, <br />
-                                            DLF Phase-2, Gurugram – 122002
+                                            RPH Realty <br />
+                                            Unit 402, <br />
+                                            Goa — 403001, India
                                         </p>
                                     </div>
 
                                     <div className="flex gap-4">
                                         <Phone className="text-navy-950 mt-1" />
-                                        <p>+91 98115 56625 / 98107 86375 / 99990 19763</p>
+                                        <p>+91 98200 12345</p>
                                     </div>
 
                                     <div className="flex gap-4">
                                         <Mail className="text-navy-950 mt-1" />
-                                        <p>sales@crownpointestates.com</p>
+                                        <p>info@royalprimehomes.com</p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -108,8 +106,8 @@ const Contact = () => {
                     viewport={{ once: true }}
                 >
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.8734948011775!2d77.08983769999999!3d28.483356200000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19fc22d63287%3A0x86013e4f6dd2d196!2sCrownpoint%20Estate!5e0!3m2!1sen!2sin!4v1768914202564!5m2!1sen!2sin"
-                        className="absolute inset-0 w-full h-full border-0"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123063.85694291882!2d73.74836605581177!3d15.444256744005872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbe9d2243e8d2bd%3A0xe54c4ff55a3036fe!2sPanaji%2C%20Goa!5e0!3m2!1sen!2sin!4v1713600000000!5m2!1sen!2sin"
+                        className="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
