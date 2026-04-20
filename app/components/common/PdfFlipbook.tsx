@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -9,14 +9,16 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const DUMMY_PAGES = [
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80", // Cover
     "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
-    "https://images.unsplash.com/photo-1600607687940-c52fb0729a5c?w=800&q=80",
-    "https://images.unsplash.com/photo-1600566753190-17f0bb2a6c3e?w=800&q=80",
+    "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=800&q=80",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
     "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80",
     "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=800&q=80", // Back Cover
 ];
 
 export default function PdfFlipbook() {
     const bookRef = useRef<any>(null);
+    const [currentPage, setCurrentPage] = useState(0);
+    const totalPages = DUMMY_PAGES.length;
 
     // --- NAVIGATION HANDLERS ---
     const handlePrev = () => {
@@ -25,10 +27,11 @@ export default function PdfFlipbook() {
 
     const handleNext = () => {
         bookRef.current?.pageFlip().flipNext();
+
     };
 
     return (
-        <div className="relative group max-w-6xl mx-auto py-10">
+        <div className="relative group max-w-6xl mx-auto py-5 md:py-10">
 
             {/* --- WRAPPER FOR CONTROLS AND BOOK --- */}
             <div className="flex items-center justify-center gap-4">
@@ -36,7 +39,7 @@ export default function PdfFlipbook() {
                 {/* PREVIOUS BUTTON */}
                 <button
                     onClick={handlePrev}
-                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
+                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-slate-900"
                     aria-label="Previous Page"
                 >
                     <ChevronLeft size={24} />
@@ -73,7 +76,7 @@ export default function PdfFlipbook() {
                 {/* NEXT BUTTON */}
                 <button
                     onClick={handleNext}
-                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100"
+                    className="cursor-pointer p-3 rounded-full bg-white shadow-lg text-slate-900 hover:bg-blue-600 hover:text-white transition-all duration-300 z-10 hidden md:block border border-slate-100 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-slate-900"
                     aria-label="Next Page"
                 >
                     <ChevronRight size={24} />
@@ -82,10 +85,16 @@ export default function PdfFlipbook() {
 
             {/* MOBILE CONTROLS (Floating at the bottom) */}
             <div className="flex justify-center gap-6 mt-8 md:hidden">
-                <button onClick={handlePrev} className="cursor-pointer bg-white p-4 rounded-full shadow-md">
+                <button
+                    onClick={handlePrev}
+                    className="cursor-pointer bg-white p-2 md:p-4 rounded-full shadow-md disabled:opacity-30 disabled:cursor-not-allowed"
+                >
                     <ChevronLeft size={24} />
                 </button>
-                <button onClick={handleNext} className="cursor-pointer bg-white p-4 rounded-full shadow-md">
+                <button
+                    onClick={handleNext}
+                    className="cursor-pointer bg-white p-2 md:p-4 rounded-full shadow-md disabled:opacity-30 disabled:cursor-not-allowed"
+                >
                     <ChevronRight size={24} />
                 </button>
             </div>
