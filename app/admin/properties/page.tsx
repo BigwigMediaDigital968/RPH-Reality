@@ -176,7 +176,7 @@ export default function PropertiesPage() {
             )}
 
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="hidden flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="font-display text-3xl font-bold text-navy-900">
                         Property Management
@@ -185,13 +185,6 @@ export default function PropertiesPage() {
                         Manage all your property listings
                     </p>
                 </div>
-                <button
-                    onClick={() => router.push("/admin/properties/create")}
-                    className="flex items-center gap-2 px-4 py-2 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
-                >
-                    <Plus size={18} />
-                    Add Property
-                </button>
             </div>
 
             {/* Stats Cards */}
@@ -246,68 +239,78 @@ export default function PropertiesPage() {
 
             {/* Filters */}
             <div className="bg-white rounded-lg border border-border p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    {/* Search */}
-                    <div className="lg:col-span-2">
-                        <div className="relative">
-                            <Search
-                                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
-                                size={20}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Search properties..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
-                            />
+                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    {/* Search Bar (Grows to fill space) */}
+                    <div className="relative flex-grow">
+                        <Search
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+                            size={18}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search properties..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all"
+                        />
+                    </div>
+
+                    {/* Filters Container */}
+                    <div className="flex flex-wrap items-center gap-3 md:w-auto">
+                        {/* Purpose Filter */}
+                        <div className="relative min-w-[140px]">
+                            <select
+                                value={purposeFilter}
+                                onChange={(e) => setPurposeFilter(e.target.value)}
+                                className="w-full px-4 py-2.5 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 appearance-none bg-white cursor-pointer"
+                            >
+                                <option value="all">All Purposes</option>
+                                <option value="sale">For Sale</option>
+                                <option value="rent">For Rent</option>
+                                <option value="lease">For Lease</option>
+                            </select>
                         </div>
-                    </div>
 
-                    {/* Purpose Filter */}
-                    <div className="relative">
-                        <select
-                            value={purposeFilter}
-                            onChange={(e) => setPurposeFilter(e.target.value)}
-                            className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent appearance-none bg-white"
-                        >
-                            <option value="all">All Purposes</option>
-                            <option value="sale">For Sale</option>
-                            <option value="rent">For Rent</option>
-                            <option value="lease">For Lease</option>
-                        </select>
-                    </div>
+                        {/* Type Filter */}
+                        <div className="relative min-w-[140px]">
+                            <select
+                                value={typeFilter}
+                                onChange={(e) => setTypeFilter(e.target.value)}
+                                className="w-full px-4 py-2.5 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 appearance-none bg-white cursor-pointer"
+                            >
+                                <option value="all">All Types</option>
+                                {typesData?.data?.map((type: string) => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Type Filter */}
-                    <div className="relative">
-                        <select
-                            value={typeFilter}
-                            onChange={(e) => setTypeFilter(e.target.value)}
-                            className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent appearance-none bg-white"
-                        >
-                            <option value="all">All Types</option>
-                            {typesData?.data?.map((type: string) => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                        {/* Location Filter */}
+                        <div className="relative min-w-[140px]">
+                            <select
+                                value={locationFilter}
+                                onChange={(e) => setLocationFilter(e.target.value)}
+                                className="w-full px-4 py-2.5 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 appearance-none bg-white cursor-pointer"
+                            >
+                                <option value="all">All Locations</option>
+                                {locationsData?.data?.map((location: string) => (
+                                    <option key={location} value={location}>
+                                        {location}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Location Filter */}
-                    <div className="relative">
-                        <select
-                            value={locationFilter}
-                            onChange={(e) => setLocationFilter(e.target.value)}
-                            className="w-full px-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent appearance-none bg-white"
+                        {/* Add Property Button */}
+                        <button
+                            onClick={() => router.push("/admin/properties/create")}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-gold-400 text-navy-900 rounded-lg font-sans font-semibold hover:bg-gold-500 transition-colors"
                         >
-                            <option value="all">All Locations</option>
-                            {locationsData?.data?.map((location: string) => (
-                                <option key={location} value={location}>
-                                    {location}
-                                </option>
-                            ))}
-                        </select>
+                            <Plus size={18} />
+                            Add Property
+                        </button>
                     </div>
                 </div>
             </div>

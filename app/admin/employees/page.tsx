@@ -251,7 +251,7 @@ export default function EmployeeManagement() {
             )}
 
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="hidden flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="font-display text-3xl font-bold text-navy-900">
                         Employee Management
