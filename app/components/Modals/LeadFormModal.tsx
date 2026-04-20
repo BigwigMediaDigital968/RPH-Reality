@@ -72,29 +72,12 @@ export default function LeadFormModal({
 
         if (result.success) {
             setSubmitted(true);
-
             reset();
 
-            console.log("Lead created:", result.data);
-            //alert(result.message);
-        }
-
-        if (type === "download" && downloadFileName) {
-            try {
-                const link = document.createElement('a');
-                link.href = downloadFileName;
-
-                // Set the suggested filename
-                const fileNameOnly = downloadFileName.split('/').pop() || 'brochure.pdf';
-                link.setAttribute('download', fileNameOnly);
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                console.log("Download triggered successfully");
-            } catch (error) {
-                console.error("Download failed:", error);
+            if (type === "download" && downloadFileName) {
+                setTimeout(() => {
+                    window.open(downloadFileName, '_blank');
+                }, 1500);
             }
         }
 
