@@ -12,6 +12,9 @@ import { Blog, getBlogBySlug } from '@/app/lib/api/blogs';
 import { useParams } from "next/navigation";
 import { GoldLoader } from '@/app/components/Ui/GoldLoader';
 import RelatedBlogs from '@/app/components/common/RelatedBlogs';
+import SocialShare from '@/app/components/common/SocialShare';
+import PropertyAdSidebar from '@/app/components/common/PropertyAdSidebar';
+import { formatDate } from '@/app/utils/date';
 
 export default function BlogDetail() {
     const params = useParams();
@@ -78,13 +81,8 @@ export default function BlogDetail() {
 
                 {/* --- LEFT: SOCIAL & META (Sticky) --- */}
                 <aside className="lg:col-span-1 hidden lg:block">
-                    <div className="sticky top-32 space-y-8">
-                        <div className="flex flex-col gap-4 text-slate-400">
-                            <p className="text-[10px] font-bold uppercase tracking-tighter mb-2">Share</p>
-                            <button className="p-3 rounded-full border border-slate-100 hover:text-gold-600 hover:border-gold-500 transition-all"><Link2 size={18} /></button>
-                            <button className="p-3 rounded-full border border-slate-100 hover:text-gold-600 hover:border-gold-500 transition-all"><Link2 size={18} /></button>
-                            <button className="p-3 rounded-full border border-slate-100 hover:text-gold-600 hover:border-gold-500 transition-all"><Link2 size={18} /></button>
-                        </div>
+                    <div className="sticky top-32">
+                        <SocialShare title={blog?.title} />
                     </div>
                 </aside>
 
@@ -94,9 +92,7 @@ export default function BlogDetail() {
 
                         <article className="lg:col-span-8 space-y-10">
                             <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm border-b border-slate-100 pb-8">
-                                <div className="flex items-center gap-2"><User size={16} className="text-gold-600" /> {blog?.author}</div>
-                                <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {blog?.date}</div>
-                                <div className="flex items-center gap-2"><Clock size={16} className="text-gold-600" /> {blog?.readTime}</div>
+                                <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {formatDate(blog?.updatedAt)}</div>
                             </div>
 
                             <div>
@@ -137,16 +133,8 @@ export default function BlogDetail() {
                         </article></>)}
 
                 {/* --- RIGHT: PROPERTY AD --- */}
-                <aside className="lg:col-span-3 space-y-8">
-                    <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                        <h4 className="font-bold text-navy-900 mb-4">Featured Property</h4>
-                        <div className="relative h-40 rounded-xl overflow-hidden mb-4">
-                            <Image src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400" alt="Ad" fill className="object-cover" />
-                        </div>
-                        <p className="font-bold text-slate-900 text-sm">4BHK Heritage Villa</p>
-                        <p className="text-gold-600 font-bold mt-1">₹8.5 Cr</p>
-                        <button className="w-full mt-4 py-3 bg-white border border-navy-900 text-navy-900 text-sm font-bold rounded-lg hover:bg-navy-900 hover:text-white transition-all">View Details</button>
-                    </div>
+                <aside className="lg:col-span-3">
+                    <PropertyAdSidebar />
                 </aside>
             </div>
 

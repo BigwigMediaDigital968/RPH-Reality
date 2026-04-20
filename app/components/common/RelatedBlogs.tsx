@@ -15,12 +15,11 @@ interface RelatedBlogsProps {
 
 export default function RelatedBlogs({ blogId, limit = 4 }: RelatedBlogsProps) {
     const { data: response, isLoading, error } = useQuery({
-        queryKey: ["related blogs", blogId],
+        queryKey: ["related-blogs", blogId],
         queryFn: () => getRelatedBlogs(blogId as string, 5),
         enabled: !!blogId,
     });
-    const relatedBlogs = response?.data;
-    console.log("related blogs", response);
+    const relatedBlogs = response?.data || [];
     if (relatedBlogs && relatedBlogs?.length < 1) {
         return null;
     }
