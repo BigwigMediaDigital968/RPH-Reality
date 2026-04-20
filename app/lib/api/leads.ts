@@ -86,7 +86,7 @@ export const updateLead = async (id: string, data: Partial<Lead>) => {
 };
 
 export const updateLeadStatus = async (id: string, status: string) => {
-  const response = await axios.patch(`${API_BASE_URL}/leads/${id}/status`, { status });
+  const response = await axios.put(`${API_BASE_URL}/leads/${id}`, { status });
   return response.data;
 };
 
