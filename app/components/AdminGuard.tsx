@@ -14,8 +14,7 @@ export default function AdminGuard({
 
     useEffect(() => {
         const token = localStorage.getItem("admin-auth");
-
-        if (token !== "admin-auth-token") {
+        if (!token) {
             router.replace("/login");
         } else {
             setLoading(false);

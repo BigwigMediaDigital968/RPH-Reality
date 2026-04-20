@@ -16,19 +16,12 @@ export default function AdminLogin() {
         if (token) router.replace("/admin");
     }, []);
 
-    const handleLogin = async () => {
-        const res = await fetch("/api/admin/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
 
-        const data = await res.json();
-
-        if (res.ok) {
-            localStorage.setItem("admin-auth", data.token);
+        if (email === "admin@example.com" && password === "123456") {
+            // Set a static token to simulate authentication
+            localStorage.setItem("admin-auth", "static-admin-session-token");
             router.push("/admin");
         } else {
             alert("Invalid credentials");
@@ -60,7 +53,7 @@ export default function AdminLogin() {
                             <input
                                 type="email"
                                 required
-                                placeholder="admin@royalprimehomes.com"
+                                placeholder="admin@example.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full pl-11 pr-4 py-3 border border-border rounded-lg font-sans text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent"
