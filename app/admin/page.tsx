@@ -2,8 +2,11 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Users, FileText, Briefcase, TrendingUp } from "lucide-react";
+import { Users, FileText, Briefcase, TrendingUp, Building2 } from "lucide-react";
 import { getLeads } from "../lib/api/leads";
+import { getBlogStats } from "../lib/api/blogs";
+import { applicationsApi } from "../lib/api/applications";
+import { getProperties } from "../lib/api/properties";
 import { formatDate } from "../utils/date";
 import Link from "next/link";
 
@@ -44,43 +47,57 @@ export default function AdminDashboard() {
         limit: 5,
     }
 
-    const { data: leadsData, isLoading, error } = useQuery({
+    const { data: leadsData } = useQuery({
         queryKey: ["leads", filters],
         queryFn: () => getLeads(filters)
     });
 
-    console.log(leadsData)
+    const { data: blogStats } = useQuery({
+        queryKey: ["blog-stats"],
+        queryFn: () => getBlogStats()
+    });
+
+    const { data: appStats } = useQuery({
+        queryKey: ["application-stats"],
+        queryFn: () => applicationsApi.getApplicationStats()
+    });
+
+    const { data: propertyStats } = useQuery({
+        queryKey: ["property-stats"],
+        queryFn: () => getProperties({ page: 1, limit: 1 })
+    });
 
 
     const stats = [
         {
             title: "Total Leads",
-            value: "1,234",
+            value: leadsData?.stats.all || 0,
             change: "+12.5%",
             icon: Users,
             trend: "up" as const,
         },
         {
-            title: "Active Projects",
-            value: "45",
+            title: "Total Blogs",
+            value: blogStats?.data.total || 0,
             change: "+8.2%",
             icon: FileText,
             trend: "up" as const,
         },
         {
+            title: "Total Properties",
+            value: propertyStats?.stats.all || 0,
+            change: "+5.4%",
+            icon: Building2,
+            trend: "up" as const,
+        },
+        {
             title: "Career Applications",
-            value: "89",
+            value: appStats?.data.totalApplications || 0,
             change: "+15.3%",
             icon: Briefcase,
             trend: "up" as const,
         },
-        {
-            title: "Conversion Rate",
-            value: "23.5%",
-            change: "-2.1%",
-            icon: TrendingUp,
-            trend: "down" as const,
-        },
+
     ];
 
     const recentLeads = leadsData?.data;
