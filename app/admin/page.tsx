@@ -9,6 +9,7 @@ import { applicationsApi } from "../lib/api/applications";
 import { getProperties } from "../lib/api/properties";
 import { formatDate } from "../utils/date";
 import Link from "next/link";
+import { GoldLoader } from "../components/Ui/GoldLoader";
 
 interface StatCardProps {
     title: string;
@@ -40,6 +41,19 @@ const StatCard = ({ title, value, change, icon: Icon, trend }: StatCardProps) =>
     );
 };
 
+const StatCardSkeleton = () => {
+    return (
+        <div className="bg-white rounded-lg border border-border p-6 animate-pulse">
+            <div className="flex items-center justify-between mb-4">
+                <div className="h-12 w-12 rounded-lg bg-gray-100"></div>
+                <div className="h-4 w-12 bg-gray-100 rounded"></div>
+            </div>
+            <div className="h-8 w-16 bg-gray-100 rounded mb-2"></div>
+            <div className="h-4 w-24 bg-gray-100 rounded"></div>
+        </div>
+    );
+};
+
 export default function AdminDashboard() {
 
     const filters = {
@@ -47,26 +61,27 @@ export default function AdminDashboard() {
         limit: 5,
     }
 
-    const { data: leadsData } = useQuery({
+    const { data: leadsData, isLoading: isLoadingLeads } = useQuery({
         queryKey: ["leads", filters],
         queryFn: () => getLeads(filters)
     });
 
-    const { data: blogStats } = useQuery({
+    const { data: blogStats, isLoading: isLoadingBlogs } = useQuery({
         queryKey: ["blog-stats"],
         queryFn: () => getBlogStats()
     });
 
-    const { data: appStats } = useQuery({
+    const { data: appStats, isLoading: isLoadingApps } = useQuery({
         queryKey: ["application-stats"],
         queryFn: () => applicationsApi.getApplicationStats()
     });
 
-    const { data: propertyStats } = useQuery({
+    const { data: propertyStats, isLoading: isLoadingProperties } = useQuery({
         queryKey: ["property-stats"],
         queryFn: () => getProperties({ page: 1, limit: 1 })
     });
 
+    const isLoadingStats = isLoadingLeads || isLoadingBlogs || isLoadingApps || isLoadingProperties;
 
     const stats = [
         {
@@ -106,9 +121,18 @@ export default function AdminDashboard() {
         <div className="space-y-6">
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat) => (
-                    <StatCard key={stat.title} {...stat} />
-                ))}
+                {isLoadingStats ? (
+                    <>
+                        <StatCardSkeleton />
+                        <StatCardSkeleton />
+                        <StatCardSkeleton />
+                        <StatCardSkeleton />
+                    </>
+                ) : (
+                    stats.map((stat) => (
+                        <StatCard key={stat.title} {...stat} />
+                    ))
+                )}
             </div>
 
             {/* Recent Leads Table */}
@@ -121,7 +145,12 @@ export default function AdminDashboard() {
                         Latest enquiries from your website
                     </p>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto relative min-h-[200px]">
+                    {isLoadingLeads ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+                            <GoldLoader />
+                        </div>
+                    ) : null}
                     <table className="w-full">
                         <thead className="bg-cream">
                             <tr>
@@ -172,6 +201,13 @@ export default function AdminDashboard() {
                                     </td>
                                 </tr>
                             ))}
+                            {!isLoadingLeads && recentLeads?.length === 0 && (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-8 text-center text-text-muted font-sans font-medium">
+                                        No recent leads found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
