@@ -25,8 +25,8 @@ export default function page() {
       <Hero
         title={
           <>
-            Property for <br />
-            <span className="italic text-gold-400"> Lease</span>
+            Sell your <br />
+            <span className="italic text-gold-400"> Property</span>
           </>
         }
         image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80"
