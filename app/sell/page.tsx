@@ -30,7 +30,7 @@ export default function page() {
           </>
         }
         image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80"
-        label="Properties for lease"
+        label="List with us"
       />
       <SellSections />
       <section className="relative py-16 bg-[#faf9f7]">
