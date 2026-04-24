@@ -44,15 +44,16 @@ export default function page() {
               viewport={{ once: true }}
             >
               <p className="uppercase tracking-widest text-sm text-gold-500 mb-4 font-heading">
-                Get in touch
+                LIST YOUR PROPERTY
               </p>
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy-900 mb-6">
-                Let’s start a conversation
+                Let’s list your property
               </h2>
               <p className="text-gray-600 max-w-md mb-12">
-                Get in touch with RPH Realty for expert guidance in buying,
-                selling, or investing in premium real estate across the
-                beautiful coastal landscapes of Goa.
+                Partner with us to showcase your property to serious and
+                verified buyers across Goa. From accurate pricing to premium
+                marketing, we ensure your listing gets maximum visibility and
+                the best possible value quickly and seamlessly.
               </p>
 
               <div className="space-y-8">
@@ -172,20 +173,29 @@ const SellSections = () => {
       {/* SECTION 2: WHY SELL WITH US? */}
       <section className="py-32 px-6 lg:px-14 bg-navy-900 border-y border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-6xl text-white font-light tracking-tight leading-none">
-                Why Market <br />
-                <span className="font-serif italic text-gold-400">
-                  With Us?
-                </span>
-              </h2>
-            </div>
-            <p className="text-white/60 max-w-sm text-lg font-light leading-relaxed">
+          <header className="mb-16 text-center">
+            <SectionLabel>Lets Market</SectionLabel>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="mt-6 text-4xl lg:text-5xl font-serif text-white leading-tight"
+            >
+              Why Market <br />{" "}
+              <span className="italic text-gold-500">With Us?</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-4 text-charcoal-600 text-white max-w-2xl mx-auto font-sans"
+            >
               We don't just list properties; we engineer success through global
               reach and local precision.
-            </p>
-          </div>
+            </motion.p>
+          </header>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/10 rounded-3xl overflow-hidden">
             <BenefitCell
@@ -206,19 +216,6 @@ const SellSections = () => {
             />
           </div>
         </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-24 text-center">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="inline-block relative group"
-        >
-          <div className="absolute inset-0 bg-gold-500 blur-2xl opacity-10 group-hover:opacity-20 transition-opacity" />
-          <button className="relative bg-white text-navy-950 px-12 py-6 rounded-full font-bold uppercase tracking-[0.2em] text-xs flex items-center gap-4 hover:bg-gold-500 transition-colors duration-500">
-            List Your Property <ArrowUpRight size={18} />
-          </button>
-        </motion.div>
       </section>
     </div>
   );
@@ -300,7 +297,7 @@ const BenefitCell = ({
   highlight?: any;
 }) => (
   <div
-    className={`p-12 md:p-16 flex flex-col items-start gap-8 border-white/10 ${highlight ? "bg-white/[0.03] md:border-x" : ""} group hover:bg-gold-500/5 transition-colors duration-500`}
+    className={`p-12 md:p-16 flex flex-col items-start gap-8 border-white/10 ${highlight ? "bg-white/10 md:border-x" : ""} group hover:bg-white/5 transition-colors duration-500`}
   >
     <div className="text-gold-500 mb-4 group-hover:scale-110 transition-transform duration-500">
       {icon}
