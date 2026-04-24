@@ -11,6 +11,8 @@ import * as z from "zod";
 interface EnquiryFormProps {
   variant?: "default" | "minimal";
   btnText?: string;
+  purpose?: string | null;
+  source?: string | null;
 }
 
 const leadSchema = z.object({
@@ -20,14 +22,20 @@ const leadSchema = z.object({
   city: z.string().optional().or(z.literal("")),
   purpose: z.string().min(1, "Please select a purpose"),
   note: z.string().max(500, "Note is too long").optional(),
+  source: z.string().optional(), // ✅ ADD THIS
 });
 
 // Extract Type from Schema
 type LeadFormValues = z.infer<typeof leadSchema>;
 
-
-export default function EnquiryForm({ variant = "default", btnText = "Submit" }: EnquiryFormProps) {
+export default function EnquiryForm({
+  variant = "default",
+  btnText = "Submit",
+  purpose,
+  source,
+}: EnquiryFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  console.log("purpose", purpose);
   const {
     register,
     handleSubmit,
@@ -37,15 +45,20 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
     resolver: zodResolver(leadSchema),
     mode: "onTouched", // Validates as user interacts
     defaultValues: {
-      purpose: "buy",
+      purpose: purpose || "buy",
+      source: source || "unknown", // ✅ ADD THIS
     },
   });
 
   const onSubmit = async (data: LeadFormValues) => {
-
     try {
-      console.log(data)
-      const result = await createLead(data);
+      //console.log(data);
+      const payload = {
+        ...data,
+        source: source || "unknown",
+      };
+      //console.log(data, payload);
+      const result = await createLead(payload);
 
       if (result.success) {
         setSubmitted(true);
@@ -56,7 +69,8 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
         //alert(result.message);
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       console.error("Submission failed:", errorMessage);
       //alert(`Error: ${errorMessage}`);
     }
@@ -78,7 +92,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             stroke="#D4A435"
             strokeWidth={2}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l6 6 9-13.5"
+            />
           </svg>
         </div>
         <h3 className="font-display text-navy-900 text-2xl font-semibold mb-2">
@@ -104,10 +122,17 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             type="text"
             placeholder="Your full name"
             {...register("name")}
-            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.name ? "border-red-500 focus:ring-red-500/20" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
-              }`}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${
+              errors.name
+                ? "border-red-500 focus:ring-red-500/20"
+                : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+            }`}
           />
-          {errors.name && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
         {/* Phone */}
@@ -119,10 +144,17 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             type="tel"
             placeholder="+971 50 000 0000"
             {...register("phone")}
-            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.phone ? "border-red-500 focus:ring-red-500/20" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
-              }`}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${
+              errors.phone
+                ? "border-red-500 focus:ring-red-500/20"
+                : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+            }`}
           />
-          {errors.phone && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.phone.message}</p>}
+          {errors.phone && (
+            <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">
+              {errors.phone.message}
+            </p>
+          )}
         </div>
 
         {/* Email */}
@@ -134,10 +166,17 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             type="email"
             placeholder="Your email address"
             {...register("email")}
-            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${errors.email ? "border-red-500" : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
-              }`}
+            className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${
+              errors.email
+                ? "border-red-500"
+                : "border-border focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8"
+            }`}
           />
-          {errors.email && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         {/* City */}
@@ -151,8 +190,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
             {...register("city")}
             className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200"
           />
-          {errors.city && <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">{errors.city.message}</p>}
-
+          {errors.city && (
+            <p className="text-[10px] text-red-500 mt-1 font-bold ml-1">
+              {errors.city.message}
+            </p>
+          )}
         </div>
       </div>
 
@@ -163,6 +205,7 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
           </label>
           <select
             {...register("purpose")}
+            disabled={purpose ? true : false}
             className="w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 border border-border rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-900/8 transition-all duration-200 bg-white"
           >
             {PURPOSE_OPTIONS.map((option) => (
@@ -191,8 +234,11 @@ export default function EnquiryForm({ variant = "default", btnText = "Submit" }:
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full py-2 sm:py-4 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg transition-colors duration-200 mt-2 ${isSubmitting ? "bg-charcoal-400 cursor-not-allowed" : "bg-navy-900 hover:bg-navy-800 cursor-pointer"
-          }`}
+        className={`w-full py-2 sm:py-4 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg transition-colors duration-200 mt-2 ${
+          isSubmitting
+            ? "bg-charcoal-400 cursor-not-allowed"
+            : "bg-navy-900 hover:bg-navy-800 cursor-pointer"
+        }`}
       >
         {isSubmitting ? "Submitting..." : btnText}
       </button>
