@@ -45,6 +45,12 @@ export default function PropertyDetailsPage() {
         isOpen: boolean;
         project: null;
     }>({ isOpen: false, project: null });
+    const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+
+    const toggleFaq = (index: number) => {
+        setOpenFaqIndex(openFaqIndex === index ? null : index);
+    };
 
     const handleDownloadClick = () => {
         setLeadFormModal({ isOpen: true, project: null });
@@ -58,6 +64,7 @@ export default function PropertyDetailsPage() {
         enabled: !!slug,
     });
     const propertyData = propertyRes?.data;
+    const faqs = propertyData?.faqs || [];
 
     console.log(propertyData)
 
@@ -530,6 +537,55 @@ export default function PropertyDetailsPage() {
                                             </div>
                                         </div>
                                     </motion.div>)}
+
+                                    {/* FAQ Accordion */}
+                                    {faqs.length > 0 && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.6 }}
+                                            className="bg-white border border-gold-500/20 rounded-2xl p-8 backdrop-blur-sm"
+                                        >
+                                            <SectionLabel>Frequently Asked Questions</SectionLabel>
+                                            <div className="mt-6 space-y-4">
+                                                {faqs.map((faq:any, index:number) => (
+                                                    <div
+                                                        key={faq._id}
+                                                        className="border border-gold-500/20 rounded-lg overflow-hidden"
+                                                    >
+                                                        <button
+                                                            onClick={() => toggleFaq(index)}
+                                                            className="w-full flex items-center justify-between p-4 text-left bg-navy-950/5 hover:bg-navy-950/10 transition-colors"
+                                                        >
+                                                            <span className="font-semibold text-navy-950">
+                                                                {faq.question}
+                                                            </span>
+                                                            <svg
+                                                                className={`w-5 h-5 text-gold-500 transition-transform duration-200 ${openFaqIndex === index ? 'rotate-180' : ''}`}
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M19 9l-7 7-7-7"
+                                                                />
+                                                            </svg>
+                                                        </button>
+                                                        <div
+                                                            className={`overflow-hidden transition-all duration-300 ${openFaqIndex === index ? 'max-h-40' : 'max-h-0'}`}
+                                                        >
+                                                            <p className="p-4 text-navy-950/80 leading-relaxed">
+                                                                {faq.answer}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )}
                                 </div>
 
                                 {/* Right Column - Contact Form */}
