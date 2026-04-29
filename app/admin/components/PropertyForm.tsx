@@ -660,7 +660,7 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                         images={images}
                         onChange={setImages}
                         maxImages={10}
-                        maxSizeMB={5}
+                        maxSizeMB={10}
                     />
                 </div>
 
