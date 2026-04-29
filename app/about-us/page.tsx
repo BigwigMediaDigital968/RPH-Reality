@@ -57,9 +57,9 @@ export default function AboutUsPage() {
                     <motion.div
                         whileInView={{ x: 0, opacity: 1 }}
                         initial={{ x: -50, opacity: 0 }}
-                        className="rounded-3xl overflow-hidden border-4 border-white shadow-2xl"
+                        className="rounded-3xl overflow-hidden border-4 border-white shadow-2xl aspect-[5/4]"
                     >
-                        <Image src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" unoptimized width={800} height={600} alt="Luxury Property" />
+                        <Image className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" unoptimized width={800} height={600} alt="Luxury Property" />
                     </motion.div>
                     {/* Floating Experience Badge */}
                     <motion.div
@@ -71,27 +71,23 @@ export default function AboutUsPage() {
                     </motion.div>
                 </div>
 
-                <div className="space-y-8">
+                <div className="">
                     <SectionLabel>Company About</SectionLabel>
-                    <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-                        One of the fastest ways to gain <span className="italic font-light">business success</span>
+                    <h2 className="text-4xl md:text-5xl font-bold leading-tight mt-4">
+                        Our Story
                     </h2>
-                    <p className="text-slate-400 font-light leading-relaxed">
-                        Royal Prime Homes caters to high-net-worth individuals and large enterprises seeking premium Goan sanctuaries. Our objective is to help clients leverage the power of elite real estate to reach their long-term lifestyle goals.
+                    <p className="text-slate-400 font-light leading-relaxed mt-4">
+                        At RPH Reality, we started with a vision that goes beyond property transactions, we build possibilities. Our foundation lies in understanding that every real estate decision is deeply personal, whether it’s finding the perfect home or shaping a long-term investment.
+                    </p>
+                    <p className="text-slate-400 font-light leading-relaxed mt-2">
+                        From day one, our goal has been to redefine real estate through trust, clarity, and meaningful relationships. We don’t just deal in properties, we guide journeys, helping clients discover spaces that align with their aspirations and lifestyle.
+                    </p>
+                    <p className="text-slate-400 font-light leading-relaxed mt-2">
+
+                        Blending global standards with strong local expertise, we deliver tailored real estate experiences that reflect the uniqueness of every client. At RPH Reality, we believe true value isn’t just in the property you choose it’s in the future you create with it.
                     </p>
 
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {["Emergency Solutions Anytime", "Affordable Price 2-Year Plan", "How to Improve Business", "Reliable & Experienced Team"].map((item, i) => (
-                            <li key={i} className="flex items-center gap-3 text-sm font-medium text-slate-200">
-                                <div className="w-5 h-5 rounded-full bg-navy-900/20 flex items-center justify-center text-navy-900">
-                                    <ChevronRight size={14} strokeWidth={3} />
-                                </div>
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
-
-                    <button className="cursor-pointer bg-white text-[#020810] px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:shadow-[0_0_30px_rgba(0,212,255,0.4)] transition-all active:scale-95">
+                    <button className="cursor-pointer mt-4 bg-white text-[#020810] px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:shadow-[0_0_30px_rgba(0,212,255,0.4)] transition-all active:scale-95">
                         Get A Quote +
                     </button>
                 </div>
