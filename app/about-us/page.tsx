@@ -10,6 +10,7 @@ import { ArrowUpRight } from "lucide-react";
 import AwardSection from "../components/common/AwardSection";
 import CoreValuesSection from "../components/common/CoreValuesSection";
 import Hero from "../components/Ui/Hero";
+import Link from "next/link";
 
 // Data following the "Royal Prime" Array of Objects pattern
 const stats = [
@@ -87,9 +88,11 @@ export default function AboutUsPage() {
                         Blending global standards with strong local expertise, we deliver tailored real estate experiences that reflect the uniqueness of every client. At RPH Reality, we believe true value isn’t just in the property you choose it’s in the future you create with it.
                     </p>
 
-                    <button className="cursor-pointer mt-4 bg-white text-[#020810] px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:shadow-[0_0_30px_rgba(0,212,255,0.4)] transition-all active:scale-95">
+                    <div>
+                        <Link href={'/contact'} className="inline-block cursor-pointer mt-4 bg-white text-[#020810] px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:shadow-[0_0_30px_rgba(0,212,255,0.4)] transition-all active:scale-95">
                         Get A Quote +
-                    </button>
+                    </Link>
+                    </div>
                 </div>
             </section>
 
