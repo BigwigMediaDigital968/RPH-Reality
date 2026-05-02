@@ -20,8 +20,10 @@ export default function Home() {
       </div>
       <Features />
       <ServicesFan />
-      <DevelopersDesign />
-      <LeadForm />
+      {
+        /*       <DevelopersDesign />
+      */
+      }      <LeadForm />
       <Testimonials />
       <Blogs />
     </>

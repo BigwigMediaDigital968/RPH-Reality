@@ -4,6 +4,7 @@ import "./globals.css";
 import NavbarWrapper from "./components/NavbarWrapper";
 import Footer from "./components/Footer";
 import Providers from "./queryProvider";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <NavbarWrapper />
           {children}
           <Footer />
+          <WhatsAppButton phoneNumber="919876543210" />
         </Providers>
       </body>
     </html>
