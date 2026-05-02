@@ -186,12 +186,17 @@ export default function PropertiesPage() {
                                         </div>
 
                                         {/* Content */}
-                                        <div className="p-6 py-4 space-y-4">
+                                        <div className="p-6 py-4 space-y-2">
                                             <div>
-                                                <h3 className="text-xl font-semibold text-slate-900 mb-2 font-display group-hover:text-gold-600 transition-colors duration-300">
+                                                <h3 className="text-xl font-semibold text-slate-900 font-display line-clamp-2 group-hover:text-gold-600 transition-colors duration-300">
                                                     {property.title}
                                                 </h3>
-                                                <p className="text-slate-600 flex items-center gap-2 text-sm">
+                                                {property.price && (<div>
+                                                    <p className="text-base sm:text-lg md:text-xl font-bold text-gold-600 font-display">
+                                                        {property.price}
+                                                    </p>
+                                                </div>)}
+                                                <p className="text-slate-600 flex items-center gap-2 text-sm mt-2">
                                                     <svg
                                                         className="w-4 h-4 text-gold-600"
                                                         fill="none"
@@ -215,22 +220,19 @@ export default function PropertiesPage() {
                                             </div>
 
                                             {/* Features: Changed icons to gold, text to slate-600 */}
-                                            <div className="flex items-center gap-6 text-sm text-slate-600 bg-slate-50 p-3 py-1 rounded-lg border border-slate-100">
-                                                <FeatureItem icon={BedIcon} label={`${property.bedrooms} Beds`} />
+                                            <div className=" text-sm text-slate-600 bg-slate-50 p-3 py-1 rounded-lg border border-slate-100">
+                                                <div className="flex  gap-6 ">
+                                                    <FeatureItem icon={BedIcon} label={`${property.bedrooms} Beds`} />
                                                 <FeatureItem icon={BathIcon} label={`${property.bathrooms} Baths`} />
-                                                <FeatureItem icon={AreaChartIcon} label={property?.areaSqft} />
+                                                </div>
+                                                <div className="w-full mt-2">
+                                                    <FeatureItem icon={AreaChartIcon} label={property?.areaSqft} />
+                                                </div>
                                             </div>
 
                                             {/* Price and CTA */}
                                             <div className=" items-center justify-between pt-3 border-t border-slate-100">
-                                                <div>
-                                                    <p className="text-xs text-slate-500 uppercase tracking-widest mb-1">
-                                                        Investment
-                                                    </p>
-                                                    <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 font-display">
-                                                        {property.price}
-                                                    </p>
-                                                </div>
+                                                
 
                                                 <Link
                                                     href={`/properties/${property?.slug}`}

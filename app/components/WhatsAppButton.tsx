@@ -1,8 +1,6 @@
 "use client";
 
-import React from 'react';
-import { MessageCircle } from 'lucide-react';
-
+import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 
 
@@ -17,6 +15,9 @@ const WhatsAppButton = ({
 }: WhatsAppButtonProps) => {
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  const pathname = usePathname();
+    if (pathname.startsWith("/admin")) return null;
 
   return (
     <a
