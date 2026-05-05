@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { Blog } from '@/app/lib/api/blogs';
+import { formatDate } from '@/app/utils/date';
 
 
 // 2. Define the Props for the Component
@@ -58,7 +59,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index = 0 }) => {
                     </span>
                     <span className="text-slate-300">·</span>
                     <span className="text-xs font-sans text-slate-500 font-medium">
-                        {post.updatedAt}
+                        {formatDate(post.updatedAt)}
                     </span>
                 </div>
 

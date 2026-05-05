@@ -1,14 +1,11 @@
 "use client";
 
-import React from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Clock, User, Share2, Link2, ArrowLeft } from 'lucide-react';
-import { fadeUp } from '@/app/utils/motion';
-import BlogCard from '@/app/components/Ui/BlogCard';
 import { useQuery } from '@tanstack/react-query';
-import { Blog, getBlogBySlug } from '@/app/lib/api/blogs';
+import { getBlogBySlug} from '@/app/lib/api/blogs';
 import { useParams } from "next/navigation";
 import { GoldLoader } from '@/app/components/Ui/GoldLoader';
 import RelatedBlogs from '@/app/components/common/RelatedBlogs';
@@ -34,11 +31,15 @@ export default function BlogDetail() {
         queryFn: () => getBlogBySlug(slug as string),
         enabled: !!slug,
     });
+    // const { data: relatedRes, isLoading: isRelatedLoading, error: relatedBlogsError } = useQuery({
+    //     queryKey: ["related-blogs", slug],
+    //     queryFn: () => getRelatedBlogs(slug as string, 4),
+    //     enabled: !!slug,
+    // });
+
     const blog = response?.data;
-
-
-
-    const relatedBlogs = [response?.data];
+    // const relatedBlogs = relatedRes?.data;
+    // console.log("related data", relatedBlogs, relatedRes)
 
 
     if (error) return <div>Something went wrong</div>;

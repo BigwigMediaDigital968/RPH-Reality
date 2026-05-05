@@ -5,7 +5,7 @@ import { Loader2, Calendar, Eye, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "../Ui/BlogCard";
-import { Blog, getRelatedBlogs } from "@/app/lib/api/blogs";
+import { Blog, getBlogs, getRelatedBlogs } from "@/app/lib/api/blogs";
 
 interface RelatedBlogsProps {
     blogId: string;
@@ -16,7 +16,9 @@ interface RelatedBlogsProps {
 export default function RelatedBlogs({ blogId, limit = 4 }: RelatedBlogsProps) {
     const { data: response, isLoading, error } = useQuery({
         queryKey: ["related-blogs", blogId],
-        queryFn: () => getRelatedBlogs(blogId as string, 5),
+        queryFn: () => getBlogs({
+                    limit: 5,
+                }),
         enabled: !!blogId,
     });
     const relatedBlogs = response?.data || [];
@@ -33,7 +35,7 @@ export default function RelatedBlogs({ blogId, limit = 4 }: RelatedBlogsProps) {
                             <p className="text-slate-500 mt-2">More insights from our real estate experts</p>
                         </div>
                         <Link href="/blogs" className="text-navy-900 font-bold border-b-2 border-gold-500 hover:text-gold-600 transition-colors">
-                            View All News
+                            View All Blogs
                         </Link>
                     </div>
 
