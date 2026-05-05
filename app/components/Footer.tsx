@@ -148,10 +148,14 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-white text-sm font-sans leading-relaxed">
-                  RPH Realty Unit 402, Goa 403001, India
+                  Gera Imperium Star
+Office no. 812-A, 8th floor
+Opposite Hotel Novotel,
+Patto Centre, Panjim
+Goa India
                 </span>
               </li>
-              <li>
+              <li className="hidden">
                 <a
                   href="tel:+919820012345"
                   className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3"
@@ -174,7 +178,8 @@ export default function Footer() {
                   +91 98200 12345
                 </a>
               </li>
-              <li>
+              <li className="
+              hidden">
                 <a
                   href="mailto:info@royalprimehomes.com"
                   className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3 break-all"
