@@ -19,6 +19,7 @@ export interface Lead {
     phone: string;
   };
   assignedAt?: string;
+  sheetSynced?: boolean;
   source: string;
   createdAt: string;
   updatedAt: string;

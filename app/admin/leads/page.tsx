@@ -45,6 +45,24 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
+type CleanedLead = {
+  "S.No": number;
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  purpose: string;
+  note: string;
+  adminNote: string;
+  status: "new" | "assigned" | "contacted" | "closed";
+  assignedTo: string;
+  source: string;
+  sheetSynced: string;
+  createdAt: string;
+  updatedAt: string;
+  assignedAt: string;
+};
+
 export default function LeadManagement() {
   const queryClient = useQueryClient();
 
@@ -191,14 +209,62 @@ export default function LeadManagement() {
     }
   };
 
-  const handleExport = async () => {
-    try {
-      await exportLeads(filters);
-      showToast("Leads exported successfully", "success");
-    } catch (error) {
-      showToast("Failed to export leads", "error");
+const handleExport = () => {
+  try {
+    if (!leadsData || leadsData?.data?.length === 0) {
+      showToast("No data to export", "error");
+      return;
     }
-  };
+
+    // Convert JSON to CSV
+        const cleanedData = leadsData.data.map((item:any, index:number) => ({
+      "S.No": index + 1,
+      name: item.name,
+      phone: item.phone,
+      email: item.email,
+      city: item.city,
+      purpose: item.purpose,
+      note: item.note,
+      adminNote: item.adminNote,
+      status: item.status,
+      assignedTo: item.assignedTo?.name || item.assignedTo?.email || "", // fix object
+      source: item.source,
+      sheetSynced: item.sheetSynced ? "Yes" : "No",
+      createdAt: new Date(item.createdAt).toLocaleString(),
+      updatedAt: new Date(item.updatedAt).toLocaleString(),
+      assignedAt: item.assignedAt
+        ? new Date(item.assignedAt).toLocaleString()
+        : "",
+    }));
+
+    const headers = Object.keys(cleanedData[0]) as (keyof CleanedLead)[];
+
+    const csvRows = [
+      headers.join(","),
+      ...cleanedData.map(row =>
+        headers.map(field => `"${row[field] ?? ""}"`).join(",")
+      ),
+    ];
+
+
+    const csvContent = csvRows.join("\n");
+
+    // Create a blob and download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "leads.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    showToast("Leads exported successfully", "success");
+  } catch (error) {
+    showToast("Failed to export leads", "error");
+  }
+};
 
   const getStatusColor = (status: Lead["status"]) => {
     const colors = {
@@ -335,7 +401,7 @@ export default function LeadManagement() {
             {/* Export lead button */}
             <button
               onClick={handleExport}
-              className="flex items-center gap-2 px-4 py-2 bg-gold-400 text-navy-900 rounded-lg font-sans hover:bg-gold-500 transition-colors"
+              className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-gold-400 text-navy-900 rounded-lg font-sans hover:bg-gold-500 transition-colors"
             >
               <Download size={18} />
               Export
