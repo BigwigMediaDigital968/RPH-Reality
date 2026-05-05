@@ -22,17 +22,17 @@ const stats = [
 
 const team = [
     {
-        name: "Rohit Sharma",
-        role: "CEO & Founder",
-        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400",
+        name: "Mayur Sail",
+        role: "Owner",
+        image: "/person-1.jpeg",
         bio: "With over 15 years of experience in Goa’s dynamic real estate market, Rohit specializes in luxury villas, beachfront properties, and high-growth investment opportunities. His deep understanding of local regulations, land acquisition, and premium developments has helped countless clients secure exclusive properties across North and South Goa. Known for his transparent approach and strong developer network, he ensures every investment is both secure and future-ready."
     },
-    {
-        name: "Aman Verma",
-        role: "Creative Director",
-        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400",
-        bio: "Aman brings a refined design perspective to Goa’s luxury real estate landscape, curating properties that blend modern architecture with coastal elegance. From boutique villas to high-end residential projects, his expertise lies in crafting spaces that enhance lifestyle and long-term value. With a keen eye for detail and global design influences, he plays a key role in shaping distinctive properties that stand out in Goa’s premium market."
-    }
+    // {
+    //     name: "Aman Verma",
+    //     role: "Creative Director",
+    //     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400",
+    //     bio: "Aman brings a refined design perspective to Goa’s luxury real estate landscape, curating properties that blend modern architecture with coastal elegance. From boutique villas to high-end residential projects, his expertise lies in crafting spaces that enhance lifestyle and long-term value. With a keen eye for detail and global design influences, he plays a key role in shaping distinctive properties that stand out in Goa’s premium market."
+    // }
 ];
 
 export default function AboutUsPage() {

@@ -1,76 +1,62 @@
 'use client';
 
-import { motion, Variants } from 'framer-motion';
-import { Shield, Heart, Users, Award, Handshake } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { Shield, Heart, Users, Award, Handshake, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import SectionLabel from '../Ui/SectionLabel';
 
 const coreValues = [
-    {
-        id: 1,
-        icon: Shield,
-        title: 'Integrity',
-        description: 'Transparent dealings and honest guidance in every transaction.',
-    },
-    {
-        id: 2,
-        icon: Handshake,
-        title: 'Commitment',
-        description: 'Dedicated service backed by over 15 years of real estate expertise.',
-    },
-    {
-        id: 3,
-        icon: Users,
-        title: 'Customer First',
-        description: 'Solutions carefully tailored around client needs and long-term goals.',
-    },
-    {
-        id: 4,
-        icon: Award,
-        title: 'Excellence',
-        description: 'High standards in service delivery, advisory, and market knowledge.',
-    },
-    {
-        id: 5,
-        icon: Heart,
-        title: 'Reliability',
-        description: 'Long-term relationships built on trust, consistency, and results.',
-    },
+    { id: 1, icon: Shield, title: 'Integrity', description: 'Transparent dealings and honest guidance in every transaction.' },
+    { id: 2, icon: Handshake, title: 'Commitment', description: 'Dedicated service backed by over 15 years of real estate expertise.' },
+    { id: 3, icon: Users, title: 'Customer First', description: 'Solutions carefully tailored around client needs and long-term goals.' },
+    { id: 4, icon: Award, title: 'Excellence', description: 'High standards in service delivery, advisory, and market knowledge.' },
+    { id: 5, icon: Heart, title: 'Reliability', description: 'Long-term relationships built on trust, consistency, and results.' },
 ];
 
-export default function CoreValuesSection() {
-    const containerVariants: Variants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-            },
-        },
+export default function CoreValuesCarousel() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [itemsPerPage, setItemsPerPage] = useState(1);
+
+    // Calculate responsive items and width
+    useEffect(() => {
+        const updateWidth = () => {
+            if (containerRef.current) {
+                setContainerWidth(containerRef.current.offsetWidth);
+                if (window.innerWidth >= 1024) setItemsPerPage(3);
+                else if (window.innerWidth >= 768) setItemsPerPage(2);
+                else setItemsPerPage(1);
+            }
+        };
+
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+    }, []);
+
+    const maxIndex = coreValues.length - itemsPerPage;
+
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, [maxIndex]);
+
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
     };
 
-    const cardVariants: Variants = {
-        hidden: {
-            opacity: 0,
-            y: 60,
-            scale: 0.9,
-        },
-        visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15,
-                duration: 0.6,
-            },
-        },
-    };
+    // Auto-play effect
+    useEffect(() => {
+        const interval = setInterval(handleNext, 5000);
+        return () => clearInterval(interval);
+    }, [handleNext]);
+
+    const cardWidth = containerWidth / itemsPerPage;
 
     return (
         <section className="relative bg-[#F5F0E8] py-20 lg:py-28 overflow-hidden">
-            {/* Background Decorative Elements */}
+            {/* Background Decorative Elements (Same as before) */}
             <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-[#1B365D]/5 rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-1/4 h-1/4 bg-amber-200/20 rounded-full blur-3xl" />
 
@@ -83,11 +69,9 @@ export default function CoreValuesSection() {
                     viewport={{ once: false, amount: 0.3 }}
                     className="mb-16"
                 >
-
-                    <div className='mb-4'>
+                    <div className="mb-4">
                         <SectionLabel>Our Core Values</SectionLabel>
                     </div>
-
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -95,76 +79,99 @@ export default function CoreValuesSection() {
                         viewport={{ once: false, amount: 0.3 }}
                         className="text-center text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] max-w-4xl mx-auto"
                     >
+
                         Principles That Guide Every Client Relationship
                     </motion.h2>
                 </motion.div>
 
-                {/* Values Grid */}
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.2 }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                    {coreValues.map((value, index) => {
-                        const Icon = value.icon;
-                        return (
-                            <motion.div
-                                key={value.id}
-                                variants={cardVariants}
-                                whileHover={{
-                                    y: -10,
-                                    scale: 1.02,
-                                    transition: { duration: 0.3 },
-                                }}
-                                className="group relative"
-                            >
-                                {/* Card */}
-                                <div className="relative h-full bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:border-[#1B365D]/20 transition-all duration-500 overflow-hidden">
-                                    {/* Hover Background Effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-[#1B365D]/5 via-transparent to-amber-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    {/* Icon Container */}
-                                    <motion.div
-                                        whileHover={{ rotate: 360, scale: 1.1 }}
-                                        transition={{ duration: 0.6, ease: 'easeInOut' }}
-                                        className="relative inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#1B365D]/10 to-amber-100/50 rounded-xl mb-6 group-hover:from-[#1B365D]/20 group-hover:to-amber-200/60 transition-all duration-500"
-                                    >
-                                        <Icon className="w-7 h-7 text-[#1B365D] group-hover:text-amber-600 transition-colors duration-500" />
-                                    </motion.div>
+                {/* Carousel Window */}
+                <div className="relative overflow-hidden" ref={containerRef}>
+                    <motion.div
+                        className="flex"
+                        animate={{ x: -(currentIndex * cardWidth) }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        drag="x"
+                        dragConstraints={{ left: -(maxIndex * cardWidth), right: 0 }}
+                        onDragEnd={(_, info) => {
+                            if (info.offset.x < -50) handleNext();
+                            if (info.offset.x > 50) handlePrev();
+                        }}
+                    >
+                        {coreValues.map((value, index) => {
+                            const Icon = value.icon;
+                            return (
+                                <div
+                                    key={value.id}
+                                    className="px-3 shrink-0"
+                                    style={{ width: cardWidth }}
+                                >
+                                    <div className="group relative h-full">
+                                        {/* Your original Card Design */}
+                                        <div className="relative h-full bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:border-[#1B365D]/20 transition-all duration-500 overflow-hidden">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-[#1B365D]/5 via-transparent to-amber-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    {/* Content */}
-                                    <div className="relative">
-                                        <h3 className="text-2xl font-serif text-[#1B365D] mb-3 group-hover:text-amber-600 transition-colors duration-500">
-                                            {value.title}
-                                        </h3>
-                                        <p className="text-gray-600 leading-relaxed">
-                                            {value.description}
-                                        </p>
+                                            <div className="relative inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#1B365D]/10 to-amber-100/50 rounded-xl mb-6 group-hover:from-[#1B365D]/20 group-hover:to-amber-200/60 transition-all duration-500">
+                                                <Icon className="w-7 h-7 text-[#1B365D] group-hover:text-amber-600 transition-colors duration-500" />
+                                            </div>
+
+                                            <div className="relative">
+                                                <h3 className="text-2xl font-serif text-[#1B365D] mb-3 group-hover:text-amber-600 transition-colors duration-500">
+                                                    {value.title}
+                                                </h3>
+                                                <p className="text-gray-600 leading-relaxed line-clamp-3">
+                                                    {value.description}
+                                                </p>
+                                            </div>
+
+                                            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-400/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1B365D] via-amber-500 to-transparent" />
+                                        </div>
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-[#1B365D]/20 via-amber-500/20 to-[#1B365D]/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-10" />
                                     </div>
-
-                                    {/* Decorative Corner Element */}
-                                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-400/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                    {/* Bottom Accent Line */}
-                                    <motion.div
-                                        initial={{ scaleX: 0 }}
-                                        whileInView={{ scaleX: 1 }}
-                                        viewport={{ once: false }}
-                                        transition={{ duration: 0.6, delay: index * 0.1 }}
-                                        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1B365D] via-amber-500 to-transparent origin-left"
-                                    />
                                 </div>
+                            );
+                        })}
+                    </motion.div>
+                </div>
 
-                                {/* Card Shadow/Glow Effect */}
-                                <div className="absolute -inset-1 bg-gradient-to-r from-[#1B365D]/20 via-amber-500/20 to-[#1B365D]/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-10" />
-                            </motion.div>
-                        );
-                    })}
-                </motion.div>
+                {/* Dots Indicator */}
 
-                {/* Bottom CTA or Additional Info (Optional) */}
+                <div className='flex justify-between sm:px-10'>
+
+                    <div className="flex justify-center gap-2 mt-8">
+                        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setCurrentIndex(i)}
+                                className={`h-2 rounded-full transition-all duration-300 ${currentIndex === i ? 'w-8 bg-[#1B365D]' : 'w-2 bg-gray-300'
+                                    }`}
+                            />
+                        ))}
+                    </div>
+
+                    <div className='mt-6 flex items-center justify-center gap-4'>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handlePrev}
+                                className="p-3 rounded-full border text-navy-950/80 border-navy-950/80 hover:bg-[#1B365D] hover:text-white transition-all group"
+                            >
+                                <ChevronLeft className="w-6 h-6" />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className="p-3 rounded-full border text-navy-950/80 border-navy-950/80 hover:bg-[#1B365D] hover:text-white transition-all group"
+                            >
+                                <ChevronRight className="w-6 h-6" />
+                            </button>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                {/* Bottom CTA (Same as before) */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -172,61 +179,25 @@ export default function CoreValuesSection() {
                     viewport={{ once: false, amount: 0.3 }}
                     className="mt-16 text-center"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold text-[#1B365D] mb-4 font-display">
+                    <h2 className="text-3xl md:text-4xl font-bold text-[#1B365D] mb-4">
                         Ready to Find Your <span className="text-gold-500">Dream Sanctuary?</span>
                     </h2>
 
-                    <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-10 font-light leading-relaxed px-6">
+                     <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-10 font-light leading-relaxed px-6">
                         Whether you are looking for a luxury beachfront villa or a high-growth
                         investment, our team of experts is here to provide transparent,
                         personalized guidance at every step of your journey.
                     </p>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="cursor-pointer inline-flex items-center gap-2 px-10 py-4 bg-[#1B365D] text-white font-bold uppercase text-xs tracking-widest rounded-full transition-all shadow-lg hover:shadow-[#1B365D]/20"
-                        >
-                            <Link href={'/contact'}>Contact Our Experts</Link>
-                        </motion.button>
-
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="cursor-pointer inline-flex items-center gap-2 px-10 py-4 bg-transparent border border-navy-700 text-navy-700 font-bold uppercase text-xs tracking-widest rounded-full transition-all hover:border-gold-500 hover:text-gold-500"
-                        >
-                            <Link href={'/properties'}>Explore Properties</Link>
-                        </motion.button>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                        <Link href="/contact" className="px-10 py-4 bg-[#1B365D] text-white font-bold uppercase text-xs tracking-widest rounded-full shadow-lg hover:bg-[#1B365D]/90 transition-all">
+                            Contact Our Experts
+                        </Link>
+                        <Link href="/properties" className="px-10 py-4 border border-[#1B365D] text-[#1B365D] font-bold uppercase text-xs tracking-widest rounded-full hover:bg-[#1B365D] hover:text-white transition-all">
+                            Explore Properties
+                        </Link>
                     </div>
                 </motion.div>
             </div>
-
-            {/* Floating Decorative Elements */}
-            <motion.div
-                animate={{
-                    y: [0, -20, 0],
-                    opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-1/4 right-20 w-3 h-3 bg-amber-400/40 rounded-full blur-sm"
-            />
-            <motion.div
-                animate={{
-                    y: [0, -30, 0],
-                    opacity: [0.2, 0.5, 0.2],
-                }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="absolute bottom-1/4 left-20 w-4 h-4 bg-[#1B365D]/30 rounded-full blur-sm"
-            />
-            <motion.div
-                animate={{
-                    y: [0, -25, 0],
-                    opacity: [0.4, 0.7, 0.4],
-                }}
-                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-                className="absolute top-1/2 left-1/4 w-2 h-2 bg-amber-300/30 rounded-full blur-sm"
-            />
         </section>
     );
 }
