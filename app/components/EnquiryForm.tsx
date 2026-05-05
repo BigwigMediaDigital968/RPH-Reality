@@ -236,7 +236,7 @@ export default function EnquiryForm({
         disabled={isSubmitting}
         className={`w-full py-2 sm:py-4 text-white text-xs font-sans font-semibold tracking-widest uppercase rounded-lg transition-colors duration-200 mt-2 ${
           isSubmitting
-            ? "bg-charcoal-400 cursor-not-allowed"
+            ? "bg-navy-900/60 cursor-not-allowed"
             : "bg-navy-900 hover:bg-navy-800 cursor-pointer"
         }`}
       >

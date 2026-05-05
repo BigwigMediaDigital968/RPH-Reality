@@ -326,8 +326,9 @@ export default function LeadManagement() {
                 <option value="all">All Purpose</option>
                 <option value="buy">Buy</option>
                 <option value="sell">Sale</option>
-                <option value="rent">Rent</option>
-                <option value="lease">Lease</option>
+                <option value="other">Other</option>
+                {/* <option value="rent">Rent</option>
+                <option value="lease">Lease</option> */}
               </select>
             </div>
 
