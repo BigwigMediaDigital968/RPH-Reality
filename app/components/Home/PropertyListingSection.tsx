@@ -233,13 +233,13 @@ export default function PropertyListingSection3D() {
                                                             </div>
 
                                                             {/* Price */}
-                                                            <div className="hidden md:flex items-center gap-2">
+                                                            {property?.price && (<div className="hidden md:flex items-center gap-2">
                                                                 <div className="w-1 h-8 bg-amber-400 rounded-full" />
                                                                 <div>
                                                                     <div className="text-sm text-gray-400 uppercase tracking-wider">Price from</div>
                                                                     <div className="text-xl font-semibold text-amber-400">{property?.price}</div>
                                                                 </div>
-                                                            </div>
+                                                            </div>)}
 
                                                             {/* Location */}
                                                             <div className="flex items-center gap-2">
@@ -254,7 +254,7 @@ export default function PropertyListingSection3D() {
                                                         {/* View Details Button */}
                                                         <Link
                                                             href={`/properties/${property?.slug}`}
-                                                            className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#1B365D] font-semibold rounded-full hover:bg-amber-400 hover:text-white transition-all shadow-lg"
+                                                            className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#1B365D] font-semibold rounded-full hover:bg-gold-400 hover:text-white transition-all shadow-lg"
                                                         >
                                                             View Details
                                                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
