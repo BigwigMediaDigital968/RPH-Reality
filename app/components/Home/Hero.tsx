@@ -38,6 +38,14 @@ export default function Hero() {
                         style={{ scale: videoScale }} // keep subtle parallax zoom if you want
                         className="w-full h-full"
                     >
+                        <Image
+                            src="/hero-frmae.jpg"
+                            width={100}
+
+                            height={100}
+                            alt="fallback"
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500
+        }`} />
                         <video
                             autoPlay
                             loop
@@ -45,7 +53,7 @@ export default function Hero() {
                             playsInline
                             className="absolute inset-0 w-full h-full object-cover"
                         >
-                            <source src="https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+                            <source src="/1409899-uhd_2560_1440_25fps.mp4" type="video/mp4" />
                         </video>
 
                         {/* Overlay                         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
