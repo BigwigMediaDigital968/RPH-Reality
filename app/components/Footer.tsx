@@ -212,6 +212,17 @@ Goa India
             © {new Date().getFullYear()} RPH Realty. All rights
             reserved. RERA Licensed.
           </p>
+          <p className="text-white/60 text-xs font-sans">
+            Designed and developed by{" "}
+            <a
+              href="https://www.bigwigmediadigital.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400 hover:text-gold-300 transition-colors"
+            >
+              Bigwig Media Digital
+            </a>
+          </p>
           <div className="flex gap-6">
             {legalLinks.map((item, index) => (
               <Link

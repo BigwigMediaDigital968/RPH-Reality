@@ -646,7 +646,7 @@ export default function PropertyDetailsPage() {
                                         </div>
 
                                         {/* Direct Contact */}
-                                        <div className="mt-6 pt-6 border-t border-gold-500/20 space-y-3">
+                                        <div className="mt-6 pt-6 border-t border-gold-500/20 space-y-3 hidden">
                                             <a
                                                 href={`tel:${propertyData?.agent?.phone}`}
                                                 className="flex items-center gap-3 text-navy-950 hover:text-gold-400 transition-colors"

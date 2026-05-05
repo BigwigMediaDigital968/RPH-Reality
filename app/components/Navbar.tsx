@@ -88,7 +88,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
           <div className="hidden lg:flex items-center gap-3 pr-2">
             <Link
               href="/properties"
-              className={`text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded border transition-all duration-200 ${scrolled
+              className={`hidden text-xs font-sans font-semibold tracking-widest uppercase px-5 py-2.5 rounded border transition-all duration-200 ${scrolled
                 ? "border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white"
                 : "border-white/50 text-white hover:bg-white/10 hover:border-white"
                 }`}
@@ -168,7 +168,7 @@ export default function Navbar({ scrolled }: { scrolled: boolean }) {
                 <Link
                   href="/properties"
                   onClick={() => setMenuOpen(false)}
-                  className="text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded border border-navy-900 text-navy-900"
+                  className="hidden text-center text-xs font-sans font-semibold tracking-widest uppercase px-5 py-3 rounded border border-navy-900 text-navy-900"
                 >
                   Explore Properties
                 </Link>

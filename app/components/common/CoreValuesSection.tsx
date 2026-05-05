@@ -48,7 +48,7 @@ export default function CoreValuesCarousel() {
 
     // Auto-play effect
     useEffect(() => {
-        const interval = setInterval(handleNext, 5000);
+        const interval = setInterval(handleNext, 3000);
         return () => clearInterval(interval);
     }, [handleNext]);
 
@@ -138,7 +138,7 @@ export default function CoreValuesCarousel() {
 
                 {/* Dots Indicator */}
 
-                <div className='flex justify-between sm:px-10'>
+                <div className='hidden justify-between sm:px-10'>
 
                     <div className="flex justify-center gap-2 mt-8">
                         {Array.from({ length: maxIndex + 1 }).map((_, i) => (
