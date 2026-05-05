@@ -42,9 +42,31 @@ export default function BlogDetail() {
 
 
     if (error) return <div>Something went wrong</div>;
-    if (!blog) return <div>No blog found</div>;
 
     console.log(blog)
+
+    if (isLoading && !blog ) {
+        return (
+            <>
+            <div className='flex justify-center items-center h-screen'>
+                <GoldLoader />
+            </div>
+            </>
+        )
+    }
+
+
+    if (!blog) return (
+        <>
+            
+            <div className='flex justify-center items-center h-screen flex-col gap-6'>
+                <h2 className='text-2xl font-bold text-navy-900'>Blog Not Found</h2>
+                <Link href="/blogs" className='flex items-center gap-2 text-gold-500 font-bold'>
+                    <ArrowLeft size={16} /> Back to Blogs
+                </Link>
+            </div>
+        </>
+    );
 
     return (
         <main className="bg-white min-h-screen">
@@ -88,49 +110,53 @@ export default function BlogDetail() {
 
                 {/* --- MIDDLE: CONTENT --- */}
                 {isLoading ? (<>
-                    <GoldLoader /></>) : (<>
+                    <div className='lg:col-span-8 space-y-10 flex justify-center items-center h-96'>
+                        <GoldLoader />
+                    </div>
 
-                        <article className="lg:col-span-8 space-y-10">
-                            <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm border-b border-slate-100 pb-8">
-                                <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {formatDate(blog?.updatedAt)}</div>
-                            </div>
+                </>) : (<>
 
-                            <div>
-                                <motion.h1
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.1 }}
-                                    className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-navy-900 leading-tight"
-                                >
-                                    {blog?.title}
-                                </motion.h1>
-                            </div>
+                    <article className="lg:col-span-8 space-y-10">
+                        <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm border-b border-slate-100 pb-8">
+                            <div className="flex items-center gap-2"><Calendar size={16} className="text-gold-600" /> {formatDate(blog?.updatedAt)}</div>
+                        </div>
 
-                            <div className="prose prose-lg prose-slate max-w-none">
-                                <p className="text-xl text-slate-600 leading-relaxed font-serif italic border-l-4 border-gold-500 pl-6 py-2">
-                                    {blog?.excerpt}
-                                </p>
+                        <div>
+                            <motion.h1
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-navy-900 leading-tight"
+                            >
+                                {blog?.title}
+                            </motion.h1>
+                        </div>
 
-                                <h2 className="text-2xl font-bold text-navy-900 mt-12 mb-6">The Shift Toward Boutique Luxury</h2>
-                                <div
-                                    className="prose prose-lg prose-slate max-w-none"
-                                    dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
-                                />
-                            </div>
+                        <div className="prose prose-lg prose-slate max-w-none">
+                            <p className="text-xl text-slate-600 leading-relaxed font-serif italic border-l-4 border-gold-500 pl-6 py-2">
+                                {blog?.excerpt}
+                            </p>
 
-                            {/* Newsletter Opt-in */}
-                            <div className="hidden bg-navy-900 rounded-3xl p-10 text-white relative overflow-hidden">
-                                <div className="relative z-10 max-w-md">
-                                    <h3 className="text-2xl font-bold mb-4">Get the Royal Gazette</h3>
-                                    <p className="text-slate-300 mb-6">Exclusive Goan real estate insights delivered to your inbox weekly.</p>
-                                    <div className="flex gap-2">
-                                        <input type="email" placeholder="Your Email" className="bg-white/10 border border-white/20 px-4 py-3 rounded-xl flex-grow focus:outline-none focus:border-gold-500" />
-                                        <button className="bg-gold-500 text-navy-900 px-6 py-3 rounded-xl font-bold">Join</button>
-                                    </div>
+                            <h2 className="text-2xl font-bold text-navy-900 mt-12 mb-6">The Shift Toward Boutique Luxury</h2>
+                            <div
+                                className="prose prose-lg prose-slate max-w-none"
+                                dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
+                            />
+                        </div>
+
+                        {/* Newsletter Opt-in */}
+                        <div className="hidden bg-navy-900 rounded-3xl p-10 text-white relative overflow-hidden">
+                            <div className="relative z-10 max-w-md">
+                                <h3 className="text-2xl font-bold mb-4">Get the Royal Gazette</h3>
+                                <p className="text-slate-300 mb-6">Exclusive Goan real estate insights delivered to your inbox weekly.</p>
+                                <div className="flex gap-2">
+                                    <input type="email" placeholder="Your Email" className="bg-white/10 border border-white/20 px-4 py-3 rounded-xl flex-grow focus:outline-none focus:border-gold-500" />
+                                    <button className="bg-gold-500 text-navy-900 px-6 py-3 rounded-xl font-bold">Join</button>
                                 </div>
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
                             </div>
-                        </article></>)}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                        </div>
+                    </article></>)}
 
                 {/* --- RIGHT: PROPERTY AD --- */}
                 <aside className="lg:col-span-3">
