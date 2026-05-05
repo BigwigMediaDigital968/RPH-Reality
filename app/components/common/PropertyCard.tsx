@@ -61,7 +61,7 @@ export default function PropertyCard({
                 )}
 
                 {/* Action Buttons */}
-                <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
+                <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 hidden">
                     <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
@@ -92,9 +92,9 @@ export default function PropertyCard({
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-serif text-navy-900 mb-2 group-hover:text-gold-600 transition-colors duration-300">
+                <Link href={`/properties/${property?.slug}`} className="block text-xl font-serif text-navy-900 mb-2 group-hover:text-gold-600 transition-colors duration-300">
                     {property?.title}
-                </h3>
+                </Link>
 
                 {/* Location */}
                 <div className="flex items-center gap-2 mb-4 text-charcoal-600">
@@ -106,20 +106,22 @@ export default function PropertyCard({
                 <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-4" />
 
                 {/* Property Features */}
-                <div className="flex items-center justify-between text-charcoal-600">
-                    <div className="flex items-center gap-1.5">
-                        <Bed size={18} className="text-gold-500" />
-                        <span className="text-sm font-sans font-medium">
-                            {property?.bedrooms}
-                        </span>
+                <div className=" text-charcoal-600">
+                    <div className="flex gap-6">
+                        <div className="flex items-center gap-1.5">
+                            <Bed size={18} className="text-gold-500" />
+                            <span className="text-sm font-sans font-medium">
+                                {property?.bedrooms}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <Bath size={18} className="text-gold-500" />
+                            <span className="text-sm font-sans font-medium">
+                                {property?.bathrooms}
+                            </span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                        <Bath size={18} className="text-gold-500" />
-                        <span className="text-sm font-sans font-medium">
-                            {property?.bathrooms}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 mt-2">
                         <Square size={18} className="text-gold-500" />
                         <span className="text-sm font-sans font-medium">
                             {property?.areaSqft}
