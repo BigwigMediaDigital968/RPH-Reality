@@ -555,7 +555,7 @@ export default function PropertyDetailsPage() {
                                                     >
                                                         <button
                                                             onClick={() => toggleFaq(index)}
-                                                            className="w-full flex items-center justify-between p-4 text-left bg-navy-950/5 hover:bg-navy-950/10 transition-colors"
+                                                            className="w-full flex items-center cursor-pointer justify-between p-4 text-left bg-navy-950/5 hover:bg-navy-950/10 transition-colors"
                                                         >
                                                             <span className="font-semibold text-navy-950">
                                                                 {faq.question}
@@ -655,7 +655,7 @@ export default function PropertyDetailsPage() {
                                         </form>
 
                                         <div className="mt-6">
-                                            <EnquiryForm />
+                                            <EnquiryForm  source={`property - ${propertyData?.title}`}/>
                                         </div>
 
                                         {/* Direct Contact */}
