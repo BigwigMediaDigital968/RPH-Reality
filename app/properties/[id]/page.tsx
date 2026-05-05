@@ -188,7 +188,7 @@ export default function PropertyDetailsPage() {
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={() => setSelectedImage(index)}
-                                                className={`relative h-24 w-32 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index
+                                                className={`relative h-24 w-32 flex-shrink-0 rounded-lg bg-navy-950/30 overflow-hidden border-2 transition-all ${selectedImage === index
                                                     ? "border-gold-500 shadow-lg shadow-gold-500/30"
                                                     : "border-transparent hover:border-gold-500/50"
                                                     }`}
