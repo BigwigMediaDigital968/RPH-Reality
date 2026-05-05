@@ -28,21 +28,21 @@ export default function PropertyListingSection3D() {
 
     // Auto-slide functionality
     useEffect(() => {
-        if (!isHovered) {
+        if (!isHovered && properties.length > 0) { // ✅ guard added
             const interval = setInterval(() => {
                 handleNext();
             }, 3000);
-
             return () => clearInterval(interval);
         }
-    }, [currentIndex, isHovered]);
-
+    }, [currentIndex, isHovered, properties.length]);
     const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % properties?.length);
+        if (properties.length === 0) return; // ✅
+        setCurrentIndex((prev) => (prev + 1) % properties.length);
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + properties?.length) % properties?.length);
+        if (properties.length === 0) return; // ✅
+        setCurrentIndex((prev) => (prev - 1 + properties.length) % properties.length);
     };
 
     const handleDotClick = (index: number) => {
@@ -50,12 +50,19 @@ export default function PropertyListingSection3D() {
     };
 
     // Get the position of a slide relative to the current index
-    const getSlidePosition = (index: number) => {
+    // const getSlidePosition = (index: number) => {
+    //     const diff = index - currentIndex;
+    //     if (diff === 0) return 'center';
+    //     if (diff === 1 || diff === -(properties?.length - 1)) return 'right';
+    //     if (diff === -1 || diff === properties?.length - 1) return 'left';
+    //     return '';
+    // };
+    const getSlidePosition = (index: number, total: number) => {
         const diff = index - currentIndex;
         if (diff === 0) return 'center';
-        if (diff === 1 || diff === -(properties?.length - 1)) return 'right';
-        if (diff === -1 || diff === properties?.length - 1) return 'left';
-        return 'hidden';
+        if (diff === 1 || diff === -(total - 1)) return 'right';
+        if (diff === -1 || diff === total - 1) return 'left';
+        return '';
     };
 
     // Get style for each slide based on position
@@ -154,131 +161,131 @@ export default function PropertyListingSection3D() {
                     <div className="relative h-[600px] md:h-[500px] lg:h-[500px]">
                         {isLoading ? <div className='h-[500px]  lg:h-[400px]'>
                             <CardSkeleton />
-                        </div> : null}
-                        {properties?.map((property, index) => {
-                            const position = getSlidePosition(index);
-                            const isCenter = position === 'center';
+                        </div> :
+                            properties?.map((property, index) => {
+                                const position = getSlidePosition(index, properties?.length); // ✅
+                                const isCenter = position === 'center';
 
-                            return (
-                                <motion.div
-                                    key={property._id}
-                                    className="absolute inset-0 flex items-center justify-center"
-                                    animate={getSlideStyle(position)}
-                                    transition={{
-                                        type: 'tween',
-                                    }}
-                                    style={{
-                                        transformStyle: 'preserve-3d',
-                                        zIndex: isCenter ? 10 : 1,
-                                    }}
-                                    onMouseEnter={() => setIsHovered(true)}
-                                    onMouseLeave={() => setIsHovered(false)}
-                                >
-                                    <div
-                                        className={`relative w-full max-w-5xl h-[500px]  lg:h-[400px] rounded-3xl overflow-hidden ${isCenter ? 'cursor-default' : 'cursor-pointer'
-                                            }`}
-                                        onClick={() => !isCenter && setCurrentIndex(index)}
+                                return (
+                                    <motion.div
+                                        key={property._id}
+                                        className="absolute inset-0 flex items-center justify-center"
+                                        animate={getSlideStyle(position)}
+                                        transition={{
+                                            type: 'tween',
+                                        }}
+                                        style={{
+                                            transformStyle: 'preserve-3d',
+                                            zIndex: isCenter ? 10 : 1,
+                                        }}
+                                        onMouseEnter={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)}
                                     >
-                                        {/* Property Image */}
-                                        <Image
-                                            src={property.images?.[0]}
-                                            alt={property.title}
-                                            fill
-                                            className="object-cover"
-                                            priority={isCenter}
-                                            unoptimized
-                                        />
+                                        <div
+                                            className={`relative w-full max-w-5xl h-[500px]  lg:h-[400px] bg-navy-950 rounded-3xl overflow-hidden ${isCenter ? 'cursor-default' : 'cursor-pointer'
+                                                }`}
+                                            onClick={() => !isCenter && setCurrentIndex(index)}
+                                        >
+                                            {/* Property Image */}
+                                            <Image
+                                                src={property.images?.[0]}
+                                                alt={property.title}
+                                                fill
+                                                className="object-cover"
+                                                priority={isCenter}
+                                                unoptimized
+                                            />
 
-                                        {/* Gradient Overlays */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                                        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+                                            {/* Gradient Overlays */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent" />
+                                            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
 
-                                        {/* Property Information Overlay - Only show on center slide */}
-                                        {isCenter && (
-                                            <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 30 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.6, delay: 0.1 }}
-                                                    className="max-w-2xl"
-                                                >
-                                                    {/* Property Title */}
-                                                    <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif text-white mb-4">
-                                                        {property.title}
-                                                    </h3>
-
-                                                    {/* Property Details */}
-                                                    <p className="hidden md:block md:text-lg text-gray-200 mb-6 line-clamp-2">
-                                                        {property.description
-                                                            ?.split(" ")
-                                                            .slice(0, 20)
-                                                            .join(" ") + (property.description?.split(" ").length > 20 ? "..." : "")}
-                                                    </p>
-
-                                                    <div className="flex flex-wrap items-center gap-6 mb-6">
-                                                        {/* Size */}
-                                                        <div className="hidden md:flex items-center gap-2">
-                                                            <div className="w-1 h-8 bg-amber-400 rounded-full" />
-                                                            <div>
-                                                                <div className="text-sm text-gray-400 uppercase tracking-wider">Size</div>
-                                                                <div className="text-xl font-semibold text-white">{property?.areaSqft}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Price */}
-                                                        <div className="hidden md:flex items-center gap-2">
-                                                            <div className="w-1 h-8 bg-amber-400 rounded-full" />
-                                                            <div>
-                                                                <div className="text-sm text-gray-400 uppercase tracking-wider">Price from</div>
-                                                                <div className="text-xl font-semibold text-amber-400">{property?.price}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Location */}
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-1 h-8 bg-amber-400 rounded-full" />
-                                                            <div>
-                                                                <div className="text-sm text-gray-400 uppercase tracking-wider">Location</div>
-                                                                <div className="text-xl font-semibold text-white">{property?.location}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* View Details Button */}
-                                                    <Link
-                                                        href={`/properties/${property?.slug}`}
-                                                        className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#1B365D] font-semibold rounded-full hover:bg-amber-400 hover:text-white transition-all shadow-lg"
+                                            {/* Property Information Overlay - Only show on center slide */}
+                                            {isCenter && (
+                                                <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-12">
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 30 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ duration: 0.6, delay: 0.1 }}
+                                                        className="max-w-2xl"
                                                     >
-                                                        View Details
-                                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                                    </Link>
-                                                </motion.div>
-                                            </div>
-                                        )}
+                                                        {/* Property Title */}
+                                                        <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif text-white mb-4">
+                                                            {property.title}
+                                                        </h3>
 
-                                        {/* Property Number Badge - Only on center slide */}
-                                        {isCenter && (
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0.8 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.5, delay: 0.4 }}
-                                                className="absolute top-8 right-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl px-4 py-2 md:px-6 md:py-3"
-                                            >
-                                                <div className="text-lg md:text-4xl font-bold text-white">
-                                                    {String(currentIndex + 1).padStart(2, '0')}
+                                                        {/* Property Details */}
+                                                        <p className="hidden md:block md:text-lg text-gray-200 mb-6 line-clamp-2">
+                                                            {property.description
+                                                                ?.split(" ")
+                                                                .slice(0, 20)
+                                                                .join(" ") + (property.description?.split(" ").length > 20 ? "..." : "")}
+                                                        </p>
+
+                                                        <div className="flex flex-wrap items-center gap-6 mb-6">
+                                                            {/* Size */}
+                                                            <div className="hidden md:flex items-center gap-2">
+                                                                <div className="w-1 h-8 bg-amber-400 rounded-full" />
+                                                                <div>
+                                                                    <div className="text-sm text-gray-400 uppercase tracking-wider">Size</div>
+                                                                    <div className="text-xl font-semibold text-white">{property?.areaSqft}</div>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Price */}
+                                                            <div className="hidden md:flex items-center gap-2">
+                                                                <div className="w-1 h-8 bg-amber-400 rounded-full" />
+                                                                <div>
+                                                                    <div className="text-sm text-gray-400 uppercase tracking-wider">Price from</div>
+                                                                    <div className="text-xl font-semibold text-amber-400">{property?.price}</div>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Location */}
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-1 h-8 bg-amber-400 rounded-full" />
+                                                                <div>
+                                                                    <div className="text-sm text-gray-400 uppercase tracking-wider">Location</div>
+                                                                    <div className="text-xl font-semibold text-white">{property?.location}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* View Details Button */}
+                                                        <Link
+                                                            href={`/properties/${property?.slug}`}
+                                                            className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#1B365D] font-semibold rounded-full hover:bg-amber-400 hover:text-white transition-all shadow-lg"
+                                                        >
+                                                            View Details
+                                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                        </Link>
+                                                    </motion.div>
                                                 </div>
-                                                <div className="text-sm text-gray-300">/ {String(properties.length).padStart(2, '0')}</div>
-                                            </motion.div>
-                                        )}
+                                            )}
 
-                                        {/* Dimming overlay for non-center slides */}
-                                        {!isCenter && (
-                                            <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-colors" />
-                                        )}
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
+                                            {/* Property Number Badge - Only on center slide */}
+                                            {isCenter && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ duration: 0.5, delay: 0.4 }}
+                                                    className="absolute top-8 right-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl px-4 py-2 md:px-6 md:py-3"
+                                                >
+                                                    <div className="text-lg md:text-4xl font-bold text-white">
+                                                        {String(currentIndex + 1).padStart(2, '0')}
+                                                    </div>
+                                                    <div className="text-sm text-gray-300">/ {String(properties.length).padStart(2, '0')}</div>
+                                                </motion.div>
+                                            )}
+
+                                            {/* Dimming overlay for non-center slides */}
+                                            {!isCenter && (
+                                                <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-colors" />
+                                            )}
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
 
 
 
