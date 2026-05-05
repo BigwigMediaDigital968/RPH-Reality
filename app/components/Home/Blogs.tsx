@@ -23,7 +23,7 @@ export default function Blogs() {
 
 
   return (
-    <section ref={ref} className="py-20 lg:py-28 bg-white">
+    <section ref={ref} className="py-10 md:py-16 lg:py-20 bg-white">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12">
         <motion.div
           initial="hidden"

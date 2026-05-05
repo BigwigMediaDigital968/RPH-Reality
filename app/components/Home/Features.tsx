@@ -114,7 +114,7 @@ export const PropertyCard = ({ f, index }: { f: any, index: number }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="perspective-1000 w-full h-[380px] cursor-pointer"
+      className="perspective-1000 w-full h-[300px] cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
       key={index}

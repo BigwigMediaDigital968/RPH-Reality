@@ -109,7 +109,7 @@ export default function Testimonials() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section ref={containerRef} className="py-20 lg:py-28 bg-off-white overflow-hidden">
+    <section ref={containerRef} className="py-8 md:py-16 lg:py-16 bg-off-white overflow-hidden">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12">
 
         {/* Header Section */}

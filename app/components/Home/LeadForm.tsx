@@ -12,7 +12,7 @@ export default function LeadForm() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} id="contact" className="py-20 lg:py-28 bg-off-white">
+    <section ref={ref} id="contact" className="py-5 md:py-10 lg:py-16 bg-off-white">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="max-w-3xl mx-auto">
           <motion.div
