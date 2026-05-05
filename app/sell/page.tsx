@@ -133,7 +133,7 @@ const SellSections = () => {
   return (
     <div className=" text-navy-900/70 selection:bg-gold-500/30">
       {/* SECTION 1: OUR SELLING PROCESS */}
-      <section className="py-32 px-6 lg:px-14 relative overflow-hidden">
+      <section className="py-16 md:py-20 px-6 lg:px-14 relative overflow-hidden">
         {/* Background Ambient Glow */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-600/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4" />
 

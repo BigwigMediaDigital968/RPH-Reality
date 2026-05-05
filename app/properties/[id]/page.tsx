@@ -254,9 +254,17 @@ export default function PropertyDetailsPage() {
                                                     <p className="text-sm text-navy-900/70 uppercase tracking-wider mb-1">
                                                         Price
                                                     </p>
-                                                    <p className="text-4xl font-bold text-gold-400 font-display">
+                                                    {
+                                                        propertyData?.price ? (
+                                                            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gold-400 font-display">
                                                         {propertyData?.price}
                                                     </p>
+                                                        ) : (
+                                                            <p className="text-lg font-bold text-navy-950/70 font-display">
+                                                                On Enquiry
+                                                            </p>
+                                                        )
+                                                    }
                                                 </div>
                                                 <div>
                                                     <button
@@ -270,7 +278,7 @@ export default function PropertyDetailsPage() {
                                         </div>
 
                                         {/* Quick Stats */}
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-6 border-t border-gold-500/20">
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-6 border-t border-gold-500/20">
                                             <div className="text-center">
                                                 <div className="flex items-center justify-center gap-2 mb-2">
                                                     <svg
@@ -313,7 +321,7 @@ export default function PropertyDetailsPage() {
                                                 </p>
                                                 <p className="text-sm text-gray-400">Bathrooms</p>
                                             </div>
-                                            <div className="text-center">
+                                            <div className="text-center col-span-2 md:col-span-1">
                                                 <div className="flex items-center justify-center gap-2 mb-2">
                                                     <svg
                                                         className="w-6 h-6 text-gold-500"
@@ -333,27 +341,6 @@ export default function PropertyDetailsPage() {
                                                     {propertyData?.areaSqft}
                                                 </p>
                                                 <p className="text-sm text-gray-400">Total Area</p>
-                                            </div>
-                                            <div className="text-center hidden">
-                                                <div className="flex items-center justify-center gap-2 mb-2">
-                                                    <svg
-                                                        className="w-6 h-6 text-gold-500"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                                <p className="text-lg md:text-2xl font-bold text-navy-900">
-                                                    {propertyData?.parking}
-                                                </p>
-                                                <p className="text-sm text-gray-400">Parking</p>
                                             </div>
                                         </div>
                                     </motion.div>

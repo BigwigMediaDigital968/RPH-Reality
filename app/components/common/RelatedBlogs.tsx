@@ -29,7 +29,7 @@ export default function RelatedBlogs({ blogId, limit = 4 }: RelatedBlogsProps) {
         <>
             <section className="bg-slate-50 py-24">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex justify-between items-end mb-12">
+                    <div className="flex gap-4 flex-wrap justify-between items-end mb-12 ">
                         <div>
                             <h2 className="text-4xl font-display font-bold text-navy-900">Continue Reading</h2>
                             <p className="text-slate-500 mt-2">More insights from our real estate experts</p>
