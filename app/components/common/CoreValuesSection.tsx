@@ -77,7 +77,7 @@ export default function CoreValuesCarousel() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                         viewport={{ once: false, amount: 0.3 }}
-                        className="text-center text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] max-w-4xl mx-auto"
+                        className="text-center text-4xl md:text-5xl lg:text-6xl font-serif text-[#1B365D] leading-snug max-w-4xl mx-auto"
                     >
 
                         Principles That Guide Every Client Relationship
