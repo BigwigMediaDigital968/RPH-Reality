@@ -25,7 +25,7 @@ interface Property {
 }
 
 
-const filters = ["All", "Penthouse", "Villa", "Loft", "Beachfront", "Townhouse", "Cabin"];
+const filters = ["All", "Penthouse", "Villa", "Loft", "Beachfront", "Townhouse", "Apartment",  "Cabin"];
 
 export default function PropertiesPage() {
     const [selectedFilter, setSelectedFilter] = useState("");
