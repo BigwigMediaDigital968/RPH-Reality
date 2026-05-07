@@ -49,7 +49,7 @@ const sections = [
     id: "01",
     title: "Buy Property",
     subtitle: "BUY WITH CONFIDENCE",
-    desc: "Explore handpicked villas, apartments, and investment-ready properties across Goa. We help you find the right home with strong appreciation potential and rental value—making every purchase a smart move.",
+    desc: "Explore handpicked villas, apartments, and investment-ready properties across Goa. We help you find the right home with strong appreciation potential and rental value-making every purchase a smart move.",
     image:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&auto=format&fit=crop&q=60",
     cta: "View PROPERTIES",
@@ -94,75 +94,7 @@ export default function ServicesFan() {
         </div>
 
         {/* Fan Cards Container */}
-        <div className="relative hidden md:hidden justify-center items-end h-[350px] pt-20 mt-20">
-          {services.map((service) => {
-            const IconComponent = service.icon; // Extract the component
-            const isHovered = hoveredId === service.id;
-            return (
-              <motion.div
-                key={service.id}
-                onMouseEnter={() => setHoveredId(service.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                initial={false}
-                animate={{
-                  rotate: hoveredId === service.id ? 0 : service.rotation,
-                  y: hoveredId === service.id ? -20 : 0,
-                  scale: hoveredId === service.id ? 1.15 : 1,
-                  zIndex: hoveredId === service.id ? 30 : service.id,
-                  backgroundColor:
-                    hoveredId === service.id ? "#ffffff" : "#adb5bd",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="relative w-[250px] h-[300px] rounded-2xl border-2 border-white/40 shadow-2xl cursor-pointer flex flex-col items-center justify-center p-4"
-                style={{
-                  transformOrigin: "bottom center",
-                }}
-              >
-                {/* Lucide Icon Container */}
-                <div
-                  className={`mb-6 transition-all duration-500 ${isHovered ? "text-[#002147] scale-110" : "text-slate-600"}`}
-                >
-                  <IconComponent size={42} strokeWidth={1.5} />
-                </div>
-
-                {/* Headline */}
-                <h3
-                  className={`font-display text-2xl font-bold tracking-tight mb-1 transition-colors duration-300 ${isHovered ? "text-[#002147]" : "text-slate-600"}`}
-                >
-                  {service.title}
-                </h3>
-
-                {/* Hover-only Content */}
-                <AnimatePresence>
-                  {isHovered && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="flex flex-col items-center"
-                    >
-                      <p className="text-[11px] leading-relaxed text-slate-500 mb-3 px-4 font-medium">
-                        {service.desc}
-                      </p>
-
-                      <Link
-                        href={service.link}
-                        className="group/btn flex items-center gap-2 bg-[#002147] text-white px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest uppercase transition-all hover:bg-[#D4AF37] hover:shadow-xl"
-                      >
-                        Explore
-                        <ArrowRight
-                          size={14}
-                          className="transition-transform group-hover/btn:translate-x-1"
-                        />
-                      </Link>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-          <div className="absolute w-full h-1/3 z-40 bg-navy-950 top-5/6"></div>
-        </div>
+        
         <PropertySovereignSection />
 
         {/* Action Button */}
