@@ -25,7 +25,7 @@ const team = [
         name: "Mayur Sail",
         role: "Owner",
         image: "/person-1.jpeg",
-        bio: "With over 15 years of experience in Goa’s dynamic real estate market, Rohit specializes in luxury villas, beachfront properties, and high-growth investment opportunities. His deep understanding of local regulations, land acquisition, and premium developments has helped countless clients secure exclusive properties across North and South Goa. Known for his transparent approach and strong developer network, he ensures every investment is both secure and future-ready."
+        bio: "With over 15 years of experience in Goa’s dynamic real estate market, Mayur Sail specializes in luxury villas, beachfront properties, and high-growth investment opportunities. His deep understanding of local regulations, land acquisition, and premium developments has helped countless clients secure exclusive properties across North and South Goa. Known for his transparent approach and strong developer network, he ensures every investment is both secure and future-ready."
     },
     // {
     //     name: "Aman Verma",
