@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RPH Realty - Your Gateway to Goa's Luxury Real Estate",
   description: "Discover exclusive villas, beachfront properties, and high-growth investments with RPH Realty. Expert guidance, transparent transactions, and a curated selection of premium properties await you in Goa's dynamic market.",
+  icons: {
+    icon: "/rph-favicon.png",
+    shortcut: "/rph-favicon.png",
+    apple: "/rph-favicon.png",
+  },
 };
 
 export default function RootLayout({
