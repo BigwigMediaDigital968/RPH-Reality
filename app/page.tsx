@@ -25,7 +25,7 @@ export default function Home() {
       */
       }      <LeadForm />
       <Testimonials />
-      <Blogs />
+      {/* <Blogs /> */}
     </>
   );
 }
