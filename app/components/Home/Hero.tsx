@@ -124,7 +124,7 @@ export default function Hero() {
                                     transition={{ duration: 0.8, delay: 0.9 }}
                                     className="text-lg md:text-xl text-gray-200 max-w-3xl mb-8 font-light leading-relaxed"
                                 >
-                                    Seeking a luxury property in Goa’s breathtaking coastal paradise? RPH Reality is your trusted partner in premium real estate, specializing in exclusive homes and high-end investment opportunities tailored to elevate your lifestyle.
+                                    Seeking a luxury property in Goa’s breathtaking coastal paradise? RPH Realty is your trusted partner in premium real estate, specializing in exclusive homes and high-end investment opportunities tailored to elevate your lifestyle.
                                 </motion.p>
 
                                 <motion.div
@@ -185,7 +185,7 @@ export default function Hero() {
                                 transition={{ duration: 0.8, delay: 0.9 }}
                                 className="text-lg md:text-xl text-navy-950/90 max-w-3xl mb-8 font-light leading-relaxed"
                             >
-                                Seeking a luxury property in Goa’s breathtaking coastal paradise? RPH Reality is your trusted partner in premium real estate, specializing in exclusive homes and high-end investment opportunities tailored to elevate your lifestyle.
+                                Seeking a luxury property in Goa’s breathtaking coastal paradise? RPH Realty is your trusted partner in premium real estate, specializing in exclusive homes and high-end investment opportunities tailored to elevate your lifestyle.
                             </motion.p>
 
                             <motion.div

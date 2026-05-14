@@ -78,14 +78,14 @@ export default function AboutUsPage() {
                         Our Story
                     </h2>
                     <p className="text-slate-400 font-light leading-relaxed mt-4">
-                        At RPH Reality, we started with a vision that goes beyond property transactions, we build possibilities. Our foundation lies in understanding that every real estate decision is deeply personal, whether it’s finding the perfect home or shaping a long-term investment.
+                        At RPH Realty, we started with a vision that goes beyond property transactions, we build possibilities. Our foundation lies in understanding that every real estate decision is deeply personal, whether it’s finding the perfect home or shaping a long-term investment.
                     </p>
                     <p className="text-slate-400 font-light leading-relaxed mt-2">
                         From day one, our goal has been to redefine real estate through trust, clarity, and meaningful relationships. We don’t just deal in properties, we guide journeys, helping clients discover spaces that align with their aspirations and lifestyle.
                     </p>
                     <p className="text-slate-400 font-light leading-relaxed mt-2">
 
-                        Blending global standards with strong local expertise, we deliver tailored real estate experiences that reflect the uniqueness of every client. At RPH Reality, we believe true value isn’t just in the property you choose it’s in the future you create with it.
+                        Blending global standards with strong local expertise, we deliver tailored real estate experiences that reflect the uniqueness of every client. At RPH Realty, we believe true value isn’t just in the property you choose it’s in the future you create with it.
                     </p>
 
                     <div>
