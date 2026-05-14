@@ -267,12 +267,12 @@ export default function PropertyDetailsPage() {
                                                     }
                                                 </div>
                                                 <div>
-                                                    <button
+                                                    {propertyData?.brochure && (<button
                                                         onClick={() => handleDownloadClick()}
 
                                                         className=" cursor-pointer w-full bg-navy-900 text-white border-2 border-navy-900 hover:text-navy-900 hover:bg-white px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest shadow-lg transition-all ease-in-out">
                                                         Download Brochure
-                                                    </button>
+                                                    </button>)}
                                                 </div>
                                             </div>
                                         </div>
