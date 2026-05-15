@@ -62,19 +62,19 @@ export default function CareersPage() {
                         <span className="text-gold-400">Career</span>
                     </>
                 }
-                image="https://s3.india.com/wp-content/uploads/2025/05/gooa-ft.jpg"
+                image="https://images.unsplash.com/photo-1642922835816-e2ac68db5c42?q=80&w=1074&auto=format&fit=crop"
                 label="Join us"
             />
 
             {/* 2. CONTENT SECTION (Culture & Values) */}
             <section className="py-24 border-b border-slate-100">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-3xl font-bold text-navy-900 mb-6">Why Royal Prime?</h2>
+                    <h2 className="text-3xl font-bold text-navy-900 mb-6">Why RPH Realty?</h2>
                     <p className="text-navy-900/80 leading-relaxed mb-8">
-                        At Royal Prime Homes, we don't just sell properties; we curate lifestyles.
+                        At RPH Realty, we don't just sell properties; we curate lifestyles.
                         Our team is built on a foundation of integrity, innovation, and an
                         unrelenting pursuit of excellence. When you join us, you’re not just
-                        taking a job—you’re joining a family that values your growth as much
+                        taking a job - you’re joining a family that values your growth as much
                         as our own.
                     </p>
                     <div className="flex flex-wrap justify-center gap-8 text-sm font-semibold text-navy-900/80 uppercase tracking-widest">
@@ -167,7 +167,7 @@ export default function CareersPage() {
                         <h3 className="text-xl font-bold text-navy-900 mb-2">Don't see the right role?</h3>
                         <p className="text-slate-500 mb-6">We're always looking for exceptional talent. Send us your resume anyway.</p>
                         <a href="mailto:careers@royalprime.com" className="text-gold-400 font-bold underline hover:text-gold-400 transition-colors">
-                            careers@royalprime.com
+                            careers@rphrealty.com
                         </a>
                     </motion.div>
                 </div>

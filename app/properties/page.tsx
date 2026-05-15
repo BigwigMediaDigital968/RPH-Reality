@@ -54,7 +54,7 @@ export default function PropertiesPage() {
                         <span className="text-gold-400">Exclusive Properties</span>
                     </>
                 }
-                image="https://s3.india.com/wp-content/uploads/2025/05/gooa-ft.jpg"
+                image="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1074&auto=format&fit=crop"
                 label="Premium Collection"
             />
 

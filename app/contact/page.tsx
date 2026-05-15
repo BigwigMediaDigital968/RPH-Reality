@@ -63,22 +63,23 @@ const Contact = () => {
                     <MapPin className="text-navy-950 mt-1" />
                     <p>
                       Gera Imperium Star <br />
-Office no. 812-A, 8th floor <br />
-Opposite Hotel Novotel, <br />
-Patto Centre, Panjim
-Goa India
+                      Office no. 812-A, 8th floor <br />
+                      Opposite Hotel Novotel, <br />
+                      Patto Centre, Panjim
+                      Goa India
                     </p>
                   </div>
 
-                  <div className="hidden gap-4 ">
+                  <a
+                  href="tel:+919284788693" className="flex gap-4 ">
                     <Phone className="text-navy-950 mt-1" />
-                    <p>+91 98200 12345</p>
-                  </div>
+                    <p>+919284788693</p>
+                  </a>
 
-                  <div className="hidden gap-4">
+                  <a href="mailto:contact@rphrealty.com" className="hidden gap-4">
                     <Mail className="text-navy-950 mt-1" />
-                    <p>info@royalprimehomes.com</p>
-                  </div>
+                    <p>contact@rphrealty.com</p>
+                  </a>
                 </div>
               </motion.div>
 
@@ -111,7 +112,7 @@ Goa India
           viewport={{ once: true }}
         >
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.812669062055!2d73.8332836!3d15.4945054!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfc1870bd62f33%3A0x6f779ece0ea56530!2sGera&#39;s%20Imperium%20Star!5e0!3m2!1sen!2sin!4v1777984152440!5m2!1sen!2sin" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.812669062055!2d73.8332836!3d15.4945054!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfc1870bd62f33%3A0x6f779ece0ea56530!2sGera&#39;s%20Imperium%20Star!5e0!3m2!1sen!2sin!4v1777984152440!5m2!1sen!2sin"
             className="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
             allowFullScreen
             loading="lazy"

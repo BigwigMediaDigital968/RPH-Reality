@@ -142,7 +142,7 @@ export default function EnquiryForm({
           </label>
           <input
             type="tel"
-            placeholder="+971 50 000 0000"
+            placeholder="+91 9654854589"
             {...register("phone")}
             className={`w-full px-2 py-2 sm:px-4 sm:py-3 text-sm font-sans text-navy-900 placeholder-charcoal-400 border rounded-lg outline-none transition-all duration-200 ${
               errors.phone

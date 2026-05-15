@@ -15,7 +15,7 @@ const navLinks: NavLink[] = [
     dropdownItems: [
       { name: "Buy Property", href: "/buy" },
       { name: "Sell Property", href: "/sell" },
-        { name: "Explore Properties", href: "/properties" },
+      { name: "Explore Properties", href: "/properties" },
       // { name: "Rent", href: "/rent" },
       // { name: "Lease", href: "/lease" },
     ],
@@ -63,19 +63,40 @@ export default function Footer() {
               </div>
             </div>
             <p className="font-sans text-white text-sm leading-relaxed mb-5 max-w-xs">
-              Goa's trusted real estate partner. Helping clients find their
-              perfect home since 2013.
+              Redefining Goa real estate with trust, clarity, and personalized property solutions.
             </p>
             <div className="flex gap-3">
-              {["in", "f", "ig", "x"].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  className="w-8 h-8 rounded-full border border-navy-700 flex items-center justify-center text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-200 text-xs font-sans font-semibold"
-                >
-                  {s}
-                </a>
-              ))}
+
+              <div className="flex items-center gap-2">
+                {[
+                  {
+                    label: "in",
+                    href: "https://www.linkedin.com/",
+                  },
+                  {
+                    label: "f",
+                    href: "https://www.facebook.com/",
+                  },
+                  {
+                    label: "ig",
+                    href: "https://www.instagram.com/",
+                  },
+                  {
+                    label: "x",
+                    href: "https://x.com/",
+                  },
+                ].map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full border border-navy-700 flex items-center justify-center text-white hover:border-gold-400 hover:text-gold-400 transition-all duration-200 text-xs font-sans font-semibold"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -149,15 +170,15 @@ export default function Footer() {
                 </svg>
                 <span className="text-white text-sm font-sans leading-relaxed">
                   Gera Imperium Star
-Office no. 812-A, 8th floor
-Opposite Hotel Novotel,
-Patto Centre, Panjim
-Goa India
+                  Office no. 812-A, 8th floor
+                  Opposite Hotel Novotel,
+                  Patto Centre, Panjim
+                  Goa India
                 </span>
               </li>
-              <li className="hidden">
+              <li className="">
                 <a
-                  href="tel:+919820012345"
+                  href="tel:+919284788693"
                   className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3"
                 >
                   <svg
@@ -175,13 +196,13 @@ Goa India
                       d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
                     />
                   </svg>
-                  +91 98200 12345
+                  +919284788693
                 </a>
               </li>
               <li className="
-              hidden">
+              ">
                 <a
-                  href="mailto:info@royalprimehomes.com"
+                  href="mailto:contact@rphrealty.com"
                   className="text-white text-sm font-sans hover:text-gold-400 transition-colors flex gap-3 break-all"
                 >
                   <svg
@@ -199,7 +220,7 @@ Goa India
                       d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                     />
                   </svg>
-                  info@royalprimehomes.com
+                  contact@rphrealty.com
                 </a>
               </li>
             </ul>
