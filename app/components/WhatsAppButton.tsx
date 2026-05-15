@@ -10,8 +10,8 @@ interface WhatsAppButtonProps {
 }
 
 const WhatsAppButton = ({ 
-  phoneNumber = "911234567890", 
-  message = "Hello! I'd like to book an appointment." 
+  phoneNumber, 
+  message = "Hello! I would like to enquire about a property." 
 }: WhatsAppButtonProps) => {
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

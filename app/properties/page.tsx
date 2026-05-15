@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import SectionLabel from "../components/Ui/SectionLabel";
 import Hero from "../components/Ui/Hero";
-import { AreaChartIcon, BathIcon, BedIcon, Eye } from "lucide-react";
+import { AreaChartIcon, BathIcon, BedIcon, Eye, Map } from "lucide-react";
 import Link from "next/link";
 import { getProperties } from "../lib/api/properties";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ interface Property {
 }
 
 
-const filters = ["All", "Penthouse", "Villa", "Loft", "Beachfront", "Townhouse", "Apartment",  "Cabin"];
+const filters = ["All", "Penthouse", "Villa", "Loft", "Beachfront", "Townhouse", "Apartment", "Cabin", "Plots"];
 
 export default function PropertiesPage() {
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -43,6 +43,18 @@ export default function PropertiesPage() {
             : propertiesData?.data?.filter((p: any) => p.type === selectedFilter);
 
     console.log(filteredProperties)
+
+    const redirectionProperty = {
+        _id: "plots-link",
+        title: "Explore Full Land Portfolio",
+        location: "Global Exclusive Estates",
+        type: "Plots",
+        purpose: "invest",
+        images: ["/plot-for-sale.png"],
+        slug: "all-plots",
+        areaSqft: "Multiple Dimensions Available"
+    };
+
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
@@ -153,7 +165,7 @@ export default function PropertiesPage() {
                                             </motion.div>
 
                                             {/* Overlay Gradient: Shifted from dark to light/transparent */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-90 transition-opacity duration-500" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent opacity-90 transition-opacity duration-500" />
 
                                             {/* Status Badge */}
                                             <motion.div
@@ -223,7 +235,7 @@ export default function PropertiesPage() {
                                             <div className=" text-sm text-slate-600 bg-slate-50 p-3 py-1 rounded-lg border border-slate-100">
                                                 <div className="flex  gap-6 ">
                                                     <FeatureItem icon={BedIcon} label={`${property.bedrooms} Beds`} />
-                                                <FeatureItem icon={BathIcon} label={`${property.bathrooms} Baths`} />
+                                                    <FeatureItem icon={BathIcon} label={`${property.bathrooms} Baths`} />
                                                 </div>
                                                 <div className="w-full mt-2">
                                                     <FeatureItem icon={AreaChartIcon} label={property?.areaSqft} />
@@ -232,7 +244,7 @@ export default function PropertiesPage() {
 
                                             {/* Price and CTA */}
                                             <div className=" items-center justify-between pt-3 border-t border-slate-100">
-                                                
+
 
                                                 <Link
                                                     href={`/properties/${property?.slug}`}
@@ -257,6 +269,112 @@ export default function PropertiesPage() {
                                     </div>
                                 </motion.div>
                             ))}
+                            {
+                                (selectedFilter === "All" ||
+                                    selectedFilter === "" ||
+                                    selectedFilter === "Plots") && (
+                                    <>
+                                        <motion.div
+                                            key={redirectionProperty._id}
+                                            layout
+                                            initial={{ opacity: 0, y: 50 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            onHoverStart={() => setHoveredCard(198)}
+                                            onHoverEnd={() => setHoveredCard(null)}
+                                            className="group relative max-w-sm w-full"
+                                        >
+                                            <div className="relative overflow-hidden rounded-2xl bg-white shadow-xl shadow-slate-100 border border-slate-100 hover:border-gold-300 hover:scale-105 transition-all duration-500 group">
+                                                {/* Image Container */}
+                                                <div className="relative h-64 overflow-hidden">
+                                                    <motion.div
+                                                        animate={{
+                                                            scale: hoveredCard === 198 ? 1.05 : 1,
+                                                        }}
+                                                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                                                        className="w-full h-full"
+                                                    >
+                                                        <img
+                                                            src={redirectionProperty.images[0]}
+                                                            alt={redirectionProperty.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    </motion.div>
+
+                                                    {/* Overlay Gradient */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent opacity-90 transition-opacity duration-500" />
+
+                                                    {/* Status Badge */}
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        whileInView={{ opacity: 1, x: 0 }}
+                                                        viewport={{ once: true }}
+                                                        className="absolute top-4 left-4 z-10"
+                                                    >
+                                                        <span className="hidden px-4 py-2 rounded-full text-xs font-bold tracking-wider bg-gold-600 text-white uppercase">
+                                                            {redirectionProperty.purpose}
+                                                        </span>
+                                                    </motion.div>
+
+                                                    {/* Type Badge */}
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: 20 }}
+                                                        whileInView={{ opacity: 1, x: 0 }}
+                                                        viewport={{ once: true }}
+                                                        className="absolute top-4 right-4 z-10"
+                                                    >
+                                                        <span className="px-4 py-2 rounded-full text-xs font-semibold bg-white/90 text-[#020617] border border-slate-100 backdrop-blur-sm shadow-sm">
+                                                            {redirectionProperty.type}
+                                                        </span>
+                                                    </motion.div>
+                                                </div>
+
+                                                {/* Content */}
+                                                <div className="p-6 py-4 space-y-2">
+                                                    <div>
+                                                        <h3 className="text-xl font-semibold text-slate-900 font-serif line-clamp-2 group-hover:text-gold-600 transition-colors duration-300">
+                                                            {redirectionProperty.title}
+                                                        </h3>
+                                                        <p className="text-slate-600 flex items-center gap-2 text-sm mt-2">
+                                                            <Map size={14} className="text-gold-600" />
+                                                            {redirectionProperty.location}
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Area Feature (Plot Specific) */}
+                                                    <div className="text-sm text-slate-600 bg-slate-50 p-3 py-2 rounded-lg border border-slate-100 mt-4">
+                                                        <FeatureItem icon={AreaChartIcon} label={redirectionProperty.areaSqft} />
+                                                    </div>
+
+                                                    {/* CTA */}
+
+                                                    <div className=" items-center justify-between pt-3 border-t border-slate-100">
+
+
+                                                        <Link
+                                                            href={`/plots`}
+                                                            className="mt-2 w-full bg-navy-900 text-white py-3 border border-navy-900 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-gold-400 transition-all duration-300 flex items-center justify-center gap-2">
+                                                            <Eye size={18} />
+                                                            View All Plots
+                                                        </Link>
+                                                    </div>
+                                                </div>
+
+                                                {/* Hover Effect Border */}
+                                                <motion.div
+                                                    className="absolute inset-0 rounded-2xl pointer-events-none"
+                                                    animate={{
+                                                        boxShadow:
+                                                            hoveredCard === 198
+                                                                ? "0 15px 40px rgba(212, 175, 55, 0.15)"
+                                                                : "0 0 0px rgba(212, 175, 55, 0)",
+                                                    }}
+                                                    transition={{ duration: 0.3 }}
+                                                />
+                                            </div>
+                                        </motion.div></>
+                                )
+                            }
                         </motion.div></>)}
 
                     {/* No Results */}
