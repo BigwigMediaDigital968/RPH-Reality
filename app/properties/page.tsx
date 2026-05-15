@@ -50,7 +50,7 @@ export default function PropertiesPage() {
         location: "Global Exclusive Estates",
         type: "Plots",
         purpose: "invest",
-        images: ["/plot-for-sale.png"],
+        images: ["/plots-card.png"],
         slug: "all-plots",
         areaSqft: "Multiple Dimensions Available"
     };
@@ -205,7 +205,7 @@ export default function PropertiesPage() {
                                                 </h3>
                                                 {property.price && (<div>
                                                     <p className="text-base sm:text-lg md:text-xl font-bold text-gold-600 font-display">
-                                                        {property.price}
+                                                        Starts from {property.price}
                                                     </p>
                                                 </div>)}
                                                 <p className="text-slate-600 flex items-center gap-2 text-sm mt-2">

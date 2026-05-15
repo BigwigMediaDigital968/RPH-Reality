@@ -30,24 +30,24 @@ Goa Luxury
 const plotsData = [
   {
     id: "01",
-    name: "Palm Crest Residences",
-    headline: "Exclusive Waterfront Living on Dubai’s Elite Coastline.",
+    name: "Azure Coast Enclave",
+    headline: "Luxury Coastal Living in the Heart of Goa.",
     description:
-      "Located near Palm Jumeirah, this premium land parcel offers uninterrupted sea views and direct access to Dubai’s most prestigious lifestyle destinations. Ideal for creating a contemporary luxury villa with world-class amenities.",
-    area: "38,000 Sq. Ft.",
-    topography: "Flat Waterfront Plot",
+      "Located near Goa’s pristine coastline, this premium plot offers breathtaking sea views, tropical surroundings, and seamless access to luxury resorts, beaches, and vibrant lifestyle destinations.",
+    area: "18,000 Sq. Ft.",
+    topography: "Elevated Coastal Terrain",
     orientation: "West Facing",
     image: "/plot-1.png",
   },
   {
     id: "02",
-    name: "Desert Pearl Estates",
-    headline: "A Refined Address Surrounded by Dubai’s Iconic Skyline.",
+    name: "Palm Grove Retreat",
+    headline: "A Private Escape Surrounded by Nature and Serenity.",
     description:
-      "Positioned within a rapidly growing luxury district, this expansive plot combines serene desert-inspired surroundings with close proximity to Downtown Dubai and premium golf communities.",
-    area: "55,000 Sq. Ft.",
-    topography: "Level Desert Terrain",
-    orientation: "North-East Facing",
+      "Set amidst lush coconut groves and tranquil landscapes, this exclusive Goa plot provides the perfect setting for a luxury villa, wellness retreat, or long-term investment opportunity.",
+    area: "24,500 Sq. Ft.",
+    topography: "Gentle Green Slope",
+    orientation: "South-West Facing",
     image: "/plot-2.png",
   },
 ];
