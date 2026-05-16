@@ -20,8 +20,8 @@ interface ImageUploaderProps {
 export default function ImageUploader({
     images,
     onChange,
-    maxImages = 10,
-    maxSizeMB = 5,
+    maxImages = 20,
+    maxSizeMB = 15,
 }: ImageUploaderProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);

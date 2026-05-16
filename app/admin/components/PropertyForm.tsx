@@ -659,8 +659,8 @@ export default function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     <ImageUploader
                         images={images}
                         onChange={setImages}
-                        maxImages={10}
-                        maxSizeMB={10}
+                        maxImages={20}
+                        maxSizeMB={15}
                     />
                 </div>
 
