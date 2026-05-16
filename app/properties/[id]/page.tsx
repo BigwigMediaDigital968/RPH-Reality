@@ -397,7 +397,44 @@ export default function PropertyDetailsPage() {
                                         </div>
                                     </motion.div>
 
-
+{
+                                        propertyData?.highlights?.length > 0 && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.4 }}
+                                                className="bg-white border border-gold-500/20 rounded-2xl p-8 backdrop-blur-sm"
+                                            >
+                                                <SectionLabel>Property Highlights</SectionLabel>
+                                                <div className="grid md:grid-cols-2 gap-4 mt-6">
+                                                    {propertyData?.highlights?.map((feature: any, index: number) => (
+                                                        <motion.div
+                                                            key={index}
+                                                            initial={{ opacity: 0, x: -20 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: 0.5 + index * 0.05 }}
+                                                            className="flex items-start gap-3 text-navy-950/80"
+                                                        >
+                                                            <svg
+                                                                className="w-5 h-5 text-gold-500 mt-1 flex-shrink-0"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M5 13l4 4L19 7"
+                                                                />
+                                                            </svg>
+                                                            <span className="capitalize">{feature.toLowerCase()}</span>
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )
+                                    }
 
                                     {/* Amenities */}
                                     {propertyData?.featuresAmenities?.length > 0 && (<motion.div
@@ -423,17 +460,18 @@ export default function PropertyDetailsPage() {
                                         </div>
                                     </motion.div>)}
                                     {/* Features */}
+                                    
                                     {
-                                        propertyData?.extraHighlights?.length > 0 && (
+                                        propertyData?.nearby?.length > 0 && (
                                             <motion.div
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.4 }}
                                                 className="bg-white border border-gold-500/20 rounded-2xl p-8 backdrop-blur-sm"
                                             >
-                                                <SectionLabel>Property Highlights</SectionLabel>
+                                                <SectionLabel>Nearby Places</SectionLabel>
                                                 <div className="grid md:grid-cols-2 gap-4 mt-6">
-                                                    {propertyData?.extraHighlights?.map((feature: any, index: number) => (
+                                                    {propertyData?.nearby?.map((feature: any, index: number) => (
                                                         <motion.div
                                                             key={index}
                                                             initial={{ opacity: 0, x: -20 }}
@@ -461,6 +499,7 @@ export default function PropertyDetailsPage() {
                                             </motion.div>
                                         )
                                     }
+
                                     {
                                         propertyData?.extraHighlights?.length > 0 && (
                                             <motion.div
@@ -469,9 +508,9 @@ export default function PropertyDetailsPage() {
                                                 transition={{ delay: 0.4 }}
                                                 className="bg-white border border-gold-500/20 rounded-2xl p-8 backdrop-blur-sm"
                                             >
-                                                <SectionLabel>Nearby Places</SectionLabel>
+                                                <SectionLabel>Other Highlights</SectionLabel>
                                                 <div className="grid md:grid-cols-2 gap-4 mt-6">
-                                                    {propertyData?.nearby?.map((feature: any, index: number) => (
+                                                    {propertyData?.extraHighlights?.map((feature: any, index: number) => (
                                                         <motion.div
                                                             key={index}
                                                             initial={{ opacity: 0, x: -20 }}
